@@ -1,0 +1,2 @@
+class AttachmentlinkController < ApplicationController
+end

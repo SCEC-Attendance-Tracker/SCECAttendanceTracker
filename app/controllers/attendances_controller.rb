@@ -15,8 +15,12 @@ class AttendancesController < ApplicationController
     @event = Event.where(:title => params[:title])
   elsif params[:start_date]
     @event = Event.where(:start_date => params[:start_date])
-  @attendances = Attendance.where(:member_id => @member.ids).where(:event_id => @event.ids)
   end
+
+  @attendances = Attendance.where(:member_id => @member.ids).where(:event_id => @event.ids)
+  #if params[:member_id]
+  #  @attendances = Attendance.where(:member_id => params[:member_id])
+  #end
 
   end
 

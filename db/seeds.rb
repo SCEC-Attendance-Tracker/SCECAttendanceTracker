@@ -24,6 +24,16 @@ member = Member.create([
         email: "frodo.baggins@hobbit.com",
         description: "me short",
         paid_dues: 0,
+        total_attendance: 2
+    },
+    
+    { 
+        admin: 0,
+        first_name: "Steve",
+        last_name: "Wozniak",
+        email: "swozniak@mail.com",
+        description: "woo apple",
+        paid_dues: 0,
         total_attendance: 1
     }]
 )
@@ -54,22 +64,5 @@ event = Event.create([
         description: "have fun with rabbit and cat",
         avg_rating: 2.5,
         location: "Boston"
-    }]
-)
-
-attendance = Attendances.create([
-    { 
-        member_id: 1,
-        event_id: 1
-    }, 
-    
-    { 
-        member_id: 1,
-        event_id: 2
-    },
-
-    { 
-        member_id: 2,
-        event_id: 3
     }]
 )

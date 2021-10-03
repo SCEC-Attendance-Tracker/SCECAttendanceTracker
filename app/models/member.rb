@@ -9,6 +9,6 @@ class Member < ApplicationRecord
             member = Member.find_by_email(email)
             MemberRequestMailer.with(member: member).member_request.deliver_now
             create_with(email: email, first_name: first_name, last_name: last_name).find_or_create_by!(email: email)
-          end
+        end
     end
 end

@@ -4,11 +4,11 @@ RSpec.describe Event, type: :model do
   # pending "add some examples to (or delete) #{__FILE__}"
   subject do
       described_class.new(
-          eventTitle: 'Test Event',
-          eventStartDate: DateTime.new(2021,2,3,4,5,6),
-          eventEndDate: DateTime.new(2021,2,3,4,5,6),
-          eventDescription: 'Default Description',
-          eventLocation: 'Zoom'
+          title: 'Test Event',
+          start_date: DateTime.new(2021,2,3,4,5,6),
+          end_date: DateTime.new(2021,2,3,4,5,6),
+          description: 'Default Description',
+          location: 'Zoom'
       )
   end
 
@@ -17,17 +17,17 @@ RSpec.describe Event, type: :model do
   end
 
   it 'is not valid without a name' do
-      subject.eventTitle = nil
+      subject.title = nil
       expect(subject).not_to be_valid
   end
 
   it 'is not valid without a start date' do
-      subject.eventStartDate = nil
+      subject.start_date = nil
       expect(subject).not_to be_valid
   end
 
   it 'is not valid without a end date' do
-      subject.eventEndDate = nil
+      subject.end_date = nil
       expect(subject).not_to be_valid
   end
 

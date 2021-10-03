@@ -1,9 +1,10 @@
 class Event < ApplicationRecord
-    validates :eventTitle, presence: true
-    validates :eventStartDate, presence: true
-    validates :eventEndDate, presence: true
-    validates :eventDescription, presence: true
-    validates :eventLocation, presence: true
+    validates :title, presence: true
+    validates :start_date, presence: true
+    validates :end_date, presence: true
+    validates :description, presence: true
+    validates :location, presence: true
+    
     has_many :attachment_links
     has_many :attendances
     has_many :feedbacks

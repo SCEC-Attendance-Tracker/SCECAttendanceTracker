@@ -1,15 +1,19 @@
 <p id="notice"><%= notice %></p>
 
+<%= link_to 'Home', root_path %>
+
 <h1>Events</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Eventtitle</th>
-      <th>Eventstartdate</th>
-      <th>Eventenddate</th>
-      <th>Eventdescription</th>
-      <th>Eventlocation</th>
+      <th>Event ID</th>
+      <th>Event Title</th>
+      <th>Event Start Date</th>
+      <th>Event End Date</th>
+      <th>Event Description</th>
+      <th>Event Location</th>
+      <th>Event Ratings</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,11 +21,13 @@
   <tbody>
     <% @events.each do |event| %>
       <tr>
-        <td><%= event.eventTitle %></td>
-        <td><%= event.eventStartDate %></td>
-        <td><%= event.eventEndDate %></td>
-        <td><%= event.eventDescription %></td>
-        <td><%= event.eventLocation %></td>
+        <td><%= event.id %></td>
+        <td><%= link_to event.title, attendances_path(:title => @events.find(event.id).title) %></td>
+        <td><%= event.start_date %></td>
+        <td><%= event.end_date %></td>
+        <td><%= event.description %></td>
+        <td><%= event.location %></td>
+        <td><%= "event.avg_rating" %></td>
         <td><%= link_to 'Show', event %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'home#show'
 
   resources :attendances
+  resources :events
 
   devise_for :members, controllers: { omniauth_callbacks: 'members/omniauth_callbacks' }
   devise_scope :member do

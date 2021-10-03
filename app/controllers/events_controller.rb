@@ -25,7 +25,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to @event, notice: "Event was successfully created." }
+        format.html { redirect_to events_url, notice: "Event was successfully created." }
         format.json { render :show, status: :created, location: @event }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -64,6 +64,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:eventTitle, :eventStartDate, :eventEndDate, :eventDescription, :eventLocation)
+      params.require(:event).permit(:title, :start_date, :end_date, :description, :location)
     end
 end

@@ -23,10 +23,10 @@
         <td><%= attendance.member_id %></td>
         <td><%= attendance.event_id %></td>
 
-        <td><%= member.first_name %></td>
-        <td><%= member.last_name %></td>
-        <td><%= event.title %></td>
-        <td><%= event.start_date %></td>
+        <td><%= @member.find(attendance.member_id).first_name %></td>
+        <td><%= @member.find(attendance.member_id).last_name %></td>
+        <td><%= @event.find(attendance.event_id).title %></td>
+        <td><%= @event.find(attendance.event_id).start_date %></td>
 
         <td><%= link_to 'Show', attendance %></td>
         <td><%= link_to 'Edit', edit_attendance_path(attendance) %></td>

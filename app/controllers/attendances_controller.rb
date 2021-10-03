@@ -6,6 +6,18 @@ class AttendancesController < ApplicationController
     @attendances = Attendance.all
     @member = Member.all
     @event = Event.all
+
+  if params[:first_name]
+    @member = Member.where(:first_name => params[:first_name])
+  elsif params[:last_name]
+    @member = Member.where(:last_name => params[:last_name])
+  elsif params[:title]
+    @event = Event.where(:title => params[:title])
+  elsif params[:start_date]
+    @event = Event.where(:start_date => params[:start_date])
+  @attendances = Attendance.where(:member_id => @member.ids).where(:event_id => @event.ids)
+  end
+
   end
 
   # GET /attendances/1 or /attendances/1.json

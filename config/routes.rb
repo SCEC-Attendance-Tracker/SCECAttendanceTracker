@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root to: 'home#show'
+
+  resources :attendances
+
   devise_for :members, controllers: { omniauth_callbacks: 'members/omniauth_callbacks' }
   devise_scope :member do
     get 'members/sign_in', to: 'members/sessions#new', as: :new_member_session

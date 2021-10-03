@@ -29,7 +29,8 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @from_google_params ||= {
         email: auth.info.email,
         first_name: auth.info.name.split[0],
-        last_name: auth.info.name.split[1]
+        last_name: auth.info.name.split[1],
+        uid: auth.info.uid
       }
     end
   

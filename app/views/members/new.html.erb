@@ -1,0 +1,14 @@
+<%= link_to("<< Back to List", members_path, :class => 'back-link') %>
+
+<div class="members new">
+  <h2>Create Member</h2>
+
+  <%= form_for(@member, :url => members_path, :method => 'post') do |f| %>
+
+    <%= render(:partial => 'form', :locals => {:f => f}) %>
+
+    <div class="form-buttons">
+      <%= f.submit("Update Member") %>
+    </div>
+  <% end %>
+</div>

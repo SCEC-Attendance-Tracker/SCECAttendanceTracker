@@ -6,7 +6,6 @@ class MemberRequestMailer < ApplicationMailer
   #
   def member_request
     @member = params[:member]
-    @url = 'example.com'
     @admins = Member.where(:admin => true)
 
     mail(to: @admins.pluck(:email), subject: 'SCEC - New Member Request')

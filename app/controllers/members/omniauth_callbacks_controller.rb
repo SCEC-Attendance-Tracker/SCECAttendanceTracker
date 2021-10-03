@@ -2,7 +2,6 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def google_oauth2
       puts from_google_params
       member = Member.from_google(**from_google_params)
-      MemberRequestMailer.with(member: member).member_request.deliver_later
   
       if member.present?
         sign_out_all_scopes

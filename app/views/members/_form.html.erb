@@ -3,11 +3,11 @@
 <table summary="Member form fields">
   <tr>
     <th>First Name</th>
-    <td><%= f.text_field(:first_name)%> </td>
+    <td><%= f.text_field(:first_name, :readonly=>true) %> </td>
     <th> Last Name </th>
-    <td> <%= f.text_field(:last_name)%> </td>
+    <td> <%= f.text_field(:last_name, :readonly=>true) %> </td>
     <th> Email </th>
-    <td> <%= f.text_field(:email) %> </td>
+    <td> <%= f.text_field(:email, :readonly=>true) %> </td>
   </tr>
   <tr>
     <th>Description</th>
@@ -15,14 +15,14 @@
   </tr>
   <tr>
     <th>Admin</th>
-    <td><%= f.check_box(:admin) %></td>
+    <td><%= f.check_box(:admin, :readonly=>true) %></td>
   </tr>
   <tr>
     <th>Paid dues</th>
-    <td><%= f.check_box(:paid_dues) %></td>
+    <td><%= f.check_box(:paid_dues, :readonly=>true) %></td>
   </tr>
   <tr>
     <th>Attendance</th>
-    <td><%= f.text_field(:total_attendance) %></td>
+    <td><%= f.text_field(:total_attendance, :readonly=>true) %></td>
   </tr>
 </table>

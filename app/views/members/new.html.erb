@@ -2,9 +2,7 @@
 
 <div class="members new">
   <h2>Create Member</h2>
-
-  <%= form_for(@member, :url => members_path, :method => 'post') do |f| %>
-
+  <%= form_for(@member, :url => members_path, :method => 'post', :first_name => @params["first_name"]) do |f| %>
     <%= render(:partial => 'form', :locals => {:f => f}) %>
 
     <div class="form-buttons">

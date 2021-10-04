@@ -1,12 +1,19 @@
 class MembersController < ApplicationController
+  skip_before_action :authenticate_member!, :only => [:new]
+
   def new
     @member = Member.new
+    @params = request.query_parameters
+    @member.first_name = @params['first_name']
+    @member.last_name = @params['last_name']
+    @member.email = @params['email']
+    @member.uid = @params['uid']
+    sign_in @member, event: :authentication
   end
 
   def create
     @member = Member.new(member_params)
     if @member.save
-      # probably not gonna be this route
       redirect_to(members_path)
     else
       render('new')
@@ -18,6 +25,7 @@ class MembersController < ApplicationController
   end
 
   def show
+    @member = Member.find(params[:id])
   end
 
   def delete

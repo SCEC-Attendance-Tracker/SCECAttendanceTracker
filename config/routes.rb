@@ -19,6 +19,4 @@ Rails.application.routes.draw do
       delete 'members/:id', to: 'members#destroy'
     end
   end
-
-  root 'members#index'
 end

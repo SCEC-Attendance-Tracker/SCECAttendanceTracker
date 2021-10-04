@@ -1,10 +1,18 @@
 import React from "react"
-import PropTypes from "prop-types"
+import FullCalendar from '@fullcalendar/react'
+import googleCalendarPlugin from '@fullcalendar/google-calendar'
+import dayGridPlugin from '@fullcalendar/daygrid'
 class GoogleCalendar extends React.Component {
   render () {
     return (
-      <React.Fragment>
-      </React.Fragment>
+        <FullCalendar 
+          plugins = {[ googleCalendarPlugin, dayGridPlugin ]}
+          initialView = "dayGridMonth"
+          googleCalendarApiKey = 'AIzaSyAc2Ls0mbsox4ZX6xCX2ZoybF6YFLtot34'
+          events = {{
+            googleCalendarId: 'scecattendancetracker@gmail.com'
+          }}
+        />
     );
   }
 }

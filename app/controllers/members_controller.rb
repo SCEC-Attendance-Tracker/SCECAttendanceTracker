@@ -2,19 +2,17 @@ class MembersController < ApplicationController
   skip_before_action :authenticate_member!, :only => [:new]
 
   def new
-    @member = Member.new
     @params = request.query_parameters
-    @member.first_name = @params['first_name']
-    @member.last_name = @params['last_name']
-    @member.email = @params['email']
-    @member.uid = @params['uid']
+    @member = Member.find_by(email: @params['email'])
   end
 
   def create
-    @member = Member.new(member_params)
-    if @member.save
+    @member = Member.find_by(email: member_params[:email])
+
+    if @member.update(member_params)
       redirect_to(members_path)
     else
+
       render('new')
     end
   end
@@ -55,7 +53,7 @@ class MembersController < ApplicationController
   
   private
   def member_params
-    params.require(:member).permit(:first_name, :last_name, :email)
+    params.require(:member).permit(:first_name, :last_name, :email, :description)
   end
 
   def set_member

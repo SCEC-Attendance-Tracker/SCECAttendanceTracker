@@ -8,7 +8,6 @@ class MembersController < ApplicationController
     @member.last_name = @params['last_name']
     @member.email = @params['email']
     @member.uid = @params['uid']
-    sign_in @member, event: :authentication
   end
 
   def create
@@ -53,7 +52,7 @@ class MembersController < ApplicationController
       render('edit')
     end
   end
-
+  
   private
   def member_params
     params.require(:member).permit(:first_name, :last_name, :email)
@@ -62,4 +61,6 @@ class MembersController < ApplicationController
   def set_member
     @member = Member.find(params[:id])
   end
+
+
 end

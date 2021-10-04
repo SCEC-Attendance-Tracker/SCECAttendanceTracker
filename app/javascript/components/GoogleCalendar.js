@@ -5,14 +5,14 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 class GoogleCalendar extends React.Component {
   render () {
     return (
-        <FullCalendar 
-          plugins = {[ googleCalendarPlugin, dayGridPlugin ]}
-          initialView = "dayGridMonth"
-          googleCalendarApiKey = 'AIzaSyAc2Ls0mbsox4ZX6xCX2ZoybF6YFLtot34'
-          events = {{
-            googleCalendarId: 'scecattendancetracker@gmail.com'
-          }}
-        />
+            <FullCalendar 
+            plugins = {[ googleCalendarPlugin, dayGridPlugin ]}
+            initialView = "dayGridMonth"
+            googleCalendarApiKey = 'AIzaSyAc2Ls0mbsox4ZX6xCX2ZoybF6YFLtot34'
+            events = {{
+              googleCalendarId: 'scecattendancetracker@gmail.com'
+            }}
+          />
     );
   }
 }

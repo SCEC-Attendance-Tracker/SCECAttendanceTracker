@@ -85,7 +85,4 @@ Rails.application.configure do
     password: ENV["GMAIL_PASSWORD"]
   }
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-  
-  ENV['GOOGLE_OAUTH_CLIENT_ID'] = '975521204484-4amj4sum982u6onqnviv6vt6pa3de5rj.apps.googleusercontent.com'
-  ENV['GOOGLE_OAUTH_CLIENT_SECRET'] = '_OzIa7zrV-TqkocFvJb2U5K6'
 end

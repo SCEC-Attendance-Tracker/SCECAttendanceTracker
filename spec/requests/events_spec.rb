@@ -62,7 +62,7 @@ RSpec.describe "/events", type: :request do
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
+    it "renders a successful response" do
       event = Event.create! valid_attributes
       get edit_event_url(event)
       expect(response).to be_successful

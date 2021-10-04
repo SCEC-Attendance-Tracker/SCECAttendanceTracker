@@ -1,7 +1,9 @@
-<div class="Members index">
-  <h2>Member</h2>
+<p id="notice"><%= notice %></p>
 
-  <%= link_to('New Member', new_member_path, :class => 'action new') %>
+<div class="Members index">
+  <%= link_to 'Home', root_path %>
+
+  <h2>Member</h2>
 
   <table class="listing" summary="Member list">
     <% @member.each do |member| %>
@@ -18,4 +20,7 @@
     </tr>
     <% end %>
   </table>
+
+  <%= link_to('Add Member', new_member_path, :class => 'action new') %>
+
 </div>

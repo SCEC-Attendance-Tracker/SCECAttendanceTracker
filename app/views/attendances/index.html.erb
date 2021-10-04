@@ -27,7 +27,7 @@
 
         <td><%= link_to @member.find(attendance.member_id).first_name, attendances_path(:first_name => @member.find(attendance.member_id).first_name) %></td>
         <td><%= link_to @member.find(attendance.member_id).last_name, attendances_path(:last_name => @member.find(attendance.member_id).last_name) %></td>
-        <td><%= link_to @event.find(attendance.event_id).title, attendances_path(:title => @event.find(attendance.event_id).title) %></td>
+        <td><%= link_to @event.find(attendance.event_id).title, attendances_path(:title => @event.find(attendance.event_id).title) %> <%= link_to "Event Details", "/events/#{attendance.event_id}" %></td>
         <td><%= link_to @event.find(attendance.event_id).start_date, attendances_path(:start_date => @event.find(attendance.event_id).start_date) %></td>
 
         <td><%= link_to 'Show', attendance %></td>

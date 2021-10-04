@@ -13,7 +13,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         member = Member.from_google(**google_params)
 
         sign_in member, event: :authentication
-        redirect_to new_member_path(google_params)
+        redirect_to new_member_path({email: google_params[:email]})
       else
         flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
         redirect_to new_member_session_path

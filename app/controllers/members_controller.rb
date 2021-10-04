@@ -10,7 +10,7 @@ class MembersController < ApplicationController
     @member = Member.find_by(email: member_params[:email])
 
     if @member.update(member_params)
-      redirect_to(members_path)
+      redirect_to(root_path)
     else
 
       render('new')

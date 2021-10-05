@@ -27,18 +27,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-<<<<<<< HEAD
-/config/local_env.yml
-=======
-/config/enivronments/development.rb
->>>>>>> 89692fd84aadae581e34fc8ceeb71ff608f81f40
-
-/public/packs
-/public/packs-test
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity
 
 /public/packs
 /public/packs-test

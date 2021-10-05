@@ -1,4 +1,3 @@
-
 Rails.application.routes.draw do
   root to: 'home#show'
   devise_for :members, controllers: { omniauth_callbacks: 'members/omniauth_callbacks' }

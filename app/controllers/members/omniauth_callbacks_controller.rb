@@ -3,8 +3,9 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       google_params = from_google_params
 
       check_member = Member.find_by(email: google_params[:email])
-      if(check_member) 
+      if(check_member)
         sign_in check_member, event: :authentication
+        session[:member_id] = check_member.id
         redirect_to root_path
       elsif defined?(google_params)
         sign_out_all_scopes
@@ -13,6 +14,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         member = Member.from_google(**google_params)
 
         sign_in member, event: :authentication
+        session[:member_id] = member.id
         redirect_to new_member_path({email: google_params[:email]})
       else
         flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."

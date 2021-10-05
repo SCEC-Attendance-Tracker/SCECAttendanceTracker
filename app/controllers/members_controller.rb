@@ -50,7 +50,7 @@ class MembersController < ApplicationController
       render('edit')
     end
   end
-  
+
   private
   def member_params
     params.require(:member).permit(:first_name, :last_name, :email, :description)

@@ -8,6 +8,7 @@ class MembersController < ApplicationController
     @member.last_name = @params['last_name']
     @member.email = @params['email']
     @member.uid = @params['uid']
+    MemberRequestMailer.with(member: @member).member_request.deliver_now
   end
 
   def create

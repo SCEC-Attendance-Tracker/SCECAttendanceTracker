@@ -16,7 +16,6 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           google_params[:new_member] = true
         else
           google_params[:new_member] = false
-          MemberRequestMailer.with(member: member).member_request.deliver_now
         end
 
         sign_in member, event: :authentication

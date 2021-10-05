@@ -1,0 +1,8 @@
+<%= link_to("<< Back to Home", root_path, :class => 'back-link') %>
+<%= is_edit_owner(@member[:id], session[:member_id]) %>
+<%= is_delete_owner(@member[:id], session[:member_id]) %>
+
+<h1> <%= @member.first_name %> <%= @member.last_name %> </h1>
+<h2> Email: <%= @member.email %> </h2>
+<h3> About Me: </h3>
+<p> <%= @member.description %> </p>

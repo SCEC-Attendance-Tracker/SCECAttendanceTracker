@@ -1,0 +1,11 @@
+<h1>Home Page</h1>
+
+<h1>You're logged in! Welcome to the Member Dashboard!</h1>
+<%= link_to "Sign Out", destroy_member_session_path %>
+
+<%= link_to 'View Attendance', attendances_url %>
+<%= link_to 'View Events', events_url %>
+<%= link_to 'View Members', members_url %>
+<%= link_to 'View my profile', member_path(@member[:id])%>
+
+<%= react_component("GoogleCalendar")  %>

@@ -3,10 +3,6 @@ class MembersController < ApplicationController
 
   def new
     @params = request.query_parameters
-    @member.first_name = @params['first_name']
-    @member.last_name = @params['last_name']
-    @member.email = @params['email']
-    @member.uid = @params['uid']
     @member = Member.find_by(email: @params['email'])
   end
 

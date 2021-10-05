@@ -30,6 +30,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rexml'
 gem 'react-rails'
+gem 'devise'
+gem 'omniauth', '~> 1.9.1'
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

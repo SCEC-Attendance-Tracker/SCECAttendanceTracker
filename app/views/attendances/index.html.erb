@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Home', root_path %>
+
+<h1>Attendances</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member ID</th>
+      <th>Event ID</th>
+
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Event Name</th>
+      <th>Event Date</th>
+
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @attendances.each do |attendance| %>
+      <tr>
+        <td><%= attendance.member_id %></td>
+        <td><%= attendance.event_id %></td>
+
+        <td><%= link_to @member.find(attendance.member_id).first_name, attendances_path(:first_name => @member.find(attendance.member_id).first_name) %></td>
+        <td><%= link_to @member.find(attendance.member_id).last_name, attendances_path(:last_name => @member.find(attendance.member_id).last_name) %></td>
+        <td><%= link_to @event.find(attendance.event_id).title, attendances_path(:title => @event.find(attendance.event_id).title) %> <%= link_to "Event Details", "/events/#{attendance.event_id}" %></td>
+        <td><%= link_to @event.find(attendance.event_id).start_date, attendances_path(:start_date => @event.find(attendance.event_id).start_date) %></td>
+
+        <td><%= link_to 'Show', attendance %></td>
+        <td><%= link_to 'Edit', edit_attendance_path(attendance) %></td>
+        <td><%= link_to 'Destroy', attendance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Attendance', new_attendance_path %>
+
+<%= link_to 'Clear Filters', attendances_path %>

@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<div class="Members index">
+  <%= link_to 'Home', root_path %>
+
+  <h2>Member</h2>
+
+  <table class="listing" summary="Member list">
+    <% @member.each do |member| %>
+    <tr>
+      <td><%= member.id %></td>
+      <td><%= member.first_name %></td>
+      <td><%= member.last_name %></td>
+      <td><%= member.email %></td>
+      <td class="actions">
+        <%= link_to("Show", member_path(member), :class => 'action show') %>
+        <%= link_to("Edit", edit_member_path(member), :class => 'action edit') %>
+        <%= link_to("Delete", delete_member_path(member), :class => 'action delete') %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+
+  <%= link_to('Add Member', new_member_path, :class => 'action new') %>
+
+</div>

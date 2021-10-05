@@ -43,6 +43,9 @@ class AttendancesController < ApplicationController
 
     respond_to do |format|
       if @attendance.save
+        member = Member.find(attendance_params[:member_id])
+        member.update(total_attendance: member.total_attendance + 1)
+
         format.html { redirect_to @attendance, notice: "Attendance was successfully created." }
         format.json { render :show, status: :created, location: @attendance }
       else
@@ -55,7 +58,7 @@ class AttendancesController < ApplicationController
   # PATCH/PUT /attendances/1 or /attendances/1.json
   def update
     respond_to do |format|
-      if @attendance.update(attendance_params)
+      if @attendance.update(attendance_params)        
         format.html { redirect_to @attendance, notice: "Attendance was successfully updated." }
         format.json { render :show, status: :ok, location: @attendance }
       else
@@ -68,6 +71,8 @@ class AttendancesController < ApplicationController
   # DELETE /attendances/1 or /attendances/1.json
   def destroy
     @attendance.destroy
+    member = Member.find(@attendance.member_id)
+    member.update(total_attendance: member.total_attendance - 1)
     respond_to do |format|
       format.html { redirect_to attendances_url, notice: "Attendance was successfully destroyed." }
       format.json { head :no_content }

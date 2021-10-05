@@ -1,4 +1,6 @@
-require "active_support/core_ext/integer/time"
+# frozen_string_literal: true
+
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -75,15 +77,15 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    domain: "smtp.gmail.com",
+    address: 'smtp.gmail.com',
+    domain: 'smtp.gmail.com',
     port: 587,
-    authentication: "login",
+    authentication: 'login',
     tls: false,
-    enable_starttls_auto: true, 
-    user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"]
+    enable_starttls_auto: true,
+    user_name: ENV['GMAIL_USERNAME'],
+    password: ENV['GMAIL_PASSWORD']
   }
-  #Change domain to Heroku domain before deployment
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 } 
+  # Change domain to Heroku domain before deployment
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end

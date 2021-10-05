@@ -1,9 +1,12 @@
-class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+# frozen_string_literal: true
+
+module Members
+  class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def google_oauth2
       google_params = from_google_params
 
       check_member = Member.find_by(email: google_params[:email])
-      if(check_member)
+      if check_member
         sign_in check_member, event: :authentication
         session[:member_id] = check_member.id
         redirect_to root_path
@@ -15,9 +18,10 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
         sign_in member, event: :authentication
         session[:member_id] = member.id
-        redirect_to new_member_path({email: google_params[:email]})
+        redirect_to new_member_path({ email: google_params[:email] })
       else
-        flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
+        flash[:alert] =
+          t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
         redirect_to new_member_session_path
       end
     end
@@ -41,7 +45,9 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         last_name: auth.info.name.split[1]
       }
     end
+
     def auth
       @auth ||= request.env['omniauth.auth']
     end
   end
+end

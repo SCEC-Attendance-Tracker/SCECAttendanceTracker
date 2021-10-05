@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class MembersController < ApplicationController
-  skip_before_action :authenticate_member!, :only => [:new]
+  skip_before_action :authenticate_member!, only: [:new]
 
   def new
     @params = request.query_parameters
@@ -34,8 +36,8 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
     @member.destroy
     respond_to do |format|
-      format.html {redirect_to members_url, notice: 'Account deleted!'}
-      format.json {head :no_content}
+      format.html { redirect_to members_url, notice: 'Account deleted!' }
+      format.json { head :no_content }
     end
   end
 
@@ -53,6 +55,7 @@ class MembersController < ApplicationController
   end
 
   private
+
   def member_params
     params.require(:member).permit(:first_name, :last_name, :email, :description)
   end
@@ -60,6 +63,4 @@ class MembersController < ApplicationController
   def set_member
     @member = Member.find(params[:id])
   end
-
-
 end

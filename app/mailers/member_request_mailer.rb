@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MemberRequestMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -6,11 +8,8 @@ class MemberRequestMailer < ApplicationMailer
   #
   def member_request
     @member = params[:member]
-    @admins = Member.where(:admin => true)
+    @admins = Member.where(admin: true)
 
-    if(@admins.present?)
-      mail(to: @admins.pluck(:email), subject: 'SCEC - New Member Request')
-    end
+    mail(to: @admins.pluck(:email), subject: 'SCEC - New Member Request') if @admins.present?
   end
 end
- 

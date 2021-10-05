@@ -10,6 +10,7 @@ class MembersController < ApplicationController
     @member = Member.find_by(email: member_params[:email])
 
     if @member.update(member_params)
+      MemberRequestMailer.with(member: @member).member_request.deliver_now
       redirect_to(root_path)
     else
 

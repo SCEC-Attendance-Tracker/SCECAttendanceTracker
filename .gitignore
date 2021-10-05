@@ -28,7 +28,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-/config/enivronments/development.rb
 
 /public/packs
 /public/packs-test
@@ -43,3 +42,6 @@ yarn-debug.log*
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore application configuration
+/config/application.yml

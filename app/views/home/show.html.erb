@@ -3,8 +3,8 @@
 <h1>You're logged in! Welcome to the Member Dashboard!</h1>
 <%= link_to "Sign Out", destroy_member_session_path %>
 
-<%= react_component("GoogleCalendar")  %>
-
 <%= link_to 'View Attendance', attendances_url %>
 <%= link_to 'View Events', events_url %>
 <%= link_to 'View Members', members_url %>
+
+<%= react_component("GoogleCalendar")  %>

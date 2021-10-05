@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2021_10_03_040234) do
-=======
-ActiveRecord::Schema.define(version: 2021_10_03_022632) do
->>>>>>> origin/SAT-7-calendar
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"

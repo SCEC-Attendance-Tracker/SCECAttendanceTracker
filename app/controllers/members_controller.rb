@@ -1,14 +1,18 @@
 class MembersController < ApplicationController
+  skip_before_action :authenticate_member!, :only => [:new]
+
   def new
-    @member = Member.new
+    @params = request.query_parameters
+    @member = Member.find_by(email: @params['email'])
   end
 
   def create
-    @member = Member.new(member_params)
-    if @member.save
-      # probably not gonna be this route
-      redirect_to(members_path)
+    @member = Member.find_by(email: member_params[:email])
+
+    if @member.update(member_params)
+      redirect_to(root_path)
     else
+
       render('new')
     end
   end
@@ -18,6 +22,7 @@ class MembersController < ApplicationController
   end
 
   def show
+    @member = Member.find(params[:id])
   end
 
   def delete
@@ -45,13 +50,15 @@ class MembersController < ApplicationController
       render('edit')
     end
   end
-
+  
   private
   def member_params
-    params.require(:member).permit(:first_name, :last_name, :email)
+    params.require(:member).permit(:first_name, :last_name, :email, :description)
   end
 
   def set_member
     @member = Member.find(params[:id])
   end
+
+
 end

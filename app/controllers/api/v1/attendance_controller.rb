@@ -16,7 +16,7 @@ class Api::V1::AttendanceController < ApplicationController
         render json: @attendance
     else
         render json: @attendance.errors
-
+    end
   end
 
   # GET /attendances/new

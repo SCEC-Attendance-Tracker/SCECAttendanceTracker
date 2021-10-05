@@ -10,18 +10,15 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :member_id %>
-    <%= form.text_field :member_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :event_id %>
-    <%= form.text_field :event_id %>
+  <h2> Would you like to mark your attendance for the following event? </h2>
+  <h3>Event Name: <%= Event.find(attendance.event_id).title %> </h3>
+  <div class="fields">
+    <%= form.hidden_field :member_id %>
+    <%= form.hidden_field :event_id %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "Yes" %>
+    <%= link_to "No", events_path %>
   </div>
 <% end %>

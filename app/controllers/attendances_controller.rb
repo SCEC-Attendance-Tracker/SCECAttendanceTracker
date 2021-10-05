@@ -31,6 +31,9 @@ class AttendancesController < ApplicationController
   # GET /attendances/new
   def new
     @attendance = Attendance.new
+    @params = request.query_parameters
+    @attendance.event_id = @params['event_id']
+    @attendance.member_id = session[:member_id]
   end
 
   # GET /attendances/1/edit
@@ -40,17 +43,24 @@ class AttendancesController < ApplicationController
   # POST /attendances or /attendances.json
   def create
     @attendance = Attendance.new(attendance_params)
+    event = Event.find(attendance_params[:event_id])
+    
 
     respond_to do |format|
-      if @attendance.save
-        member = Member.find(attendance_params[:member_id])
-        member.update(total_attendance: member.total_attendance + 1)
+      if DateTime.now.between?(event.start_date, event.end_date)
+        if @attendance.save
+          member = Member.find(attendance_params[:member_id])
+          member.update(total_attendance: member.total_attendance + 1)
 
-        format.html { redirect_to @attendance, notice: "Attendance was successfully created." }
-        format.json { render :show, status: :created, location: @attendance }
+          format.html { redirect_to @attendance, notice: "Attendance was successfully created." }
+          format.json { render :show, status: :created, location: @attendance }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @attendance.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @attendance.errors, status: :unprocessable_entity }
+        format.html { redirect_to @attendance, notice: "Attendance invalid since the event is not currently going. Please mark attendance during the event." }
+        format.json { render :show, status: :exited, location: @attendance }
       end
     end
   end
@@ -73,6 +83,7 @@ class AttendancesController < ApplicationController
     @attendance.destroy
     member = Member.find(@attendance.member_id)
     member.update(total_attendance: member.total_attendance - 1)
+
     respond_to do |format|
       format.html { redirect_to attendances_url, notice: "Attendance was successfully destroyed." }
       format.json { head :no_content }

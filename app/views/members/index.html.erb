@@ -1,8 +1,5 @@
 <div class="Members index">
   <h2>Member</h2>
-
-  <%= link_to('New Member', new_member_path, :class => 'action new') %>
-
   <table class="listing" summary="Member list">
     <% @member.each do |member| %>
     <tr>
@@ -13,10 +10,9 @@
       <td><%= member.total_attendance %></td>
       <td class="actions">
         <%= link_to("Show", member_path(member), :class => 'action show') %>
-        <%= link_to("Edit", edit_member_path(member), :class => 'action edit') %>
-        <%= link_to("Delete", delete_member_path(member), :class => 'action delete') %>
       </td>
     </tr>
     <% end %>
+    <%= link_to("Home", root_path) %>
   </table>
 </div>

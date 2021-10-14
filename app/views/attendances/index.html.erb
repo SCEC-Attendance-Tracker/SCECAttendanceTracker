@@ -33,8 +33,8 @@
         <td><%= link_to @event.find(attendance.event_id).title, attendances_path(:title => @event.find(attendance.event_id).title) %> <%= link_to "Event Details", "/events/#{attendance.event_id}" %></td>
         <td><%= link_to @event.find(attendance.event_id).start_date, attendances_path(:start_date => @event.find(attendance.event_id).start_date) %></td>
         
-        <td><%= attendance.rsvp %></td>
-        <td><%= attendance.attended %></td>
+        <td><%= (attendance.rsvp ? "Yes" : "No") %></td>
+        <td><%= ((@event.find(attendance.event_id).start_date < DateTime.now) ? (attendance.attended ? "Yes" : "No") : "--") %></td>
 
         <td><%= link_to 'Show', attendance %></td>
         <td><%= link_to 'Edit', edit_attendance_path(attendance) %></td>

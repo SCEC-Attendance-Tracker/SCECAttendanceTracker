@@ -32,7 +32,8 @@
         <td><%= event.location %></td>
         <td><%= "event.avg_rating" %></td>
         
-        <td><%= link_to 'RSVP', new_attendance_path({event_id: event.id, rsvp: true})%></td>
+        <td><%= link_to (Attendance.find_by({member_id: session[:member_id], event_id: event.id, rsvp: true}) ? 'Cancel RSVP' : 'RSVP'), new_attendance_path({event_id: event.id, rsvp: true}) %></td> 
+        
         <td><%= link_to 'Mark Attendance', new_attendance_path({event_id: event.id, attended: true})%></td>
         
         <td><%= link_to 'Show', event %></td>

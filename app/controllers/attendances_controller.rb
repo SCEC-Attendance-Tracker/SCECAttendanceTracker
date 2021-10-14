@@ -9,6 +9,7 @@ class AttendancesController < ApplicationController
     @member = Member.all
     @event = Event.all
 
+    # For Filtering Attendance
     if params[:first_name]
       @member = Member.where(:first_name => params[:first_name])
     elsif params[:last_name]
@@ -30,10 +31,26 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
-    @attendance = Attendance.new
     @params = request.query_parameters
-    @attendance.event_id = @params['event_id']
+    
+    @attendance = Attendance.where(member_id: session[:member_id], event_id: @params['event_id']).first
+    @attendance ||= Attendance.new(member_id: session[:member_id], event_id: @params['event_id'])
+    
+    if @params['rsvp']
+      @attendance.toggle(:rsvp)
+    end
+      
+    if @params['mark']
+      @attendance.toggle(:attended)
+    end
+      
+    @attendance.save
+    
+    #@attendance = Attendance.new
+    #@params = request.query_parameters
+    #@attendance.event_id = @params['event_id']
     @attendance.member_id = session[:member_id]
+    
   end
 
   # GET /attendances/1/edit

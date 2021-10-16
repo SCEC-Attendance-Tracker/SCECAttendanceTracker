@@ -21,6 +21,16 @@ class AttendancesController < ApplicationController
     end
 
     @attendances = Attendance.where(:member_id => @member.ids).where(:event_id => @event.ids)
+    
+    
+    if params[:rsvp]
+      @attendance = Attendance.where(member_id: session[:member_id], event_id: params[:event_id]).first
+      @attendance ||= Attendance.new(member_id: session[:member_id], event_id: params[:event_id])
+      
+      @attendance.toggle(:rsvp)
+      @attendance.save
+    end
+    
     #if params[:member_id]
     #  @attendances = Attendance.where(:member_id => params[:member_id])
     #end
@@ -35,10 +45,6 @@ class AttendancesController < ApplicationController
     
     @attendance = Attendance.where(member_id: session[:member_id], event_id: @params['event_id']).first
     @attendance ||= Attendance.new(member_id: session[:member_id], event_id: @params['event_id'])
-    
-    if @params['rsvp']
-      @attendance.toggle(:rsvp)
-    end
       
     if @params['mark']
       @attendance.toggle(:attended)

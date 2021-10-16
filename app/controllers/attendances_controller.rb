@@ -29,6 +29,13 @@ class AttendancesController < ApplicationController
       
       @attendance.toggle(:rsvp)
       @attendance.save
+      
+      if @attendance.rsvp 
+        redirect_to events_url, notice: 'RSVP was successful.'
+      else
+        redirect_to events_url, notice: 'RSVP was cancelled.'
+      end
+      
     end
     
     #if params[:member_id]

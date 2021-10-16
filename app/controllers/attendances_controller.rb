@@ -22,18 +22,22 @@ class AttendancesController < ApplicationController
 
     @attendances = Attendance.where(:member_id => @member.ids).where(:event_id => @event.ids)
     
-    
+    # If RSVP status is updated
     if params[:rsvp]
       @attendance = Attendance.where(member_id: session[:member_id], event_id: params[:event_id]).first
       @attendance ||= Attendance.new(member_id: session[:member_id], event_id: params[:event_id])
       
-      @attendance.toggle(:rsvp)
-      @attendance.save
+      if @event.find(@attendance.event_id).start_date > DateTime.now
+        @attendance.toggle(:rsvp)
+        @attendance.save
       
-      if @attendance.rsvp 
-        redirect_to events_url, notice: 'RSVP was successful.'
+        if @attendance.rsvp 
+          redirect_to events_url, notice: 'RSVP was successful.'
+        else
+          redirect_to events_url, notice: 'RSVP was cancelled.'
+        end
       else
-        redirect_to events_url, notice: 'RSVP was cancelled.'
+        redirect_to events_url, alert: 'RSVP cannot be updated after the event has started.'
       end
       
     end

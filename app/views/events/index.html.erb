@@ -27,7 +27,11 @@
         <td><%= event.end_date %></td>
         <td><%= event.description %></td>
         <td><%= event.location %></td>
-        <td><%= "event.avg_rating" %></td>
+        <% if Feedback.where(:event_id => event.id).average(:event_rating_score).nil? %>
+          <td><%= 'N/A' %></td>
+        <% else %>
+          <td><%= link_to Feedback.where(:event_id => event.id).average(:event_rating_score), feedbacks_path(:id => event.id) %></td>
+        <%end%>
         <td><%= link_to 'Show', event %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>

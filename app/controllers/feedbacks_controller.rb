@@ -62,7 +62,7 @@ class FeedbacksController < ApplicationController
     end
   end
 
-  private
+  private  
     # Use callbacks to share common setup or constraints between actions.
     def set_feedback
       @feedback = Feedback.find(params[:id])

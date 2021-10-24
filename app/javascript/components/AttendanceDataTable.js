@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton} from '@mui/x-data-grid';
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
@@ -50,27 +50,30 @@ function QuickSearchToolbar(props) {
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
       </div>
-      <TextField
-        variant="standard"
-        value={props.value}
-        onChange={props.onChange}
-        placeholder="Search…"
-        className={classes.textField}
-        InputProps={{
-          startAdornment: <SearchIcon fontSize="small" />,
-          endAdornment: (
-            <IconButton
-              title="Clear"
-              aria-label="Clear"
-              size="small"
-              style={{ visibility: props.value ? 'visible' : 'hidden' }}
-              onClick={props.clearSearch}
-            >
-              <ClearIcon fontSize="small" />
-            </IconButton>
-          ),
-        }}
-      />
+      <div>
+        <TextField
+          variant="standard"
+          value={props.value}
+          onChange={props.onChange}
+          placeholder="Search…"
+          className={classes.textField}
+          InputProps={{
+            startAdornment: <SearchIcon fontSize="small" />,
+            endAdornment: (
+              <IconButton
+                title="Clear"
+                aria-label="Clear"
+                size="small"
+                style={{ visibility: props.value ? 'visible' : 'hidden' }}
+                onClick={props.clearSearch}
+              >
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            ),
+          }}
+        />
+        <GridToolbarExport />
+      </div>
     </div>
   );
 }
@@ -134,7 +137,7 @@ function getData(props) {
     },
   ];
   
-  var rows = [
+  var test_rows = [
     {
       id: 1,
       member_id: 1,
@@ -158,6 +161,8 @@ function getData(props) {
       attended: 'No' 
     },
   ];
+  
+  var rows = [];
   
   for (var i in attendances) {
     console.log(attendances[i])
@@ -186,7 +191,7 @@ export default function AttendanceDataTable(props) {
   
   if (data == undefined) {
     data = getData(props);
-    console.log(data);
+    //console.log(data);
   }
   
   const [searchText, setSearchText] = React.useState('');
@@ -201,9 +206,6 @@ export default function AttendanceDataTable(props) {
       });
     });
     setDataRows(filteredRows);
-    console.log(filteredRows);
-    
-    console.log(dataRows);
   };
 
   React.useEffect(() => {

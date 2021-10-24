@@ -4,95 +4,12 @@ import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid';
+import DataTable from "./DataTable";
 
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
-
-function escapeRegExp(value) {
-  return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
-
-const theme = createTheme({   
-  palette: {      
-    primary: {         
-      main: "#500000" // Maroon
-    },      
-    secondary: {         
-      main: "#ffff33" // Yellow               
-    }            
-  },fontFamily: 'Roboto Mono'
-});
-
-const useStyles = makeStyles(
-  (theme) =>
-    createStyles({
-      root: {
-        padding: theme.spacing(0.5, 0.5, 0),
-        justifyContent: 'space-between',
-        display: 'flex',
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-      },
-      textField: {
-        [theme.breakpoints.down('xs')]: {
-          width: '100%',
-        },
-        margin: theme.spacing(1, 0.5, 1.5),
-        '& .MuiSvgIcon-root': {
-          marginRight: theme.spacing(0.5),
-        },
-        '& .MuiInput-underline:before': {
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        },
-      },
-    }),
-  { theme },
-);
-
-function QuickSearchToolbar(props) {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.root}>
-      <div>
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
-      </div>
-      <div>
-        <TextField
-          variant="standard"
-          value={props.value}
-          onChange={props.onChange}
-          placeholder="Search…"
-          className={classes.textField}
-          InputProps={{
-            startAdornment: <SearchIcon fontSize="small" />,
-            endAdornment: (
-              <IconButton
-                title="Clear"
-                aria-label="Clear"
-                size="small"
-                style={{ visibility: props.value ? 'visible' : 'hidden' }}
-                onClick={props.clearSearch}
-              >
-                <ClearIcon fontSize="small" />
-              </IconButton>
-            ),
-          }}
-        />
-        <GridToolbarExport />
-      </div>
-    </div>
-  );
-}
-
-QuickSearchToolbar.propTypes = {
-  clearSearch: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
-};
 
 function getData(props) {
   
@@ -104,16 +21,18 @@ function getData(props) {
     {
       field: 'id',
       headerName: 'ID',
-      visible: false
+      hide: true
     },
     { 
       field: 'member_id', 
       headerName: 'Member ID',
-      width: 100
+      width: 100,
+      hide: true
     },
     { field: 'event_id', 
       headerName: 'Event ID',
-      width: 100
+      width: 100,
+      hide: true
     },
     { 
       field: 'first_name', 
@@ -136,6 +55,11 @@ function getData(props) {
       width: 180
     },
     {
+      field: 'start_time',
+      headerName: 'Time',
+      width: 180
+    },
+    {
       field: 'rsvp',
       headerName: 'RSVP?',
       width: 150
@@ -143,7 +67,9 @@ function getData(props) {
     {
       field: 'attended',
       headerName: 'Attended?',
-      width: 150
+      width: 150,
+      editable: true,
+      type: 'boolean'
     },
   ];
   
@@ -155,7 +81,8 @@ function getData(props) {
       first_name: 'First',
       last_name: 'Last',
       title: 'Title',
-      start_date: new Date(),
+      start_date: new Date().toLocaleDateString(),
+      start_time: new Date().toLocaleTimeString(),
       rsvp: 'Yes',
       attended: 'No' 
     },
@@ -166,7 +93,8 @@ function getData(props) {
       first_name: 'First',
       last_name: 'Last',
       title: 'Title 2',
-      start_date: new Date(),
+      start_date: new Date().toLocaleDateString(),
+      start_time: new Date().toLocaleTimeString(),
       rsvp: 'No',
       attended: 'No' 
     },
@@ -184,9 +112,10 @@ function getData(props) {
       first_name: members.find(id => attendances[i].member_id).first_name,
       last_name: members.find(id => attendances[i].member_id).last_name,
       title: events.find(id => attendances[i].event_id).title,
-      start_date: events.find(id => attendances[i].event_id).start_date,
+      start_date: new Date(events.find(id => attendances[i].event_id).start_date).toLocaleDateString(),
+      start_time: new Date(events.find(id => attendances[i].event_id).start_date).toLocaleTimeString(),
       rsvp: (attendances[i].rsvp ? 'Yes' : 'No'),
-      attended: ((events.find(id => attendances[i].event_id).start_date < new Date()) ? (attendances[i].attended ? 'Yes' : 'No') : '--')
+      attended: ((new Date(events.find(id => attendances[i].event_id).start_date) < new Date()) ? (attendances[i].attended ? 'Yes' : 'No') : '--')
     }
     rows.push(entry)
   }
@@ -198,48 +127,8 @@ function getData(props) {
 var data;
 
 export default function AttendanceDataTable(props) {
-  
-  if (data == undefined) {
-    data = getData(props);
-    //console.log(data);
-  }
-  
-  const [searchText, setSearchText] = React.useState('');
-  const [dataRows, setDataRows] = React.useState(data.rows);
-
-  const requestSearch = (searchValue) => {
-    setSearchText(searchValue);
-    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-    const filteredRows = data.rows.filter((row) => {
-      return Object.keys(row).some((field) => {
-        return searchRegex.test(row[field].toString());
-      });
-    });
-    setDataRows(filteredRows);
-  };
-
-  React.useEffect(() => {
-    setDataRows(data.rows);
-  }, [data.rows]);
-
-
+  data = getData(props);
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        components={{ Toolbar: QuickSearchToolbar }}
-        componentsProps={{
-          toolbar: {
-            value: searchText,
-            onChange: (event) => requestSearch(event.target.value),
-            clearSearch: () => requestSearch(''),
-          },
-        }}
-        rows={dataRows}
-        columns={data.columns.slice(1).slice(-6)}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
-        checkboxSelection
-      />
-    </div>
+    DataTable(data)
   );
 }

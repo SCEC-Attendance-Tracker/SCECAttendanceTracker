@@ -1,16 +1,91 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import PropTypes from 'prop-types';
 
-export default function AttendanceDataTable(props) {
-  
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton} from '@mui/x-data-grid';
+
+import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
+
+import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+
+function escapeRegExp(value) {
+  return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
+const defaultTheme = createTheme();
+const useStyles = makeStyles(
+  (theme) =>
+    createStyles({
+      root: {
+        padding: theme.spacing(0.5, 0.5, 0),
+        justifyContent: 'space-between',
+        display: 'flex',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+      },
+      textField: {
+        [theme.breakpoints.down('xs')]: {
+          width: '100%',
+        },
+        margin: theme.spacing(1, 0.5, 1.5),
+        '& .MuiSvgIcon-root': {
+          marginRight: theme.spacing(0.5),
+        },
+        '& .MuiInput-underline:before': {
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        },
+      },
+    }),
+  { defaultTheme },
+);
+
+function QuickSearchToolbar(props) {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <div>
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+      </div>
+      <TextField
+        variant="standard"
+        value={props.value}
+        onChange={props.onChange}
+        placeholder="Search…"
+        className={classes.textField}
+        InputProps={{
+          startAdornment: <SearchIcon fontSize="small" />,
+          endAdornment: (
+            <IconButton
+              title="Clear"
+              aria-label="Clear"
+              size="small"
+              style={{ visibility: props.value ? 'visible' : 'hidden' }}
+              onClick={props.clearSearch}
+            >
+              <ClearIcon fontSize="small" />
+            </IconButton>
+          ),
+        }}
+      />
+    </div>
+  );
+}
+
+QuickSearchToolbar.propTypes = {
+  clearSearch: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+};
+
+function getData(props) {
   
   var members = props.props.members;
   var events = props.props.events;
   var attendances = props.props.attendances;
-  
-  console.log(props);
-  console.log(attendances);
-  
   
   const columns = [
     {
@@ -99,15 +174,57 @@ export default function AttendanceDataTable(props) {
       attended: ((events.find(id => attendances[i].event_id).start_date < new Date()) ? (attendances[i].attended ? 'Yes' : 'No') : '--')
     }
     rows.push(entry)
-    console.log(entry)
   }
   
+  var data = {columns: columns, rows: rows}
+  return data;
+}
+
+var data;
+
+export default function AttendanceDataTable(props) {
+  
+  if (data == undefined) {
+    data = getData(props);
+    console.log(data);
+  }
+  
+  const [searchText, setSearchText] = React.useState('');
+  const [dataRows, setDataRows] = React.useState(data.rows);
+
+  const requestSearch = (searchValue) => {
+    setSearchText(searchValue);
+    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
+    const filteredRows = data.rows.filter((row) => {
+      return Object.keys(row).some((field) => {
+        return searchRegex.test(row[field].toString());
+      });
+    });
+    setDataRows(filteredRows);
+    console.log(filteredRows);
+    
+    console.log(dataRows);
+  };
+
+  React.useEffect(() => {
+    setDataRows(data.rows);
+  }, [data.rows]);
+
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={rows}
-        columns={columns.slice(1).slice(-6)}
-        pageSize={5}
+        components={{ Toolbar: QuickSearchToolbar }}
+        componentsProps={{
+          toolbar: {
+            value: searchText,
+            onChange: (event) => requestSearch(event.target.value),
+            clearSearch: () => requestSearch(''),
+          },
+        }}
+        rows={dataRows}
+        columns={data.columns.slice(1).slice(-6)}
+        pageSize={10}
         rowsPerPageOptions={[10]}
         checkboxSelection
       />

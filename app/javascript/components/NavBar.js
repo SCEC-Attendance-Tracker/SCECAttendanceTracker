@@ -62,9 +62,11 @@ export default function NavBar(props) {
 		const classes = useStyles()
 		
 		var page_name = props.props.page;
-		var member = props.props.member[0];
-		console.log(props);
-		console.log(member);
+		var member;
+		
+		if (props.props.member != undefined) {
+			member = props.props.member[0]
+		}
 		
 		const [auth, setAuth] = React.useState(true);
 		const [anchorEl, setAnchorEl] = React.useState(null);
@@ -106,11 +108,11 @@ export default function NavBar(props) {
 				</Typography>
 				
 				{/* if logged in, present member info */}
-				{ (member.id != null) &&
+				{ (member != undefined) &&
 					<Button href={"/members/"+member.id} color="inherit" className={classes.button}>{member.first_name}</Button>
 				}
 				{/* if not logged in, present sign in button */}
-				{ (member.id == null) &&
+				{ (member == undefined) &&
 					<Button href="/members/auth/google_oauth2" color="inherit" className={classes.button} >Sign In</Button>
 				}
 				
@@ -142,27 +144,35 @@ export default function NavBar(props) {
 						open={Boolean(anchorEl)}
 						onClose={handleClose}
 					>
-						<Link href={"/members/"+member.id}>
-							<MenuItem>Profile</MenuItem>
-						</Link>
+						{ (member != undefined) && 
+							<Link href={"/members/"+member.id}>
+								<MenuItem>Profile</MenuItem>
+							</Link>
+						}
 						<Link href={"/events"}>
 							<MenuItem>Events</MenuItem>
 						</Link>
 						
-						{ member.admin &&
+						{ (member != undefined) && (member.admin) &&
 							<Link href={"/attendances"}>
 								<MenuItem>Attendances</MenuItem>
 							</Link>
-							}
-							{ member.admin &&
+						}
+						{ (member != undefined) && (member.admin) &&
 							<Link href={"/members"}>
 								<MenuItem>Members</MenuItem>
 							</Link>
 						}
-						
-						<Link href="/members/sign_out">
-							<MenuItem>Sign Out</MenuItem>
-						</Link>
+						{ (member != undefined) &&
+							<Link href="/members/sign_out">
+								<MenuItem>Sign Out</MenuItem>
+							</Link>
+						}
+						{ (member == undefined) &&
+							<Link href="/members/auth/google_oauth2">
+								<MenuItem>Sign In</MenuItem>
+							</Link>
+						}
 					</Menu>
 					</Router>
 				</div>

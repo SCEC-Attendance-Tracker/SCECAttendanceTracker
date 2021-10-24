@@ -1,4 +1,8 @@
-<%= link_to("<< Back to Home", root_path, :class => 'back-link') %>
+<%#= link_to("<< Back to Home", root_path, :class => 'back-link') %>
+
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Profile"} )%>
+
 <%= is_edit_owner(@member[:id], session[:member_id]) %>
 <%= is_delete_owner(@member[:id], session[:member_id]) %>
 

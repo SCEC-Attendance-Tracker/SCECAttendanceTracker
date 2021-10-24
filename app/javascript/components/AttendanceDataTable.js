@@ -14,7 +14,17 @@ function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-const defaultTheme = createTheme();
+const theme = createTheme({   
+  palette: {      
+    primary: {         
+      main: "#500000" // Maroon
+    },      
+    secondary: {         
+      main: "#ffff33" // Yellow               
+    }            
+  },fontFamily: 'Roboto Mono'
+});
+
 const useStyles = makeStyles(
   (theme) =>
     createStyles({
@@ -38,7 +48,7 @@ const useStyles = makeStyles(
         },
       },
     }),
-  { defaultTheme },
+  { theme },
 );
 
 function QuickSearchToolbar(props) {

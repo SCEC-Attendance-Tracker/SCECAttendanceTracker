@@ -1,5 +1,7 @@
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Members"} )%>
+
 <div class="Members index">
-  <h2>Member</h2>
   <table class="listing" summary="Member list">
     <% @member.each do |member| %>
     <tr>
@@ -13,6 +15,6 @@
       </td>
     </tr>
     <% end %>
-    <%= link_to("Home", root_path) %>
+    <%#= link_to("Home", root_path) %>
   </table>
 </div>

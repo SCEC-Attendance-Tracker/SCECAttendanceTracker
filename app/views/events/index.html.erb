@@ -1,9 +1,9 @@
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Events"} )%>
 
 
-<%= link_to 'Back', :back %>
-<%= link_to 'Home', root_path %>
-
-<h1>Events</h1>
+<%#= link_to 'Back', :back %>
+<%#= link_to 'Home', root_path %>
 
 <table>
   <thead>

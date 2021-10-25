@@ -3,9 +3,11 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
 
+  helper_method :sort_column, :sort_direction
+  
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = Event.order(sort_column + " " + sort_direction)
   end
 
   # GET /events/1 or /events/1.json
@@ -57,6 +59,14 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def sort_column
+    Event.column_names.include?(params[:sort]) ? params[:sort] : "id"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event

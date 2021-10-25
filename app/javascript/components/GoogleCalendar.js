@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-import '@fullcalendar/daygrid/main.css'
+// import '@fullcalendar/daygrid/main.css'
 
 class GoogleCalendar extends React.Component {
   render () {

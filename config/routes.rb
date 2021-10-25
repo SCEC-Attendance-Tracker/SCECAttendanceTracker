@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :feedbacks
   root to: 'home#show'
@@ -19,9 +21,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get 'members/index', to: 'members#index'
-      post 'members/create', to: 'members#create'
-      delete 'members/:id', to: 'members#destroy'
+      resources :members, only: %i[index update show delete destroy]
     end
   end
 end

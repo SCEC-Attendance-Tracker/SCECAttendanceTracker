@@ -57,3 +57,4 @@ props: {member: Member.where({id: session[:member_id]}), page: "Profile"} )%>
 		<% end %>
 	</tbody>
 </table>
+<%= link_to("<< Back to Home", root_path, :class => 'back-link') %>

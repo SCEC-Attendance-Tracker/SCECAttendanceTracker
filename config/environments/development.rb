@@ -8,6 +8,10 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  ENV['GOOGLE_OAUTH_CLIENT_ID'] = '975521204484-4amj4sum982u6onqnviv6vt6pa3de5rj.apps.googleusercontent.com'
+  ENV['GOOGLE_OAUTH_CLIENT_SECRET'] = '_OzIa7zrV-TqkocFvJb2U5K6'
+  ENV['GOOGLE_CALENDAR_API_KEY'] = 'AIzaSyAc2Ls0mbsox4ZX6xCX2ZoybF6YFLtot34'
+
   # Do not eager load code on boot.
   config.eager_load = false
 

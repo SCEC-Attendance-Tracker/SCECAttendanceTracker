@@ -3,6 +3,7 @@
 module Api
   module V1
     class MembersController < ApplicationController
+      respond_to :json
       def create
         @member = Member.new(member_params)
         if @member.save
@@ -46,17 +47,16 @@ module Api
 
       def update
         @member = Member.find(params[:id])
-        if @member.update(member_params)
-          redirect_to(member_path(@member))
-        else
-          render('edit')
-        end
+        puts @member
+        @member.update(member_params)
+        puts @member
+        respond_with json: @member
       end
 
       private
 
       def member_params
-        params.require(:member).permit(:name, :email)
+        params.require(:member).permit(:first_name, :last_name, :description)
       end
 
       def set_member

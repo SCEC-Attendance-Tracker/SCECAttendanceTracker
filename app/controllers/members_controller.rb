@@ -47,11 +47,7 @@ class MembersController < ApplicationController
 
   def update
     @member = Member.find(params[:id])
-    if @member.update(member_params)
-      redirect_to(member_path(@member))
-    else
-      render('edit')
-    end
+    @member.update(member_params)
   end
 
   private

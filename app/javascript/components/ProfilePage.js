@@ -42,7 +42,9 @@ class ProfilePage extends React.Component {
 
   getMemberJSON() {
     if (this.state.is_owner) {
-      fetch(`/api/v1/members/${this.state.member_info.id}`). 
+      fetch(`/api/v1/members/${this.state.member_info.id}`, {
+        headers: {'Content-Type': 'application/json'}
+      }). 
       then((response) => response.json()). 
       then((member) => this.setEditMemberInfo({...member}));
     } 
@@ -53,9 +55,9 @@ class ProfilePage extends React.Component {
     this.render();
   }
 
-  handleEdit() {
+  async handleEdit() {
     if (this.state.editable) {
-      this.updatePostRequest();
+      await this.updatePostRequest();
     } 
 
     this.setState({editable: !this.state.editable})
@@ -77,7 +79,7 @@ class ProfilePage extends React.Component {
     }
   }
 
-  handleInputChange = (event) => {  
+  handleInputChange = (event) => {
     var member_change = {...this.state.member_edit};
     var dictName = [event.target.name];
     
@@ -98,7 +100,7 @@ class ProfilePage extends React.Component {
       const token = document.querySelector('[name=csrf-token]').content; 
       fetch(`/api/v1/members/${this.state.member_info.id}`, {
         method: 'DELETE', 
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
       }).then((response) => {
         alert("Your profile has been deleted.")
       });
@@ -107,13 +109,13 @@ class ProfilePage extends React.Component {
   }
 
   handleValidation() {
-    if(this.state.member_edit.first_name != "") {
+    if(this.state.member_edit.first_name == "") {
       this.setState({formValid: false})
       this.setState({error: "First name cannot be empty"});
       return;
     }
 
-    if(this.state.member_edit.last_name != "") {
+    if(this.state.member_edit.last_name == "") {
       this.setState({formValid: false})
       this.setState({error: "Last name cannot be empty"});
       return;
@@ -124,30 +126,29 @@ class ProfilePage extends React.Component {
   }
 
   // CURRENTLY THROWS A 302, BUT IT WORKS
-  updatePostRequest = (event) => {
+  updatePostRequest() {
     this.handleValidation();
-
-    var update_dict = {
-      first_name: this.state.member_edit.first_name,
-      last_name: this.state.member_edit.last_name, 
-      description: this.state.member_edit.description 
-    }
 
     if (this.state.formValid) {
       const token = document.querySelector('[name=csrf-token]').content;
+      console.log(this.state.member_edit);
       fetch(`/api/v1/members/${this.state.member_info.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(update_dict),
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+      method: 'PUT', 
+      body: JSON.stringify(this.state.member_edit),
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
       }).then((response) => {
-        console.log(response);
+        if (response.ok) {
+          this.setState({member_info: this.state.member_edit});
+          return response;
+        }
+
+        throw new Error('Something is wrong');
+      }).then((json) => {
+        console.log(json);
       }).catch((error) => {console.error(error)});
-      alert("Your profile has been updated.")
     } else {
       alert(this.state.error);
     }
-
-    this.setState({member_info: this.state.member_edit});
   }
 
   render() {

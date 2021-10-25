@@ -1,3 +1,3 @@
 <%= link_to("<< Back to Home", root_path, :class => 'back-link') %>
 
-<%= react_component("ProfilePage", {member: @member, is_owner: is_owner(@member[:id], session[:member_id])}) %>
+<%= react_component("ProfilePage", {member: @member, is_owner: is_owner?(@member[:id], session[:member_id])}) %>

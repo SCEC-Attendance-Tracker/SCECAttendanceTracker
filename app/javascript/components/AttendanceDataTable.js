@@ -123,13 +123,13 @@ function getData(props) {
       id: i,
       member_id: attendances[i].member_id,
       event_id: attendances[i].event_id,
-      first_name: members.find(id => attendances[i].member_id).first_name,
-      last_name: members.find(id => attendances[i].member_id).last_name,
-      title: events.find(id => attendances[i].event_id).title,
-      start_date: new Date(events.find(id => attendances[i].event_id).start_date).toLocaleDateString(),
-      start_time: new Date(events.find(id => attendances[i].event_id).start_date).toLocaleTimeString(),
+      first_name: members.find(e => e.id == attendances[i].member_id).first_name,
+      last_name: members.find(e => e.id == attendances[i].member_id).last_name,
+      title: events.find(e => e.id == attendances[i].event_id).title,
+      start_date: new Date(events.find(e => e.id == attendances[i].event_id).start_date).toLocaleDateString(),
+      start_time: new Date(events.find(e => e.id == attendances[i].event_id).start_date).toLocaleTimeString(),
       rsvp: (attendances[i].rsvp ? true : false ),
-      attended: ((new Date(events.find(id => attendances[i].event_id).start_date) < new Date()) ? (attendances[i].attended ? true : false) : false)
+      attended: ((new Date(events.find(e => e.id == attendances[i].event_id).start_date) < new Date()) ? (attendances[i].attended ? true : false) : false)
     }
     rows.push(entry)
   }

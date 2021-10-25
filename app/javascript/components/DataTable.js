@@ -38,6 +38,27 @@ const useStyles = makeStyles(
         display: 'flex',
         alignItems: 'flex-start',
         flexWrap: 'wrap',
+        width: '100%',
+      },
+      grid: {
+        marginTop: '30px',
+        
+        '& .MuiDataGrid-main': {
+          width: '100%',
+        },
+        
+        '& .MuiDataGrid-columnHeaderTitle': {
+          fontWeight: '800',
+          textOverflow: 'clip',
+        },
+        
+      },
+      toolbar: {
+        justifyContent: 'space-between',
+        display: 'flex',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+        width: '100%',
       },
       textField: {
         [theme.breakpoints.down('xs')]: {
@@ -49,10 +70,10 @@ const useStyles = makeStyles(
           color: '#500000',
         },
         '& .MuiInput-underline:before': {
-          borderBottom: `1px solid ${newTheme.palette.divider}`,
+          borderBottom: `1px solid rgba(0, 0, 0, 0.2) !important`,
         },
         '& .MuiInput-underline:after': {
-          borderBottom: `2px solid  ${newTheme.palette.primary}`,
+          borderBottom: `2px solid  #500000 !important`,
         },
       },
       button: {
@@ -66,10 +87,10 @@ const useStyles = makeStyles(
         }
       },
       actionButton: {
-        color: '#500000',
-        margin: theme.spacing(0.5),
+        color: '#500000 !important',
+        margin: `${theme.spacing(1)}px !important`,
         '&:hover': {
-          backgroundColor: 'rgba(80, 0, 0, 0.05)',
+          backgroundColor: 'rgba(80, 0, 0, 0.05) !important',
         }
       },
       iconButton: {
@@ -86,9 +107,9 @@ const useStyles = makeStyles(
 
 function QuickSearchToolbar(props) {
   const classes = useStyles();
-
+  
   return (
-    <div className={classes.root}>
+    <div className={classes.toolbar}>
       <div>
         <GridToolbarFilterButton className={classes.actionButton}/>
         <GridToolbarDensitySelector className={classes.actionButton}/>
@@ -136,6 +157,8 @@ export default function DataTable(data) {
     //console.log(data);
   }*/
   
+  const classes = useStyles();
+  
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
 
@@ -177,6 +200,7 @@ export default function DataTable(data) {
     });
     
   console.log(data.columns);
+  
   const dataColumns = React.useMemo(
     () => data.columns,
     [deleteRow],
@@ -184,8 +208,9 @@ export default function DataTable(data) {
 
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 400, width: '100%'}}>
       <DataGrid
+        className={classes.grid}
         components={{ Toolbar: QuickSearchToolbar }}
         componentsProps={{
           toolbar: {

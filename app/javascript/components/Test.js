@@ -1,125 +1,129 @@
 import * as React from 'react';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SecurityIcon from '@material-ui/icons/Security';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import PropTypes from 'prop-types';
+
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton} from '@mui/x-data-grid';
+
+import { useDemoData } from '@mui/x-data-grid-generator';
+import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
-import { randomCreatedDate, randomUpdatedDate } from '@mui/x-data-grid-generator';
 
-const initialRows = [
-  {
-    id: 1,
-    name: 'Damien',
-    age: 25,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-    isAdmin: true,
-    country: 'Spain',
-  },
-  {
-    id: 2,
-    name: 'Nicolas',
-    age: 36,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-    isAdmin: false,
-    country: 'France',
-  },
-  {
-    id: 3,
-    name: 'Kate',
-    age: 19,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-    isAdmin: false,
-    country: 'Brazil',
-  },
-];
+import { ThemeProvider, createTheme, makeStyles, createStyles } from "@material-ui/core";
 
-export default function Test() {
-  const [rows, setRows] = React.useState(initialRows);
+function escapeRegExp(value) {
+  return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
 
-  const deleteUser = React.useCallback(
-    (id) => () => {
-      setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      });
-    },
-    [],
-  );
-
-  const toggleAdmin = React.useCallback(
-    (id) => () => {
-      setRows((prevRows) =>
-        prevRows.map((row) =>
-          row.id === id ? { ...row, isAdmin: !row.isAdmin } : row,
-        ),
-      );
-    },
-    [],
-  );
-
-  const duplicateUser = React.useCallback(
-    (id) => () => {
-      setRows((prevRows) => {
-        const rowToDuplicate = prevRows.find((row) => row.id === id);
-        return [...prevRows, { ...rowToDuplicate, id: Date.now() }];
-      });
-    },
-    [],
-  );
-
-  const columns = React.useMemo(
-    () => [
-      { field: 'name', type: 'string' },
-      { field: 'age', type: 'number' },
-      { field: 'dateCreated', type: 'date', width: 130 },
-      { field: 'lastLogin', type: 'dateTime', width: 180 },
-      { field: 'isAdmin', type: 'boolean', width: 120 },
-      {
-        field: 'country',
-        type: 'singleSelect',
-        width: 120,
-        valueOptions: [
-          'Bulgaria',
-          'Netherlands',
-          'France',
-          'United Kingdom',
-          'Spain',
-          'Brazil',
-        ],
+const defaultTheme = createTheme();
+const useStyles = makeStyles(
+  (theme) =>
+    createStyles({
+      root: {
+        padding: theme.spacing(0.5, 0.5, 0),
+        justifyContent: 'space-between',
+        display: 'flex',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
       },
-      {
-        field: 'actions',
-        type: 'actions',
-        width: 180,
-        getActions: (params) => [
-          <GridActionsCellItem
-            icon={<SearchIcon />}
-            label="Delete"
-            onClick={deleteUser(params.id)}
-          />,
-          <GridActionsCellItem
-            icon={<SecurityIcon />}
-            label="Toggle Admin"
-            onClick={toggleAdmin(params.id)}
-            showInMenu
-          />,
-          <GridActionsCellItem
-            icon={<FileCopyIcon />}
-            label="Duplicate User"
-            onClick={duplicateUser(params.id)}
-            showInMenu
-          />,
-        ],
+      textField: {
+        [theme.breakpoints.down('xs')]: {
+          width: '100%',
+        },
+        margin: theme.spacing(1, 0.5, 1.5),
+        '& .MuiSvgIcon-root': {
+          marginRight: theme.spacing(0.5),
+        },
+        '& .MuiInput-underline:before': {
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        },
       },
-    ],
-    [deleteUser, toggleAdmin, duplicateUser],
-  );
+    }),
+  { defaultTheme },
+);
+
+function QuickSearchToolbar(props) {
+  const classes = useStyles();
 
   return (
-    <div style={{ height: 300, width: '100%' }}>
-      <DataGrid columns={columns} rows={rows} />
+    <React.Fragment>
+    <div className={classes.root}>
+      <div>
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+      </div>
+      <TextField
+        variant="standard"
+        value={props.value}
+        onChange={props.onChange}
+        placeholder="Search…"
+        className={classes.textField}
+        InputProps={{
+          startAdornment: <SearchIcon fontSize="small" />,
+          endAdornment: (
+            <IconButton
+              title="Clear"
+              aria-label="Clear"
+              size="small"
+              style={{ visibility: props.value ? 'visible' : 'hidden' }}
+              onClick={props.clearSearch}
+            >
+              <ClearIcon fontSize="small" />
+            </IconButton>
+          ),
+        }}
+      />
+    </div>
+    </React.Fragment>
+  );
+}
+
+QuickSearchToolbar.propTypes = {
+  clearSearch: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+};
+
+export default function Test() {
+  const { data } = useDemoData({
+    dataSet: 'Commodity',
+    rowLength: 100,
+    maxColumns: 6,
+  });
+
+  const [searchText, setSearchText] = React.useState('');
+  const [rows, setRows] = React.useState(data.rows);
+
+  const requestSearch = (searchValue) => {
+    setSearchText(searchValue);
+    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
+    console.log(data.rows);
+    const filteredRows = data.rows.filter((row) => {
+      return Object.keys(row).some((field) => {
+        return searchRegex.test(row[field].toString());
+      });
+    });
+    setRows(filteredRows);
+  };
+
+  React.useEffect(() => {
+    setRows(data.rows);
+  }, [data.rows]);
+
+  return (
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        components={{ Toolbar: QuickSearchToolbar }}
+        rows={rows}
+        columns={data.columns}
+        componentsProps={{
+          toolbar: {
+            value: searchText,
+            onChange: (event) => requestSearch(event.target.value),
+            clearSearch: () => requestSearch(''),
+          },
+        }}
+      />
     </div>
   );
 }

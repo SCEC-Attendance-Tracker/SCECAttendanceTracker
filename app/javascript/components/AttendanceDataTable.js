@@ -19,55 +19,68 @@ function getData(props) {
   
   const columns = [
     {
+      headerClassName: 'theme-header',
       field: 'id',
       headerName: 'ID',
       hide: true
     },
     { 
+      headerClassName: 'theme-header',
       field: 'member_id', 
       headerName: 'Member ID',
       width: 100,
       hide: true
     },
-    { field: 'event_id', 
+    {
+      headerClassName: 'theme-header', field: 'event_id', 
       headerName: 'Event ID',
       width: 100,
       hide: true
     },
     { 
+      headerClassName: 'theme-header',
       field: 'first_name', 
       headerName: 'First Name',
-      width: 180
+      minWidth: 150,
+      flex: 1
     },
     { 
+      headerClassName: 'theme-header',
       field: 'last_name', 
       headerName: 'Last Name',
-      width: 180
+      minWidth: 150,
+      flex: 1
     },
     {
+      headerClassName: 'theme-header',
       field: 'title',
       headerName: 'Event',
-      width: 250
+      minWidth: 150,
+      flex: 1
     },
     {
+      headerClassName: 'theme-header',
       field: 'start_date',
       headerName: 'Date',
-      width: 180
+      width: 120,
     },
     {
+      headerClassName: 'theme-header',
       field: 'start_time',
       headerName: 'Time',
-      width: 180
+      width: 120,
     },
     {
+      headerClassName: 'theme-header',
       field: 'rsvp',
       headerName: 'RSVP?',
       width: 150
     },
     {
+      headerClassName: 'theme-header',
       field: 'attended',
       headerName: 'Attended?',
-      width: 150,
+      width: 160,
       editable: true,
       type: 'boolean'
     },

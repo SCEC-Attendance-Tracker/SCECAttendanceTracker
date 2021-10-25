@@ -33,6 +33,12 @@ const theme = createTheme({
 });
 
 const useStyles = makeStyles({
+	root: {
+		width: '100vw',
+		margin: 0,
+		marginTop: '-33px',
+		marginLeft: '-33px',
+	},
 	title: {
 		flex: '1',
 		width: '100%'
@@ -53,6 +59,11 @@ const useStyles = makeStyles({
 		borderRadius: '100%',
 		'&:hover': {
 			backgroundColor: 'rgba(0, 0, 0, 0.2)',
+		}
+	},
+	menuItem: {
+		'&:hover': {
+			color: '#200000',
 		}
 	},
 })
@@ -87,7 +98,7 @@ export default function NavBar(props) {
 		
 		return (
 			<ThemeProvider theme={theme}>
-			<AppBar position="static">
+			<AppBar position="static" className={classes.root}>
 				<Toolbar>
 				
 				{ page_name != home && 
@@ -146,31 +157,31 @@ export default function NavBar(props) {
 					>
 						{ (member != undefined) && 
 							<Link href={"/members/"+member.id}>
-								<MenuItem>Profile</MenuItem>
+								<MenuItem className={classes.menuItem}>Profile</MenuItem>
 							</Link>
 						}
 						<Link href={"/events"}>
-							<MenuItem>Events</MenuItem>
+							<MenuItem className={classes.menuItem}>Events</MenuItem>
 						</Link>
 						
 						{ (member != undefined) && (member.admin) &&
 							<Link href={"/attendances"}>
-								<MenuItem>Attendances</MenuItem>
+								<MenuItem className={classes.menuItem}>Attendances</MenuItem>
 							</Link>
 						}
 						{ (member != undefined) && (member.admin) &&
 							<Link href={"/members"}>
-								<MenuItem>Members</MenuItem>
+								<MenuItem className={classes.menuItem}>Members</MenuItem>
 							</Link>
 						}
 						{ (member != undefined) &&
 							<Link href="/members/sign_out">
-								<MenuItem>Sign Out</MenuItem>
+								<MenuItem className={classes.menuItem}>Sign Out</MenuItem>
 							</Link>
 						}
 						{ (member == undefined) &&
 							<Link href="/members/auth/google_oauth2">
-								<MenuItem>Sign In</MenuItem>
+								<MenuItem className={classes.menuItem}>Sign In</MenuItem>
 							</Link>
 						}
 					</Menu>

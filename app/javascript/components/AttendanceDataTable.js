@@ -74,7 +74,8 @@ function getData(props) {
       headerClassName: 'theme-header',
       field: 'rsvp',
       headerName: 'RSVP?',
-      width: 150
+      width: 150,
+      type: 'boolean'
     },
     {
       headerClassName: 'theme-header',
@@ -127,8 +128,8 @@ function getData(props) {
       title: events.find(id => attendances[i].event_id).title,
       start_date: new Date(events.find(id => attendances[i].event_id).start_date).toLocaleDateString(),
       start_time: new Date(events.find(id => attendances[i].event_id).start_date).toLocaleTimeString(),
-      rsvp: (attendances[i].rsvp ? 'Yes' : 'No'),
-      attended: ((new Date(events.find(id => attendances[i].event_id).start_date) < new Date()) ? (attendances[i].attended ? 'Yes' : 'No') : '--')
+      rsvp: (attendances[i].rsvp ? true : false ),
+      attended: ((new Date(events.find(id => attendances[i].event_id).start_date) < new Date()) ? (attendances[i].attended ? true : false) : false)
     }
     rows.push(entry)
   }

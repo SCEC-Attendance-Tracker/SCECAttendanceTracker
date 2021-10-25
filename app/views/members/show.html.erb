@@ -1,8 +1,59 @@
-<%= link_to("<< Back to Home", root_path, :class => 'back-link') %>
+<%#= link_to("<< Back to Home", root_path, :class => 'back-link') %>
+
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Profile"} )%>
+
 <%= is_edit_owner(@member[:id], session[:member_id]) %>
 <%= is_delete_owner(@member[:id], session[:member_id]) %>
 
 <h1> <%= @member.first_name %> <%= @member.last_name %> </h1>
-<h2> Email: <%= @member.email %> </h2>
-<h3> About Me: </h3>
+<h2> <%= @member.email %> </h2>
+
+<h3> About Me </h3>
 <p> <%= @member.description %> </p>
+
+<h3> Events I'm Going To </h3>
+<table class="listing" summary="RSVP List">
+	<thead>
+		<tr>
+		  <th>Event ID</th>
+		  <th>Event</th>
+		  <th>Date</th>
+		  <th>Location</th>
+		</tr>
+	</thead>
+	  
+	<tbody>
+		<% Attendance.where({member_id: session[:member_id], rsvp: true}).each do |attendance| %>
+		<tr>
+		  <td><%= attendance.id %></td>
+		  <td><%= Event.find_by({id: attendance.event_id}).title %></td>
+		  <td><%= Event.find_by({id: attendance.event_id}).start_date %></td>
+		  <td><%= Event.find_by({id: attendance.event_id}).location %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<h3> Events I Attended </h3>
+<table class="listing" summary="Attended List">
+	<thead>
+		<tr>
+			<th>Event ID</th>
+			<th>Event</th>
+			<th>Date</th>
+			<th>Location</th>
+		</tr>
+	</thead>
+		
+	<tbody>
+		<% Attendance.where({member_id: session[:member_id], attended: true}).each do |attendance| %>
+		<tr>
+			<td><%= attendance.id %></td>
+			<td><%= Event.find_by({id: attendance.event_id}).title %></td>
+			<td><%= Event.find_by({id: attendance.event_id}).start_date %></td>
+			<td><%= Event.find_by({id: attendance.event_id}).location %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

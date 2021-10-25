@@ -1,6 +1,8 @@
-<h1>Home Page</h1>
+<%# <h1>Home Page</h1> %>
+<%= react_component("NavBar", 
+					props: {member: Member.where({id: session[:member_id]}), page: "SCEC Portal"} )%>
 
-<h1>You're logged in! Welcome to the Member Dashboard!</h1>
+<h6>You're logged in! Welcome to the Member Dashboard!</h6>
 <%= link_to "Sign Out", destroy_member_session_path %>
 
 <%= link_to 'View Attendance', attendances_url %>
@@ -10,3 +12,5 @@
 <%= link_to 'View my profile', member_path(@member[:id])%>
 
 <%= react_component("GoogleCalendar")  %>
+
+

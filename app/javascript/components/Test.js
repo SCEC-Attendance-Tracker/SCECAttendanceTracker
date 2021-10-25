@@ -46,7 +46,6 @@ function QuickSearchToolbar(props) {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
     <div className={classes.root}>
       <div>
         <GridToolbarFilterButton />
@@ -74,7 +73,6 @@ function QuickSearchToolbar(props) {
         }}
       />
     </div>
-    </React.Fragment>
   );
 }
 

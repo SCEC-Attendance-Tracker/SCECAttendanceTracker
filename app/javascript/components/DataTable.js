@@ -208,7 +208,7 @@ export default function DataTable(data) {
 
 
   return (
-    <div style={{ height: 400, width: '100%'}}>
+    <div style={{ height: '50em', width: '100%'}}>
       <DataGrid
         className={classes.grid}
         components={{ Toolbar: QuickSearchToolbar }}

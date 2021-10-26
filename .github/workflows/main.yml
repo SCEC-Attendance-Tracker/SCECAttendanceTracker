@@ -33,6 +33,6 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.0.0
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "SCECAttendanceTracker"
+          heroku_app_name: "stage-scec-gh-action"
           heroku_email: "kn395349@tamu.edu"
           usedocker: true

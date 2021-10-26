@@ -1,0 +1,10 @@
+<p><%= feedback.id %> | <%= link_to feedback.event_review, event_feedback_path(@event, feedback) %></p>
+
+<p>Edit this feedback: </p>
+
+<%= render 'feedbacks/form', feedback: feedback %>
+
+<p><%= link_to "Delete feedback", event_feedback_path(@event, feedback), method: :delete %></p>
+
+<br>
+

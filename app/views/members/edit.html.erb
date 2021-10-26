@@ -1,10 +1,10 @@
 <!-- Will just be show, but with editable fields -->
 <!-- For now, render form -->
 
-<%= link_to("<< Back to Home", root_url, :class => 'back-link') %>
+<%= link_to("Home", root_url, :class => 'back-link') %>
 
 <div class="members new">
-  <h2> Edit Profile </h2>
+  <h2> Profile Settings </h2>
 
   <%= form_for(@member, :url => members_path, :method => 'post') do |f| %>
 

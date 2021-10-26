@@ -3,9 +3,6 @@
 <%= react_component("NavBar", 
 props: {member: Member.where({id: session[:member_id]}), page: "Profile"} )%>
 
-<%= is_edit_owner(@member[:id], session[:member_id]) %>
-<%= is_delete_owner(@member[:id], session[:member_id]) %>
-
 <h1> <%= @member.first_name %> <%= @member.last_name %> </h1>
 <h2> <%= @member.email %> </h2>
 
@@ -57,3 +54,4 @@ props: {member: Member.where({id: session[:member_id]}), page: "Profile"} )%>
 		<% end %>
 	</tbody>
 </table>
+<%= link_to("<< Back to Home", root_path, :class => 'back-link') %>

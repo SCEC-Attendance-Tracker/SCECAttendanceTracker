@@ -19,8 +19,15 @@ class FeedbacksController < ApplicationController
   # POST /feedbacks or /feedbacks.json
   def create
     @event = Event.find(params[:event_id])
-    @feedback = @event.feedbacks.create(feedback_params)
-    redirect_to event_path(@event)
+    member_attend = Attendance.where(event_id: @event.id, member_id: session[:member_id]).exists?
+    if member_attend == true
+      @feedback = @event.feedbacks.create(feedback_params)
+      redirect_to event_path(@event)
+    else
+      respond_to do |format|
+        format.html { redirect_to new_attendance_path({event_id: @event.id}) , notice: "Need to mark attendence" }
+      end
+    end
   end
   
   # PATCH/PUT /feedbacks/1 or /feedbacks/1.json

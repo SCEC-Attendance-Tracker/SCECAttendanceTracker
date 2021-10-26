@@ -10,7 +10,7 @@
 
   <div class="field">
     <%= form.label :event_rating_score %>
-    <%= form.text_field :event_rating_score %>
+    <%= form.number_field :event_rating_score, in: 1..5 %>
   </div>
   
   <p>

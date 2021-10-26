@@ -1,18 +1,9 @@
 <%# <h1>Home Page</h1> %>
 <%= react_component("NavBar", 
 					props: {member: Member.where({id: session[:member_id]}), page: "SCEC Portal"} )%>
-
-<h6>You're logged in! Welcome to the Member Dashboard!</h6>
-<%= link_to "Sign Out", destroy_member_session_path %>
-
-<%= link_to 'View Attendance', attendances_url %>
-<%= link_to 'View Events', events_url %>
-<%= link_to 'View Members', members_url %>
-<%= link_to 'View Feedbacks', feedbacks_url %>
-<%= react_component("ProfilePageModal", {member: Member.find(session[:member_id]), is_owner: true})%>
-<%= link_to 'View my profile', member_path(@member[:id])%>
-
-
-<%= react_component("GoogleCalendar")  %>
-
+<div style = "margin-top: .5em;" >
+	<%= react_component("pages/HomePage",
+		events: {current_events: Event.where("? BETWEEN start_date AND end_date", DateTime.current),
+		upcoming_events: Event.where("? < start_date", DateTime.current)})%>
+</div>
 

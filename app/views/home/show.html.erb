@@ -12,6 +12,7 @@
 <%= react_component("ProfilePageModal", {member: Member.find(session[:member_id]), is_owner: true})%>
 <%= link_to 'View my profile', member_path(@member[:id])%>
 
+
 <%= react_component("GoogleCalendar")  %>
 
 

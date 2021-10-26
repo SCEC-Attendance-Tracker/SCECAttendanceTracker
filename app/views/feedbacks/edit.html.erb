@@ -1,6 +1,7 @@
-<h1>Editing Feedback</h1>
+<p id="notice"><%= notice %></p>
 
-<%= render 'form', feedback: @feedback %>
+<p>
+    Editing
+</p>
 
-<%= link_to 'Show', @feedback %> |
-<%= link_to 'Back', feedbacks_path %>
+<%= render 'feedbacks/form', feedback: @feedback %>

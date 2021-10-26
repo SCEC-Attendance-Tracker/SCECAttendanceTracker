@@ -1,25 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Event ID:</strong>
+  <strong>Event:</strong>
   <%= @feedback.event_id %>
 </p>
+
 <p>
-  <strong>Event Rating:</strong>
+  <strong>Member Review:</strong>
   <%= @feedback.event_review %>
 </p>
+
 <p>
-  <strong>Event Score:</strong>
+  <strong>Member Rating Score:</strong>
   <%= @feedback.event_rating_score %>
 </p>
-<p>
-  <strong>Created At:</strong>
-  <%= @feedback.created_at.to_formatted_s(:long) %>
-</p>
-<p>
-  <strong>Updated At:</strong>
-  <%= @feedback.updated_at.to_formatted_s(:long) %>
-</p>
 
-<%= link_to 'Edit', edit_feedback_path(@feedback) %> |
-<%= link_to 'View all Feedback', feedbacks_path %>
+<%= link_to 'Edit Feedback', [:edit, @event, @feedback] %>
+<%= link_to 'Back', event_feedbacks_path({event_id: @feedback.event.id}) %>

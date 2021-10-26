@@ -1,5 +1,4 @@
 <%# <h1>Home Page</h1> %>
-<%= stylesheet_pack_tag 'homepage', 'data-turbolinks-track': 'reload'  %>
 <%= react_component("NavBar", 
 					props: {member: Member.where({id: session[:member_id]}), page: "SCEC Portal"} )%>
 

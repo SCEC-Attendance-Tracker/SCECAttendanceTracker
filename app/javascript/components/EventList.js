@@ -22,7 +22,7 @@ export default function EventList({events}) {
             {!events &&
                 <ListItem>
                     <ListItemText 
-                        secondary = {'No events in this category!'}/>
+                        primary = {'No events in this category!'}/>
                 </ListItem>}
         </List>
       );

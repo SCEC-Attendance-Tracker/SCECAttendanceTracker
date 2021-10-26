@@ -10,7 +10,7 @@ export default function EventList({events}) {
             sx = {{
                 position: 'relative'
             }}>
-            {events.map((e) => {
+            {events && events.map((e) => {
                 return (
                     <ListItem>
                         <ListItemText 
@@ -19,6 +19,11 @@ export default function EventList({events}) {
                     </ListItem>
                 );
             })}
+            {!events &&
+                <ListItem>
+                    <ListItemText 
+                        secondary = {'No events in this category!'}/>
+                </ListItem>}
         </List>
       );
 }

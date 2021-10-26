@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @feedback.event_id %>
+</p>
+
+<p>
+  <strong>Member Review:</strong>
+  <%= @feedback.event_review %>
+</p>
+
+<p>
+  <strong>Member Rating Score:</strong>
+  <%= @feedback.event_rating_score %>
+</p>
+
+<%= link_to 'Edit Feedback', [:edit, @event, @feedback] %>
+<%= link_to 'Back', event_feedbacks_path({event_id: @feedback.event.id}) %>

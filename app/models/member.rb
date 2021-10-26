@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Member < ApplicationRecord
   devise :omniauthable, omniauth_providers: [:google_oauth2]
 

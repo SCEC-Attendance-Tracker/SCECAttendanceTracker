@@ -3,6 +3,8 @@ class CreateAttendances < ActiveRecord::Migration[6.1]
     create_table :attendances do |t|
       t.bigint :member_id
       t.bigint :event_id
+      t.boolean :rsvp
+      t.boolean :attended
 
       t.timestamps
     end

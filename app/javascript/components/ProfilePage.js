@@ -152,7 +152,7 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    const paid_dues = this.state.member_info.paid_dues;
+    const paid_dues = false;//this.state.member_info.paid_dues;
     var first_name = this.state.member_edit.first_name;
     var last_name = this.state.member_edit.last_name;
     var description = this.state.member_edit.description;

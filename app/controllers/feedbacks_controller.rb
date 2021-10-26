@@ -70,6 +70,7 @@ class FeedbacksController < ApplicationController
     end
 
     def set_feedback
+      set_event
       @feedback = @event.feedbacks.find(params[:id])
     end
     

@@ -36,8 +36,8 @@ const useStyles = makeStyles({
 	root: {
 		width: '100vw',
 		margin: 0,
-		marginTop: '-33px',
-		marginLeft: '-33px',
+		marginTop: '-8px',
+		marginLeft: '-8px',
 	},
 	title: {
 		flex: '1',

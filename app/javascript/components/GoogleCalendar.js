@@ -7,8 +7,10 @@ class GoogleCalendar extends React.Component {
     return (
             <FullCalendar 
             plugins = {[ googleCalendarPlugin, dayGridPlugin ]}
-            initialView = "dayGridMonth"
+            initialView = 'dayGridMonth'
             googleCalendarApiKey = 'AIzaSyAc2Ls0mbsox4ZX6xCX2ZoybF6YFLtot34'
+            contentHeight = "auto"
+            expandRows = {true}
             events = {{
               googleCalendarId: 'scecattendancetracker@gmail.com'
             }}

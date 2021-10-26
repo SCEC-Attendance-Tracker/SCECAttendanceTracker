@@ -25,5 +25,17 @@
   <%= @event.location %>
 </p>
 
+<% if  @event.feedbacks.any? %>
+  <hr>
+  <h2>Feedbacks by <%= @event.title%>:</h2>
+  <%= render @event.feedbacks %>
+<% else %>
+  <hr>
+  <h2> Would you like to input your feedback for the following event? </h2>
+  <%= render 'feedbacks/form', feedback: @event.feedbacks.build %>
+<% end %>
+
+
+
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'All Events', events_path %>

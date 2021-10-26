@@ -185,6 +185,7 @@ export default function DataTable(data) {
     },
     [],
   );
+  
   data.columns.push(
     {
       field: 'actions',

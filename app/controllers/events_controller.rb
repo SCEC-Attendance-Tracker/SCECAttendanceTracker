@@ -1,14 +1,23 @@
-class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy ]
+# frozen_string_literal: true
 
+class EventsController < ApplicationController
+  skip_before_action :authenticate_member!, only: [:index]
+  before_action :set_event, only: %i[show edit update destroy]
+  skip_before_action :authenticate_member!, only: [:index]
+
+  helper_method :sort_column, :sort_direction
+  
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = Event.order(sort_column + " " + sort_direction)
+  end
+
+  def current_events
+    @events
   end
 
   # GET /events/1 or /events/1.json
-  def show
-  end
+  def show; end
 
   # GET /events/new
   def new
@@ -16,8 +25,7 @@ class EventsController < ApplicationController
   end
 
   # GET /events/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /events or /events.json
   def create
@@ -25,7 +33,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to events_url, notice: "Event was successfully created." }
+        format.html { redirect_to events_url, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +46,7 @@ class EventsController < ApplicationController
   def update
     respond_to do |format|
       if @event.update(event_params)
-        format.html { redirect_to @event, notice: "Event was successfully updated." }
+        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,19 +59,28 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to events_url, notice: "Event was successfully destroyed." }
+      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.require(:event).permit(:title, :start_date, :end_date, :description, :location)
-    end
+  def sort_column
+    Event.column_names.include?(params[:sort]) ? params[:sort] : "id"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def event_params
+    params.require(:event).permit(:title, :start_date, :end_date, :description, :location)
+  end
 end

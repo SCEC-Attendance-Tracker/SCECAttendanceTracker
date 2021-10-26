@@ -8,6 +8,10 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  ENV['GOOGLE_CALENDAR_API_KEY'] = 'AIzaSyAc2Ls0mbsox4ZX6xCX2ZoybF6YFLtot34'
+  ENV['GOOGLE_OAUTH_CLIENT_ID'] = '466639305196-3o5i5nlsgoeau5gbq64j2oc8afg3imq6.apps.googleusercontent.com'
+  ENV['GOOGLE_OAUTH_CLIENT_SECRET'] = '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'
+
   # Do not eager load code on boot.
   config.eager_load = false
 
@@ -80,10 +84,10 @@ Rails.application.configure do
     port: 587,
     authentication: "login",
     tls: false,
-    enable_starttls_auto: true, 
+    enable_starttls_auto: true,
     user_name: ENV["GMAIL_USERNAME"],
     password: ENV["GMAIL_PASSWORD"]
   }
   #Change domain to Heroku domain before deployment
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 } 
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 end

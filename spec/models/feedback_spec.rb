@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Feedback, type: :model do
+
+  let(:event) { Event.create(title: "New Event", start_date: DateTime.new(2021,10,3,17,0,0), end_date: DateTime.new(2021,10,3,18,0,0), description: "description", location: "MSC") }
   subject do
-    described_class.new(event_review: 'The event was very good', event_rating_score: 10)
+    described_class.new(event_id: event.id, event_review: 'The event was very good', event_rating_score: 5)
   end
 
   it 'is valid with valid attributes' do

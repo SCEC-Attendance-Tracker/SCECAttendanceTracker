@@ -1,6 +1,8 @@
 <%= react_component("NavBar", 
 props: {member: Member.where({id: session[:member_id]}), page: "Events"} )%>
 
+<%= react_component("EventsDataTable", 
+props: {members: Member.where({id: session[:member_id]}), events: @events, attendances: @attendances})%>
 
 <%#= link_to 'Back', :back %>
 <%#= link_to 'Home', root_path %>

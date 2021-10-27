@@ -119,6 +119,6 @@ export default function EventsDataTable(props) {
   data = getData(props);
   
   return (
-    DataTable(data)
+    DataTable(data, props.props.link, props.props.type)
   );
 }

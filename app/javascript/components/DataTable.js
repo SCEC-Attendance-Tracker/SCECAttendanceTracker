@@ -10,6 +10,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import CreateButton from './CreateButton'
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -150,7 +151,7 @@ QuickSearchToolbar.propTypes = {
 
 //var data;
 
-export default function DataTable(data) {
+export default function DataTable(data, link, type) {
   
   /*if (data == undefined) {
     data = getData(props);
@@ -207,9 +208,12 @@ export default function DataTable(data) {
     [deleteRow],
   );
 
+  console.log(link)
+  console.log(type)
 
   return (
     <div style={{ height: '50em', width: '100%'}}>
+      <CreateButton link = {link} type = {type}/>
       <DataGrid
         className={classes.grid}
         components={{ Toolbar: QuickSearchToolbar }}

@@ -156,11 +156,6 @@ export default function NavBar(props) {
 						open={Boolean(anchorEl)}
 						onClose={handleClose}
 					>
-						{ (member != undefined) && 
-							<Button href={"/members/"+member.id}>
-								<MenuItem className={classes.menuItem}>Profile</MenuItem>
-							</Button>
-						}
 						<Link href={"/events"}>
 							<MenuItem className={classes.menuItem}>Events</MenuItem>
 						</Link>

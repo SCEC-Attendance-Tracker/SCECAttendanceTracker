@@ -70,23 +70,7 @@ function getData(props) {
       field: 'location',
       headerName: 'Location',
       width: 150,
-    },
-    {
-      headerClassName: 'theme-header',
-      field: 'rsvp',
-      headerName: 'RSVP',
-      width: 160,
-      editable: true,
-      type: 'boolean'
-    },
-    {
-      headerClassName: 'theme-header',
-      field: 'mark',
-      headerName: 'Mark Attendance',
-      width: 160,
-      editable: true,
-      type: 'boolean'
-    },
+    }
   ];
   
   var rows = [];
@@ -102,9 +86,7 @@ function getData(props) {
       start_time: new Date(events[i].start_date).toLocaleTimeString(),
       end_time: new Date(events[i].end_date).toLocaleTimeString(),
       description: events[i].description,
-      location: events[i].location,
-      rsvp: (a ? (attendances.find(e => e.event_id == events[i].id && e.member_id == member.id).rsvp ? true : false ) : false),
-      attended: ((new Date(events[i].start_date) < new Date()) ? (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id).attended ? true : false )) : false)
+      location: events[i].location
     }
     rows.push(entry)
   }

@@ -1,6 +1,7 @@
 import React from "react";
-import { DialogContent, IconButton, Typography, TextField, Box, Button, Modal } from "@material-ui/core";
+import { DialogContent, IconButton, Typography, TextField, Box, Button, Modal, Avatar } from "@material-ui/core";
 import { DeleteOutlined, EditOutlined, Check, Close } from "@material-ui/icons";
+import './stylesheets/Profile.css';
 
 class ProfilePageModal extends React.Component {
     constructor(props) {
@@ -153,28 +154,32 @@ class ProfilePageModal extends React.Component {
         return (
             <>
             <Box sx={style}>
-                <div className="icons" style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}>
-                    <div className="name" display='inline-block'>
+                <div className='name-icons-header'>
+                    <div className='name'>
                         {this.state.editable ? 
                         <>
                         <TextField id="outlined" label="First Name" name="first_name" value={first_name} onChange={this.handleInputChange}/>
                         <TextField id="outlined" label="Last Name" name="last_name" value={last_name} onChange={this.handleInputChange}/>
                         </>
                         : 
-                        <Typography id="profile-page-label" variant="h3" component="h2" >
-                        {this.state.member_info.first_name} {this.state.member_info.last_name}
-                        </Typography>
+                        <div className="avatar-first-last" style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                        }}>
+                            <Avatar style={{ width: 70, height: 70 }} src={this.state.member_info.img_url}/>
+                            <Typography style={{paddingLeft:'12px', margin:'auto'}} id="profile-page-label" variant="h3" component="h3" >
+                                {this.state.member_info.first_name} {this.state.member_info.last_name}
+                            </Typography>
+                        </div>
                         }
                     </div>
-                    <div>
-                        {this.state.is_owner && this.state.editable ? "" : <IconButton size="medium" onClick={this.handleDelete}> <DeleteOutlined/> </IconButton>}
-                        <IconButton size="medium" onClick={this.handleClose}> <Close/> </IconButton>
+                    <div className='delete-close'>
+                        {this.state.is_owner && this.state.editable ? "" : <IconButton size="medium" onClick={this.handleDelete} aria-label="Delete Profile"> <DeleteOutlined/> </IconButton>}
+                        <IconButton size="medium" onClick={this.handleClose} aria-label="Close Menu"> <Close/> </IconButton>
                     </div>
                 </div>
+                <br/>
+                <br/>
                 <div className="email">
                 <Typography id="profile-page-label" variant="overline" component="h2">
                     Email:
@@ -187,27 +192,22 @@ class ProfilePageModal extends React.Component {
                 <Typography id="profile-page-label" variant="overline" component="h2">
                     About Me:
                 </Typography> 
-                {this.state.editable ? <TextField id="outlined" name="description" multiline fullWidth value={description} onChange={this.handleInputChange}/>
+                {this.state.editable ? <TextField id="outlined" name="description" aria-label="About me:" multiline fullWidth value={description} onChange={this.handleInputChange}/>
                 :
                 <><Typography id="profile-page-text" sx={{ mt: 2 }}>{this.state.member_info.description}</Typography></>
                 }
                 </div>
                 <div className="attendance-points">
-                {this.state.is_owner ? 
+                    {this.state.is_owner ? 
                     <Typography id="profile-page-label" variant="overline"> 
                     Attendance Points 
                     </Typography> : ""}
-                {this.state.is_owner ? 
+                    {this.state.is_owner ? 
                     <Typography id="profile-page-text"> 
                     {this.state.member_info.total_attendance}
                     </Typography> : ""}
                 </div>
-                <div style={{
-                    position:'relative',
-                    display:'flex',
-                    flexDirection:'row',
-                    justifyContent:'space-between'
-                }}>
+                <div className='paid-dues-icon-footer'>
                     <div className="paid-dues" style={{
                         width:'50%'
                     }}>
@@ -226,12 +226,12 @@ class ProfilePageModal extends React.Component {
                         {this.state.is_owner && 
                         this.state.editable ? 
                         <div display="inline-block">  
-                            <IconButton onClick={this.handleEdit} size="medium" variant="contained"><Check/></IconButton>
-                            <Button onClick={this.handleEditCancel} startIcon={<Close/>} variant="contained" style={{
+                            <IconButton onClick={this.handleEdit} aria-label="Submit Changes" size="medium" variant="contained"><Check/></IconButton>
+                            <Button onClick={this.handleEditCancel} aria-labelledby="Cancel Changes" startIcon={<Close/>} variant="contained" style={{
                                 paddingLeft:'5px'
                             }}>Cancel</Button>
                         </div>
-                        : <Button onClick={this.handleEdit} startIcon={<EditOutlined/>} size="medium" variant="contained">Edit</Button>
+                        : <Button onClick={this.handleEdit} startIcon={<EditOutlined/>} aria-labelledby="Edit Information" size="medium" variant="contained">Edit</Button>
                         }
                     </div>
                 </div>
@@ -252,7 +252,7 @@ class ProfilePageModal extends React.Component {
         }
         return (
             <>
-                <Button onClick={this.handleOpen}> My Profile </Button>
+                <Button onClick={this.handleOpen}> <Avatar src={this.state.member_info.img_url}/> </Button>
                 <Modal
                 open={this.state.show}
                 onClose={this.handleClose}

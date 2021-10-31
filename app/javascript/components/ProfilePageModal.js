@@ -164,7 +164,7 @@ class ProfilePageModal extends React.Component {
                         : 
                         <div className="avatar-first-last" style={{
                             display: 'flex',
-                            flexDirection: 'row',
+                            flexDirection: 'row'
                         }}>
                             <Avatar style={{ width: 70, height: 70 }} src={this.state.member_info.img_url}/>
                             <Typography style={{paddingLeft:'12px', margin:'auto'}} id="profile-page-label" variant="h3" component="h3" >
@@ -241,11 +241,12 @@ class ProfilePageModal extends React.Component {
 
     render() {
         const style = {
-            position: 'absolute', 
+            position: 'fixed',
             top: '25%', 
             left: '50%', 
-            transform: 'translate(-50%, 0%)', 
-            width: '50%', 
+            transform: 'translate(-50%,0)', 
+            width: '600px',
+            maxWidth: '100%',
             bgcolor: 'background.paper',  
             boxShadow: 24, 
             p: 4

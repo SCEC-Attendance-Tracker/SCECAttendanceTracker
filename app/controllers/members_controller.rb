@@ -47,17 +47,13 @@ class MembersController < ApplicationController
 
   def update
     @member = Member.find(params[:id])
-    if @member.update(member_params)
-      redirect_to(member_path(@member))
-    else
-      render('edit')
-    end
+    @member.update(member_params)
   end
 
   private
 
   def member_params
-    params.require(:member).permit(:first_name, :last_name, :email, :description)
+    params.require(:member).permit(:first_name, :last_name, :email, :description, :admin)
   end
 
   def set_member

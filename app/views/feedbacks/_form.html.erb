@@ -1,0 +1,19 @@
+<%= form_with(model: [@event, feedback], local: true) do |form| %>
+  <div class="field">
+    <%= form.hidden_field :event_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event_review %>
+    <%= form.text_field :event_review %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event_rating_score %>
+    <%= form.number_field :event_rating_score, in: 1..5 %>
+  </div>
+  
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

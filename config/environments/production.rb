@@ -117,7 +117,6 @@ Rails.application.configure do
 
 
   config.action_mailer.perform_deliveries = true
-  # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :smtp
@@ -132,5 +131,5 @@ Rails.application.configure do
     password: ENV["GMAIL_PASSWORD"]
   }
 
-  config.action_mailer.default_url_options = { host: "stage-scec-project.herokuapp.com", port: 3000 }
+  config.action_mailer.default_url_options = { host: "scec-attenda-sat-87-use-u3yjas.herokuapp.com", port: 3000 }
 end

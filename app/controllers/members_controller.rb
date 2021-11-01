@@ -6,16 +6,15 @@ class MembersController < ApplicationController
   def new
     @params = request.query_parameters
     @member = Member.find_by(email: @params['email'])
+    MemberRequestMailer.with(member: @member).member_request.deliver_now
   end
 
   def create
     @member = Member.find_by(email: member_params[:email])
-
+    
     if @member.update(member_params)
-      MemberRequestMailer.with(member: @member).member_request.deliver_now
       redirect_to(root_path)
     else
-
       render('new')
     end
   end

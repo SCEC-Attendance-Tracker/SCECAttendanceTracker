@@ -4,11 +4,12 @@ require 'rails_helper'
 
 RSpec.describe MemberRequestMailer, type: :mailer do
   describe 'request_created' do
-    let(:mail) { MemberRequestMailer.with(member: Member.first).member_request.deliver_later }
+    let(:mem) {Member.create(admin: 'False', first_name: 'John', last_name: 'Doe', email: 'johndoe123@gmail.com')}
+    let(:mail) { MemberRequestMailer.with(member: mem).member_request }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('MemberRequest')
-      expect(mail.to).to eq(['to@example.org'])
+      expect(mail.subject).to eq('SCEC Account Created')
+      expect(mail.to).to eq(['johndoe123@gmail.com'])
       expect(mail.from).to eq(['scecattendancetracker@gmail.com'])
     end
 

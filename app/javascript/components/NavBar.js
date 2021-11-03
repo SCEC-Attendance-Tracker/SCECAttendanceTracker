@@ -171,11 +171,6 @@ export default function NavBar(props) {
 							</Link>
 						}
 						{ (member != undefined) && (member.admin) &&
-							<Link href={"/feedbacks"}>
-								<MenuItem className={classes.menuItem}>Feedback</MenuItem>
-							</Link>
-						}
-						{ (member != undefined) && (member.admin) &&
 							<Link href={"/members"}>
 								<MenuItem className={classes.menuItem}>Members</MenuItem>
 							</Link>

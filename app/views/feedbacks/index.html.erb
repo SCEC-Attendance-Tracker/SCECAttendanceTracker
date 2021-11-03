@@ -6,31 +6,3 @@ props: {member: Member.where({id: session[:member_id]}), page: "Feedbacks"} )%>
 
 <%= react_component("FeedbackDataTable", 
 props: {events: @event, feedbacks: @feedbacks})%>
-
-<!--
-<table>
-  <thead>
-    <tr>
-      <th>Event ID</th>
-      <th>Event Title</th>
-      <th>Event Feedback</th>
-      <th>Event Rating</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @feedbacks.each do |feedback| %>
-      <tr>
-        <td><%= feedback.event_id %></td>
-        <td><%= Event.find_by!(:id => feedback.event_id).title %></td>
-        <td><%= feedback.event_review %></td>
-        <td><%= feedback.event_rating_score %></td>
-        <td><%= link_to 'Show', event_feedback_path(@event.find(feedback.event_id), feedback) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to 'Back', events_url %>
--->

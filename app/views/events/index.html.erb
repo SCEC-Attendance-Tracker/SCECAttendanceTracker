@@ -46,7 +46,7 @@ props: {member: Member.where({id: session[:member_id]}), page: "Events"} )%>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to 'Mark Attendance', new_attendance_path({event_id: event.id})%><td>
-        <td><%= link_to 'All Feedbacks', event_feedbacks_url({event_id: event.id}) %><td>
+        <td><%= link_to 'All Feedbacks', feedbacks_url({event_id: event.id}) %><td>
       </tr>
     <% end %>
   </tbody>

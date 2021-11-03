@@ -10,52 +10,66 @@ class CreateEventForm extends React.Component {
     constructor(props) {
         super(props); 
         this.state = { // gonna need event JSON
+            beginDate: new Date(), 
+            endDate: new Date(),
+            created: false,
             event: {
-                start_date: "", 
-                end_date: "", 
+                start_date: this.convertDate(new Date()), 
+                end_date: this.convertDate(new Date()), 
                 description: "", 
                 location: "", 
                 title: ""
-            }, 
-            beginDate: new Date(), 
-            endDate: new Date(),
+            }
         };
     }
 
     componentDidMount = () => {
-        this.beginDateChange(this.state.beginDate);
-        this.endDateChange(this.state.endDate);
         this.render();
     }
 
-    beginDateChange = (newDate) => {
-        this.setState({beginDate: newDate});
-        
+    // convert date to utc (datetime in postgresql)
+    convertDate = (date) => {
         var utc = require('dayjs/plugin/utc')
         var dayjs = require('dayjs');
         dayjs.extend(utc);
 
-        var datetime = dayjs(newDate).format();
+        var datetime = dayjs(date).format();
+
+        return datetime;
+    }
+
+    // change start_date in state.event
+    beginDateChange = (newDate) => {
+        this.setState({beginDate: newDate});
+
         var newEvent = {...this.state.event}; 
-        newEvent.start_date = datetime;
+        newEvent.start_date = this.convertDate(newDate);
         
         this.setState({event: newEvent})
     }
 
+    // Checks for empty input on title (others can be added)
+    validateInput = () => {
+        var input = {...this.state.event};
+        if (input.title == "") {
+            alert("Please fill out all required forms.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Change end_date in state.event
     endDateChange = (newDate) => {
         this.setState({endDate: newDate});
 
-        var utc = require('dayjs/plugin/utc')
-        var dayjs = require('dayjs');
-        dayjs.extend(utc);
-
-        var datetime = dayjs(newDate).format();
         var newEvent = {...this.state.event}; 
-        newEvent.end_date = datetime;
+        newEvent.end_date = this.convertDate(newDate);
 
         this.setState({event: newEvent})
     }
 
+    // updates state.event with form change
     handleInputChange = (change) => {
         var eventDiff = {...this.state.event};
         var name = [change.target.name];
@@ -67,14 +81,16 @@ class CreateEventForm extends React.Component {
         } else if (name == 'title') {
             eventDiff.title = change.target.value;
         }
-
-        console.log(eventDiff);
+        this.setState({created: false}); // reset if another event creation
         this.setState({event: eventDiff})
-        console.log(this.state.event);
     }
 
+    // submits POST form to index route
     submitEvent = () => {
         // gotta validate 
+        if (!this.validateInput()) {
+            return;
+        }
         const token = document.querySelector('[name=csrf-token]').content; 
         fetch(`/api/v1/events/`, {
             method: 'POST', 
@@ -83,6 +99,7 @@ class CreateEventForm extends React.Component {
         }).then((response) => {
             if (response.ok) {
                 console.log("WENT THROUGH");
+                this.setState({created: true})
                 return response.json;
             }
         }).catch((error) => {
@@ -92,34 +109,37 @@ class CreateEventForm extends React.Component {
 
     render = () => {
         const style = {
-            width: 600
+            width: '100%'
         }
 
         const begin = this.state.beginDate; 
         const end = this.state.endDate;
-
+ 
         return (
             <Box sx={style}>
                 <div className='new-event-header'>
-                    <Typography id='new-event-header' variant='h3' component ='h3'> New Event </Typography>
+                    <Typography id='new-event-header' variant='h4' component ='h4'> New Event </Typography>
                 </div>
                 <div className='event-field'>
-                    <TextField id='outlined' label='Event Title' name='title' onChange={this.handleInputChange}/>
+                    {this.state.created ? <Typography id='submitted'> Event created! </Typography> : ""}
+                    <TextField required id='outlined' label='Event Title' name='title' onChange={this.handleInputChange}/>
                 </div>
-                <div className='event-field'>
+                <br/>
+                <div className='event-field-dates'>
                     <div className='time-pick'>
-                        <Typography id='from' variant='overline'> From </Typography>
+                        <Typography variant='overline'> From </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DateTimePicker name="beginDate" value={begin} renderInput={(end) => <TextField {...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
+                            <DateTimePicker maxDateTime={this.state.endDate} name="beginDate" value={begin} renderInput={(end) => <TextField id='outlined' label="From"{...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
                         </LocalizationProvider>
                     </div>
                     <div className='time-pick'>
-                        <Typography id='to' variant='overline'> To </Typography>
+                        <Typography variant='overline'> To </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DateTimePicker name="endDate" value={end} renderInput={(begin) => <TextField {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
+                            <DateTimePicker minDateTime={this.state.beginDate} name="endDate" value={end} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
                         </LocalizationProvider>
                     </div>
                 </div> 
+                <br/>
                 <div className='event-field'>
                     <TextField id='outlined' label='Description' name='description' onChange={this.handleInputChange}/>
                 </div>
@@ -127,8 +147,11 @@ class CreateEventForm extends React.Component {
                     <TextField id='outlined' label='Location' name='location' onChange={this.handleInputChange}/>
                 </div>
                 <div className='event-field'>
-                    <div className='footer'>
-                        <IconButton onClick={this.submitEvent}> <Check/> </IconButton>
+                    <div className='footer' style={{
+                        display: 'flex', 
+                        flexDirection: 'row-reverse'
+                    }}>
+                        <Button onClick={this.submitEvent} startIcon={<Check/>}> Submit </Button>
                     </div>
                 </div>
             </Box>

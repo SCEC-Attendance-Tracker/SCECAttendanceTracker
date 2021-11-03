@@ -6,5 +6,3 @@
 		events: {current_events: Event.where("? BETWEEN start_date AND end_date", DateTime.current),
 		upcoming_events: Event.where("? < start_date", DateTime.current)})%>
 </div>
-<%= react_component("CreateEventForm") %>
-

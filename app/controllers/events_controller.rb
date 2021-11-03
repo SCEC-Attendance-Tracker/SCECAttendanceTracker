@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
+  skip_before_action :authenticate_member!, only: [:index]
   before_action :set_event, only: %i[show edit update destroy]
+  skip_before_action :authenticate_member!, only: [:index]
 
   helper_method :sort_column, :sort_direction
   
@@ -9,6 +11,10 @@ class EventsController < ApplicationController
   def index
     @attendances = Attendance.all 
     @events = Event.order(sort_column + " " + sort_direction)
+  end
+
+  def current_events
+    @events
   end
 
   # GET /events/1 or /events/1.json

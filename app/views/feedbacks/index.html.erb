@@ -20,10 +20,10 @@
       <tr>
         <td><%= feedback.event_id %></td>
 
-        <td><%= link_to @events.find(feedback.event_id).title, event_feedbacks_path(:title => @events.find(feedback.event_id).title) %></td>
+        <td><%= Event.find_by!(:id => feedback.event_id).title %></td>
         <td><%= feedback.event_review %></td>
         <td><%= feedback.event_rating_score %></td>
-        <td><%= link_to 'Show', event_feedback_path(@events.find(feedback.event_id), feedback) %></td>
+        <td><%= link_to 'Show', event_feedback_path(@event.find(feedback.event_id), feedback) %></td>
       </tr>
     <% end %>
   </tbody>

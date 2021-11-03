@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core"
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import ProfilePageModal from './ProfilePageModal'
 	
 	
 const home = "SCEC Portal"
@@ -120,7 +121,7 @@ export default function NavBar(props) {
 				
 				{/* if logged in, present member info */}
 				{ (member != undefined) &&
-					<Button href={"/members/"+member.id} color="inherit" className={classes.button}>{member.first_name}</Button>
+					<ProfilePageModal member={member} is_owner={true}/>
 				}
 				{/* if not logged in, present sign in button */}
 				{ (member == undefined) &&
@@ -156,9 +157,9 @@ export default function NavBar(props) {
 						onClose={handleClose}
 					>
 						{ (member != undefined) && 
-							<Link href={"/members/"+member.id}>
+							<Button href={"/members/"+member.id}>
 								<MenuItem className={classes.menuItem}>Profile</MenuItem>
-							</Link>
+							</Button>
 						}
 						<Link href={"/events"}>
 							<MenuItem className={classes.menuItem}>Events</MenuItem>

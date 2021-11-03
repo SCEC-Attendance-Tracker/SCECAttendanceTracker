@@ -2,5 +2,8 @@
 props: {page: "SCEC Portal"} )%>
 
 <h6>You're Logged out! Log in to the Member Dashboard</h6>
-<%= react_component("GoogleCalendar")  %>
-<%= link_to "Sign in with Google", member_google_oauth2_omniauth_authorize_path %>
+
+<%= react_component("pages/HomePage",
+		events: {current_events: Event.where("? BETWEEN start_date AND end_date", DateTime.current),
+		upcoming_events: Event.where("? < start_date", DateTime.current)})%>
+

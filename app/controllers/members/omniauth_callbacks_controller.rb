@@ -5,6 +5,9 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       check_member = Member.find_by(email: google_params[:email])
       if(check_member)
         sign_in check_member, event: :authentication
+        if(auth.info.image != check_member.img_url)
+          check_member.update({img_url: auth.info.image})
+        end 
         session[:member_id] = check_member.id
         redirect_to root_path
       elsif defined?(google_params)
@@ -38,7 +41,8 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @from_google_params ||= {
         email: auth.info.email,
         first_name: auth.info.name.split[0],
-        last_name: auth.info.name.split[1]
+        last_name: auth.info.name.split[1],
+        img_url: auth.info.image
       }
     end
     def auth

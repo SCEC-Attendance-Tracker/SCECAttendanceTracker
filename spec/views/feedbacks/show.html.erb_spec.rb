@@ -5,7 +5,7 @@ RSpec.describe "feedbacks/show", type: :view do
     @feedback = assign(:feedback, Feedback.create!())
   end
 
-  it "renders attributes in <p>" do
+  xit "renders attributes in <p>" do
     render
   end
 end

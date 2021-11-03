@@ -1,9 +1,16 @@
-<p id="notice"><%= notice %></p>
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Feedbacks"} )%>
 
-<%= link_to 'Home', root_path %>
+<%#= link_to 'Back', :back %>
+<%#= link_to 'Home', root_path %>
 
-<h1>Feedbacks</h1>
+<%#= link_to 'Clear Filters', feedbacks_path %>
+<%#= link_to 'View Events', events_url %>
 
+<%= react_component("FeedbackDataTable", 
+props: {events: @event, feedbacks: @feedbacks})%>
+
+<!--
 <table>
   <thead>
     <tr>
@@ -19,7 +26,6 @@
     <% @feedbacks.each do |feedback| %>
       <tr>
         <td><%= feedback.event_id %></td>
-
         <td><%= Event.find_by!(:id => feedback.event_id).title %></td>
         <td><%= feedback.event_review %></td>
         <td><%= feedback.event_rating_score %></td>
@@ -30,3 +36,4 @@
 </table>
 
 <%= link_to 'Back', events_url %>
+-->

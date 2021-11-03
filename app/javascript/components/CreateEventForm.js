@@ -118,26 +118,28 @@ class CreateEventForm extends React.Component {
         return (
             <Box sx={style}>
                 <div className='new-event-header'>
-                    <Typography id='new-event-header' variant='h3' component ='h3'> New Event </Typography>
+                    <Typography id='new-event-header' variant='h4' component ='h4'> New Event </Typography>
                 </div>
                 <div className='event-field'>
                     {this.state.created ? <Typography id='submitted'> Event created! </Typography> : ""}
                     <TextField required id='outlined' label='Event Title' name='title' onChange={this.handleInputChange}/>
                 </div>
+                <br/>
                 <div className='event-field-dates'>
                     <div className='time-pick'>
                         <Typography variant='overline'> From </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DateTimePicker name="beginDate" value={begin} renderInput={(end) => <TextField id='outlined' label="From"{...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
+                            <DateTimePicker maxDateTime={this.state.endDate} name="beginDate" value={begin} renderInput={(end) => <TextField id='outlined' label="From"{...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
                         </LocalizationProvider>
                     </div>
                     <div className='time-pick'>
                         <Typography variant='overline'> To </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DateTimePicker name="endDate" value={end} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
+                            <DateTimePicker minDateTime={this.state.beginDate} name="endDate" value={end} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
                         </LocalizationProvider>
                     </div>
                 </div> 
+                <br/>
                 <div className='event-field'>
                     <TextField id='outlined' label='Description' name='description' onChange={this.handleInputChange}/>
                 </div>

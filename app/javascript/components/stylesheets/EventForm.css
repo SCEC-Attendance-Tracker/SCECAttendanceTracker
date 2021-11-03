@@ -1,0 +1,9 @@
+.event-field {
+    display: flex; 
+    flex-direction: column; 
+}
+
+.time-pick {
+    display: flex; 
+    flex-direction:column;
+}

@@ -108,17 +108,6 @@ class ProfilePage extends React.Component {
     }
   }
 
-  handleIndex = () => {
-    fetch(`/api/v1/members`, {
-      method: 'GET', 
-      headers: {'Content-Type': 'application/json'}
-    }).then((response) => {
-      if (response.ok) {
-        console.log(response);
-      }
-    });
-  }
-
   handleValidation() {
     if(this.state.member_edit.first_name == "") {
       this.setState({formValid: false})
@@ -240,10 +229,6 @@ class ProfilePage extends React.Component {
           {this.state.is_owner ? 
             this.returnDuesStatement(paid_dues) : ""}
         </div>
-        <Button onClick={this.handleIndex}>
-            INDEX!
-        </Button>
-
       </Box></>
     );
   }

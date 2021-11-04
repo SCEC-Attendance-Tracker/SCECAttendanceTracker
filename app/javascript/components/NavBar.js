@@ -157,9 +157,7 @@ export default function NavBar(props) {
 						onClose={handleClose}
 					>
 						{ (member != undefined) && 
-							<Button href={"/members/"+member.id}>
-								<MenuItem className={classes.menuItem}>Profile</MenuItem>
-							</Button>
+							<ProfilePageModal member={member} is_owner={true}/>
 						}
 						<Link href={"/events"}>
 							<MenuItem className={classes.menuItem}>Events</MenuItem>

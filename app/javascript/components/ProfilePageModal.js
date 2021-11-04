@@ -43,6 +43,7 @@ class ProfilePageModal extends React.Component {
             left: '50%', 
             transform: 'translate(-50%, 0%)', 
             width: 400, 
+            color: 'white',
             bgcolor: 'background.paper',  
             boxShadow: 24, 
             p: 4

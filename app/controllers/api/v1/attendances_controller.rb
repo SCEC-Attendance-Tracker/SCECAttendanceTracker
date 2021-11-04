@@ -1,50 +1,23 @@
-# frozen_string_literal: true
-
 module Api
   module V1
-    class AttendanceController < ApplicationController
-      before_action :set_attendance, only: %i[show edit update destroy]
-
+    class AttendancesController < ApplicationController
+      respond_to :json
+      
       # GET /attendances or /attendances.json
       def index
         @attendance = Attendance.all
-        @member = Member.all
-        @event = Event.all
 
         render json: @attendence
       end
 
-      # GET /attendances/1 or /attendances/1.json
-      def show
-        if @attendance
-          render json: @attendance
-        else
-          render json: @attendance.errors
-        end
-      end
-
-      # GET /attendances/new
-      def new
-        @attendance = Attendance.new
-      end
-
-      # GET /attendances/1/edit
-      def edit; end
-
       # POST /attendances or /attendances.json
       def create
         @attendance = Attendance.new(attendance_params)
-
-        respond_to do |format|
-          if @attendance.save
-            format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
-            format.json { render :show, status: :created, location: @attendance }
-            render json: @attendance
-          else
-            format.html { render :new, status: :unprocessable_entity }
-            format.json { render json: @attendance.errors, status: :unprocessable_entity }
-            render json: @attendance.errors
-          end
+        
+        if @attendance.save 
+          render json: @attendance 
+        else 
+          render json: @attendance.errors 
         end
       end
 

@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :members, only: %i[index update show delete destroy]
+      resources :feedbacks, only: %i[index show create]
     end
   end
 end

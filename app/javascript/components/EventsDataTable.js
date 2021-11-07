@@ -81,7 +81,7 @@ function getData(props) {
     },
     {
       headerClassName: 'theme-header',
-      field: 'mark',
+      field: 'attended',
       headerName: 'Mark Attendance',
       width: 160,
       editable: true,
@@ -90,7 +90,6 @@ function getData(props) {
   ];
   
   var rows = [];
-  console.log(events)
   
   for (var i in events) {
     
@@ -103,13 +102,22 @@ function getData(props) {
       end_time: new Date(events[i].end_date).toLocaleTimeString(),
       description: events[i].description,
       location: events[i].location,
-      rsvp: (attendances ? (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ? ((attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).rsvp) ? true : false ) : false) : false),
-      attended: ((new Date(events[i].start_date) < new Date()) ? (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id).attended ? true : false )) : false)
+      rsvp: (attendances ? 
+        (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ? 
+          ((attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).rsvp) ? true : false ) 
+        : false) 
+      : false),
+      attended: (attendances ? 
+      (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ? 
+        (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).attended ? true : false ) 
+      : false)
+    : false)
     }
     rows.push(entry)
   }
   
   var data = {columns: columns, rows: rows}
+  console.log(data.rows)
   return data;
 }
 

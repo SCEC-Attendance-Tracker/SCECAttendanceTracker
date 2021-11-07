@@ -1,15 +1,16 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react'
+import PropTypes from 'prop-types'
 
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid';
-import DataTable from "./DataTable";
+import IconButton from '@material-ui/core/IconButton'
+import TextField from '@material-ui/core/TextField'
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid'
+import DataTable from './DataTable'
+import EventList from './EventList'
 
-import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear'
+import SearchIcon from '@material-ui/icons/Search'
 
-import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import { createTheme, makeStyles, createStyles } from '@material-ui/core'
 
 function getData(props) {
   
@@ -81,7 +82,7 @@ function getData(props) {
     },
     {
       headerClassName: 'theme-header',
-      field: 'mark',
+      field: 'attended',
       headerName: 'Mark Attendance',
       width: 160,
       editable: true,
@@ -102,24 +103,34 @@ function getData(props) {
   console.log(myEvents);
   
   for (var i in myEvents) {
-    
-    var entry = {
-      id: i,
-      event_id: myEvents[i].id,
-      title: myEvents[i].title,
-      start_date: new Date(myEvents[i].start_date).toLocaleDateString(),
-      start_time: new Date(myEvents[i].start_date).toLocaleTimeString(),
-      end_time: new Date(myEvents[i].end_date).toLocaleTimeString(),
-      description: myEvents[i].description,
-      location: myEvents[i].location,
-      rsvp: (attendances ? (attendances.find(e => e.event_id == myEvents[i].id && e.member_id == member.id).rsvp ? true : false ) : false),
-      attended: ((new Date(myEvents[i].start_date) < new Date()) ? (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id).attended ? true : false )) : false)
+    if (myEvents[i]) {
+      var entry = {
+        id: i,
+        event_id: myEvents[i].id,
+        title: myEvents[i].title,
+        start_date: new Date(myEvents[i].start_date).toLocaleDateString(),
+        start_time: new Date(myEvents[i].start_date).toLocaleTimeString(),
+        end_time: new Date(myEvents[i].end_date).toLocaleTimeString(),
+        description: myEvents[i].description,
+        location: myEvents[i].location,
+        rsvp: (attendances ? 
+                (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)) ? 
+                  ((attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)).rsvp) ? true : false ) 
+                : false) 
+              : false),
+        attended: (attendances ? 
+                    (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)) ? 
+                      (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)).attended ? true : false ) 
+                    : false)
+                  : false)
+      }
+      rows.push(entry)
     }
-    rows.push(entry)
   }
   
   var data = {columns: columns, rows: rows}
   return data;
+  //return rows;
 }
 
 var data;
@@ -128,7 +139,9 @@ export default function MyEventsDataTable(props) {
   if (data == undefined) {
     data = getData(props);
   }
+  console.log(data.rows);
   return (
-    DataTable(data)
+    EventList({events: data.rows})
+    //DataTable(data)
   );
 }

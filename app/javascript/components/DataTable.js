@@ -41,7 +41,7 @@ const useStyles = makeStyles(
         width: '100%',
       },
       grid: {
-        marginTop: '30px',
+        marginTop: '10px',
         
         '& .MuiDataGrid-main': {
           width: '100%',

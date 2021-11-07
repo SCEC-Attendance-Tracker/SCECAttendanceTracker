@@ -135,6 +135,7 @@ function getData(props) {
   }
   
   var data = {columns: columns, rows: rows}
+  console.log(data.rows);
   return data;
 }
 

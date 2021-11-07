@@ -10,6 +10,26 @@ module Api
         render json: @attendence
       end
 
+      # GET /attendances/new
+      def new
+        @params = request.query_parameters
+        
+        @attendance = Attendance.where(member_id: session[:member_id], event_id: @params['event_id']).first
+        @attendance ||= Attendance.new(member_id: session[:member_id], event_id: @params['event_id'])
+          
+        if @params['mark']
+          @attendance.toggle(:attended)
+        end
+          
+        @attendance.save
+        
+        #@attendance = Attendance.new
+        #@params = request.query_parameters
+        #@attendance.event_id = @params['event_id']
+        @attendance.member_id = session[:member_id]
+        
+      end
+
       # POST /attendances or /attendances.json
       def create
         @attendance = Attendance.new(attendance_params)

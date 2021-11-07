@@ -45,6 +45,8 @@ class FeedBackForm extends React.Component {
             feedbackDiff.event_review= change.target.value;
         } else if (name == 'event_rating_score') {
             feedbackDiff.event_rating_score = change.target.value;
+        } else if (name == 'event_id') {
+            feedbackDiff.event_id = change.target.value;
         }
         // reset if another feedbck creation
         this.setState({created: false}); 
@@ -57,7 +59,7 @@ class FeedBackForm extends React.Component {
             return;
         }
         const token = document.querySelector('[name=csrf-token]').content; 
-        fetch(`/api/v1/feedback/`, {
+        fetch(`/api/v1/feedbacks/`, {
             method: 'POST', 
             body: JSON.stringify({feedback: this.state.feedback}),
             headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }

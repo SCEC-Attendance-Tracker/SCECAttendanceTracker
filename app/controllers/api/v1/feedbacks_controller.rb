@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FeedbackController < ApplicationController
+    class FeedbacksController < ApplicationController
       respond_to :json
 
       # GET /feedbacks or /feedbacks.json
@@ -51,7 +51,6 @@ module Api
       end
       
       def set_feedback
-        set_member
         set_event
         @feedback = @event.feedbacks.find(params[:id])
       end

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
+import { Check, Close } from '@material-ui/icons';
 import './stylesheets/FeedbackForm.css'
 
 class FeedBackForm extends React.Component {
@@ -8,6 +9,7 @@ class FeedBackForm extends React.Component {
         this.state = {
             created: false,
             id: this.props.id,
+            show: false,
             feedback: {
                 //figure out how to pull the event_id
                 event_id: "",
@@ -55,7 +57,7 @@ class FeedBackForm extends React.Component {
             return;
         }
         const token = document.querySelector('[name=csrf-token]').content; 
-        fetch(`/api/v1/feedbacks/`, {
+        fetch(`/api/v1/feedback/`, {
             method: 'POST', 
             body: JSON.stringify({feedback: this.state.feedback}),
             headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
@@ -78,23 +80,30 @@ class FeedBackForm extends React.Component {
         return (
             <Box sx={style}>
                 <div className='new-feedbackack-header'>
-                    <Typography id='new-feedback-header' variant='h4' component ='h4'> New Feedback </Typography>
+                    <Typography id='new-feedback-header' variant='h4' component='h4'> New Feedback </Typography>
                 </div>
-                <div className='feedback-field'>
-                    <TextField id='outlined' label='Event Review' name='event_review' onChange={this.handleInputChange}/>
-                </div>
-                <div className='feedback-field'>
-                    {this.state.created ? <Typography id='submitted'> Feedback created! </Typography> : ""}
-                    {/* change this to be a number field */}
-                    <TextField id='outlined' label='Event Rating Score' name='event_rating_score' onChange={this.handleInputChange}/>
-                </div>
-                <div className='feedback-field'>
-                    <div className='footer' style={{
-                        display: 'flex', 
-                        flexDirection: 'row-reverse'
-                    }}>
-                        <Button onClick={this.submitFeedback} startIcon={<Check/>}> Submit </Button>
-                    </div>
+                <Button onClick={()=>{this.setState({show:!this.state.show})}}>{ this.state.show? 'Hide' : 'Show'} Feedback</Button>
+                <div id="feedback">
+                    { this.state.show?
+                        <>
+                            <div className='feedback-field'>
+                                <TextField id='outlined' label='Event id :' name='event_id' onChange={this.handleInputChange} />
+                            </div><div className='feedback-field'>
+                                <TextField id='outlined' label='Event Review:' name='event_review' onChange={this.handleInputChange} />
+                            </div><div className='feedback-field'>
+                                {this.state.created ? <Typography id='submitted'> Feedback created! </Typography> : ""}
+                                <label for="outlined1">Event Rating Score:</label>
+                                <input type='number' id='outlined1' label='Event Rating Score:' name='event_rating_score' min="1" max="5" onChange={this.handleInputChange}/>
+                            </div><div className='feedback-field'>
+                                <div className='footer' style={{
+                                    display: 'flex',
+                                    flexDirection: 'row-reverse'
+                                }}>
+                                    <Button onClick={this.submitFeedback} startIcon={<Check />}> Submit </Button>
+                                </div>
+                            </div> 
+                        </>: null
+                    }
                 </div>
             </Box>
         );

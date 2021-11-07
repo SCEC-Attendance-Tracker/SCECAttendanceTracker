@@ -12,14 +12,14 @@ import SearchIcon from '@material-ui/icons/Search';
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 
 function getData(props) {
-  
+
   console.log(props);
-  
+
   var member = props.props.members[0];
   var events = props.props.events;
   var attendances = props.props.attendances;
-  var a = attendances != undefined;
-  
+  // var a = attendances != undefined;
+
   const columns = [
     {
       headerClassName: 'theme-header',
@@ -28,8 +28,8 @@ function getData(props) {
       hide: true
     },
     {
-      headerClassName: 'theme-header', 
-      field: 'event_id', 
+      headerClassName: 'theme-header',
+      field: 'event_id',
       headerName: 'Event ID',
       width: 100,
       hide: true
@@ -88,12 +88,13 @@ function getData(props) {
       type: 'boolean'
     },
   ];
-  
+
   var rows = [];
   console.log(events)
-  
+
   for (var i in events) {
-    
+    // console.log(a)
+
     var entry = {
       id: i,
       event_id: events[i].id,
@@ -103,12 +104,12 @@ function getData(props) {
       end_time: new Date(events[i].end_date).toLocaleTimeString(),
       description: events[i].description,
       location: events[i].location,
-      rsvp: (a ? (attendances.find(e => e.event_id == events[i].id && e.member_id == member.id).rsvp ? true : false ) : false),
+      rsvp: ((attendances && attendances.length != 0) ? (attendances.find(e => e.event_id == events[i].id && e.member_id == member.id).rsvp ? true : false ) : false),
       attended: ((new Date(events[i].start_date) < new Date()) ? (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id).attended ? true : false )) : false)
     }
     rows.push(entry)
   }
-  
+
   var data = {columns: columns, rows: rows}
   return data;
 }
@@ -117,7 +118,7 @@ var data;
 
 export default function EventsDataTable(props) {
   data = getData(props);
-  
+
   return (
     DataTable(data)
   );

@@ -38,6 +38,7 @@ gem 'omniauth-google-oauth2'
 gem 'react-rails'
 gem 'rexml'
 gem 'simplecov', require: false
+gem 'csv'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

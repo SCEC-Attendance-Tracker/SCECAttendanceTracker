@@ -26,4 +26,6 @@ Rails.application.routes.draw do
       resources :members, only: %i[index update show delete destroy]
     end
   end
+
+  get '/settings' => 'settings#show'
 end

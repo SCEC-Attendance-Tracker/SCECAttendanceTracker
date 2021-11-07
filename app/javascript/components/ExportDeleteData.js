@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 
 /** 
  * Functional component for downloading data from server 
@@ -70,9 +70,14 @@ class ExportDeleteData extends React.Component {
 
     render = () => {        
         return (
-            <div>
-                <Button onClick={this.createCSV}> Download Data </Button>
-                <Button onClick={this.deleteDatabase}> Delete All Data </Button>
+            <div display="flex" flexDirection="column"> 
+                <div>
+                    <Typography>Export or Delete Website Data</Typography>
+                </div> 
+                <div>
+                    <Button onClick={this.createCSV}> Download Data </Button>
+                    <Button onClick={this.deleteDatabase}> Delete All Data </Button>
+                </div>
             </div>
         );
     }

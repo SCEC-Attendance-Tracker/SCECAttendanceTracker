@@ -2,7 +2,7 @@ require 'csv'
 
 module DatabaseExportHelper
     def export_database() 
-        # Export to json 
+        # Export to csv 
         file = "#{Rails.root}/public/data.csv"
         member_table = Member.all;0
         events_table = Event.all;0        

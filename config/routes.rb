@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :links
   resources :feedbacks
   root to: 'home#show'
 

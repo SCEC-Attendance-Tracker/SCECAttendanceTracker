@@ -1,0 +1,5 @@
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Links"} )%>
+
+<%= react_component("LinkDataTable", 
+props: {links: @links})%>

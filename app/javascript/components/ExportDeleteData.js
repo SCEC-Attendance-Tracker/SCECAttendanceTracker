@@ -5,10 +5,7 @@ import { Button, Typography } from '@material-ui/core';
  * Functional component for downloading data from server 
  * Returns rails html embed to create data.csv in public folder
  * If download, just downloads
- * If delete, downloads and deletes on confirmation
- * 
- * TODO: 
- * needs to do react functions on button click, not as prop 
+ * If delete, downloads and deletes on confirmation 
  */
 
 class ExportDeleteData extends React.Component {
@@ -22,9 +19,6 @@ class ExportDeleteData extends React.Component {
 
     createCSV = () => {
         this.downloadCSV();
-        return (
-            '<%= export_database %>'
-        );
     }
 
     deleteDatabase = () => {
@@ -40,9 +34,9 @@ class ExportDeleteData extends React.Component {
 
     // Fetch ./data.csv
     downloadCSV = () => {
-        fetch('/data.csv', {
+        fetch('/SCECData.csv', {
             method: 'GET',
-            headers: {'Content-Type': 'application/csv'}
+            headers: {'Content-Type': 'application/csv]'}
         })
         .then((response) => response.blob())
         .then((blob) => {
@@ -54,7 +48,7 @@ class ExportDeleteData extends React.Component {
             link.href = url;
             link.setAttribute(
                 'download',
-                `data.csv`,
+                `SCECData.csv`,
             );
 
             // Append to html link element page
@@ -70,13 +64,17 @@ class ExportDeleteData extends React.Component {
 
     render = () => {        
         return (
-            <div display="flex" flexDirection="column"> 
+            <div style={{
+                display: 'flex', 
+                flexDirection: 'column'
+            }}> 
+                <Typography variant='h2'>Admin Actions</Typography>
                 <div>
-                    <Typography>Export or Delete Website Data</Typography>
+                    <Typography margin='auto'>Export or Delete Website Data</Typography>
                 </div> 
                 <div>
-                    <Button onClick={this.createCSV}> Download Data </Button>
-                    <Button onClick={this.deleteDatabase}> Delete All Data </Button>
+                    <Button variant='outlined' margin='auto' onClick={this.createCSV}> Download Data </Button>
+                    <Button variant='outlined' margin='auto' onClick={this.deleteDatabase}> Delete All Data </Button>
                 </div>
             </div>
         );

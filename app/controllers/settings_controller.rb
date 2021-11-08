@@ -3,13 +3,13 @@ class SettingsController < ApplicationController
         puts session[:member_id]
         @member = Member.find(session[:member_id])
 
-        # if @member.admin == false 
-        #     redirect_to(root_path)
-        # end 
+        if @member.admin == false 
+            redirect_to(root_path)
+        end 
 
-        # if @member.admin == nil 
-        #     redirect_to(root_path)
-        # end 
+        if @member.admin == nil 
+            redirect_to(root_path)
+        end 
 
         export_database
     end
@@ -41,7 +41,7 @@ class SettingsController < ApplicationController
             writer << feedbacks_table.first.attributes.map { |a,v| a }
             events_table.each do |s| 
                 feedbacks_for_event = Feedback.where(event_id: s.id)
-                writer << [s.title]
+                writer << [s.title, s.start_date]
                 feedbacks_for_event.each do |t|
                     writer << t.attributes.map { |b, w| w }
                 end 

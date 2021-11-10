@@ -1,12 +1,71 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { Button, Link } from "@material-ui/core";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import { Link } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const newTheme = createTheme({   
+  palette: {      
+    primary: {
+      main: "#500000" // Maroon
+    },
+    secondary: {         
+      main: "#ffff33" // Yellow               
+    },
+    divider: {         
+      main: 'rgba(0, 0, 0, 0.2)' // Maroon
+    },      
+  },fontFamily: 'Roboto Mono'
+});
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    root: {}
-  })
+    root: {
+      padding: theme.spacing(0.5, 0.5, 0),
+      justifyContent: 'space-between',
+      display: 'flex',
+      //alignItems: 'flex-start',
+      flexWrap: 'wrap',
+      width: '100%',
+    },
+    grid: {
+      marginTop: '30px',  
+      '& .MuiDataGrid-main': {
+        width: '100%',
+      },
+      '& .MuiDataGrid-columnHeaderTitle': {
+        fontWeight: '800',
+        textOverflow: 'clip',
+      },
+    },
+    button: {
+      backgroundColor: '#500000',
+      color: '#fff',
+      padding: '1em', 
+      paddingTop: '0.5em', 
+      paddingBottom: '0.5em',
+      '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      }
+    },
+    actionButton: {
+      color: '#500000 !important',
+      margin: `${theme.spacing(1)}px !important`,
+      '&:hover': {
+        backgroundColor: 'rgba(80, 0, 0, 0.05) !important',
+      }
+    },
+    iconButton: {
+      backgroundColor: '#500000',
+      color: '#fff',
+      borderRadius: '100%',
+      '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      }
+    },
+  }),
+  { newTheme },
 );
 
 const handleClick = (event, cellValues) => {
@@ -49,7 +108,6 @@ const columns = [
   }
 ];
 
-
 export default function LinkDataTable(props) {
   var member;	
   if (props.props.member != undefined) {
@@ -57,61 +115,45 @@ export default function LinkDataTable(props) {
   }
   var rows = props.props.links;
   const classes = useStyles();
+  const deleteRow = React.useCallback(
+    (id) => () => {
+      setTimeout(() => {
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+      });
+    },
+    [],
+  );
   { (member != undefined) && (member.admin) &&
     columns.push(
       { 
-        headerClassName: 'theme-header',
-        field: 'edit', 
-        headerName: 'Edit',
-        minWidth: 50,
-        maxWidth: 100,
-        flex: 1, 
-        renderCell: (cellValues) => {
-          return (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={(event) => {
-                handleClick(event, cellValues);
-              }}
-            >
-              Edit
-            </Button>
-          );
-        }
-      },
-      { 
-        headerClassName: 'theme-header',
-        field: 'delete', 
-        headerName: 'Delete',
-        minWidth: 50,
-        maxWidth: 100,
-        flex: 1, 
-        renderCell: (cellValues) => {
-          return (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={(event) => {
-                handleClick(event, cellValues);
-              }}
-            >
-              Delete
-            </Button>
-          );
-        }
+        field: 'actions', 
+        type: 'actions',
+        width: 80,
+        getActions: (params) => [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={deleteRow(params.id)}
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={deleteRow(params.id)}
+          />,
+        ],
       }
     )
   }
 
   return (
-    <div style={{ height: 500, width: "100%" }}>
+    <div style={{ height: '50em', width: "100%" }}>
       <DataGrid
         rowHeight={120}
         className={classes.root}
         rows={rows}
         columns={columns}
-        pageSize={5}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         onCellClick={handleCellClick}
       />
     </div>

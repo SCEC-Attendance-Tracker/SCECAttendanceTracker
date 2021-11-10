@@ -51,6 +51,13 @@ function getData(props) {
     },
     {
       headerClassName: 'theme-header',
+      field: 'start_date',
+      headerName: 'Date',
+      width: 120,
+      hide: true
+    },
+    {
+      headerClassName: 'theme-header',
       field: 'start_time',
       headerName: 'From',
       width: 120,
@@ -78,8 +85,16 @@ function getData(props) {
       field: 'rsvp',
       headerName: 'RSVP',
       width: 160,
-      editable: true,
-      type: 'boolean'
+      type: 'actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={ params.row.rsvp ? <CheckIcon /> : <ClearIcon />}
+          label="Mark RSVP"
+          onClick={() => {
+            markRsvp(params.row);
+          }}
+        />
+      ],
     },
     {
       headerClassName: 'theme-header',
@@ -92,7 +107,6 @@ function getData(props) {
           icon={ params.row.attended ? <CheckIcon /> : <ClearIcon />}
           label="Mark Attendance"
           onClick={() => {
-            console.log(params);
             markAttendance(params.row);
           }}
         />
@@ -100,9 +114,53 @@ function getData(props) {
     },
   ];
   
+  const markRsvp = (row) => {
+    const token = document.querySelector('[name=csrf-token]').content;
+    var att = attendances.find(e => (e.event_id == row.event_id) && (e.member_id == member.id))
+    if (!att) {
+      att = {
+        id: attendances.length + 1,
+        member_id: member.id,
+        event_id: row.event_id,
+        rsvp: true,
+        attended: false,
+        created_at: new Date(),
+        updated_at: new Date()
+      }
+      
+      return (fetch(`/api/v1/attendances`, {
+        method: 'POST', 
+        body: JSON.stringify(att),
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+      })).then(() => {
+        //location.reload();
+      })
+    }
+    
+    att.rsvp = !att.rsvp;
+    console.log(att);
+    
+    fetch(`/api/v1/attendances/${att.id}`, {
+      method: 'PUT', 
+      body: JSON.stringify(att),
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+    }).then(() => {
+      //location.reload();
+    });
+  }
+  
   const markAttendance = (row) => {
     const token = document.querySelector('[name=csrf-token]').content;
     var att = attendances.find(e => (e.event_id == row.event_id) && (e.member_id == member.id))
+    var today = new Date();
+    var start = new Date(`${row.start_date + ' ' + row.start_time}`);
+    var end = new Date(`${row.end_date + ' ' + row.end_time}`);
+    
+    console.log(start + " " + end)
+    if (today < start || today > end) {
+      return;
+    }
+    
     if (!att) {
       att = {
         id: attendances.length + 1,
@@ -133,7 +191,9 @@ function getData(props) {
       method: 'PUT', 
       body: JSON.stringify(att),
       headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
-    });
+    }).then(() => {
+      location.reload();
+    })
   }
   
   var rows = [];
@@ -145,6 +205,7 @@ function getData(props) {
       event_id: events[i].id,
       title: events[i].title,
       start_date: new Date(events[i].start_date).toLocaleDateString(),
+      end_date: new Date(events[i].end_date).toLocaleDateString(),
       start_time: new Date(events[i].start_date).toLocaleTimeString(),
       end_time: new Date(events[i].end_date).toLocaleTimeString(),
       description: events[i].description,

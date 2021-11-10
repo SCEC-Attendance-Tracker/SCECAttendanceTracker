@@ -70,7 +70,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def attendance_params
-        params.require(:attendance).permit(:member_id, :event_id, :attended, :rsvps)
+        params.require(:attendance).permit(:member_id, :event_id, :attended, :rsvp)
       end
     end
   end

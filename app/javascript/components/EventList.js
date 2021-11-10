@@ -65,9 +65,52 @@ export default function EventList({events, attendances = null, member = null}) {
   const classes = useStyles();
   var today = new Date();
   
+  const markRsvp = (row) => {
+    const token = document.querySelector('[name=csrf-token]').content;
+    var att = attendances.find(e => (e.event_id == row.event_id) && (e.member_id == member.id))
+    if (!att) {
+      att = {
+        id: attendances.length + 1,
+        member_id: member.id,
+        event_id: row.event_id,
+        rsvp: true,
+        attended: false,
+        created_at: new Date(),
+        updated_at: new Date()
+      }
+      
+      return (fetch(`/api/v1/attendances`, {
+        method: 'POST', 
+        body: JSON.stringify(att),
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+      })).then(() => {
+        location.reload();
+      })
+    }
+    
+    att.rsvp = !att.rsvp;
+    
+    fetch(`/api/v1/attendances/${att.id}`, {
+      method: 'PUT', 
+      body: JSON.stringify(att),
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+    }).then(() => {
+      location.reload();
+    });
+  }
+  
   const markAttendance = (row) => {
     const token = document.querySelector('[name=csrf-token]').content;
     var att = attendances.find(e => (e.event_id == row.event_id) && (e.member_id == member.id))
+    var today = new Date();
+    var start = new Date(`${row.start_date + ' ' + row.start_time}`);
+    var end = new Date(`${row.end_date + ' ' + row.end_time}`);
+    
+    console.log(start + " " + end)
+    if (today < start || today > end) {
+      return;
+    }
+    
     if (!att) {
       att = {
         id: attendances.length + 1,
@@ -79,9 +122,6 @@ export default function EventList({events, attendances = null, member = null}) {
         updated_at: new Date()
       }
       
-      attendances.push(att);
-      console.log(attendances);
-      
       return (fetch(`/api/v1/attendances`, {
         method: 'POST', 
         body: JSON.stringify(att),
@@ -92,7 +132,6 @@ export default function EventList({events, attendances = null, member = null}) {
     }
     
     att.attended = !att.attended;
-    console.log(att);
     
     fetch(`/api/v1/attendances/${att.id}`, {
       method: 'PUT', 
@@ -168,7 +207,7 @@ export default function EventList({events, attendances = null, member = null}) {
                           <ListItemText className={classes.listActionText}
                           primary = {'RSVP'}/>}
                           
-                          <ListItemButton className={classes.listCardButton} onClick={() => {console.log((new Date(`${e.start_date + ' ' + e.start_time}`)));console.log(`${e.rsvp}`);console.log(`${e.rsvp}` == 'true')}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {markRsvp(e)}}>
                               <ListItemIcon className={classes.icon}>
                                   <RsvpIcon />
                               </ListItemIcon>

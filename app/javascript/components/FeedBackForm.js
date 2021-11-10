@@ -48,7 +48,7 @@ class FeedBackForm extends React.Component {
         } else if (name == 'event_id') {
             feedbackDiff.event_id = change.target.value;
         }
-        // reset if another feedbck creation
+        // reset if another feedback is created
         this.setState({created: false}); 
         this.setState({feedback: feedbackDiff})
     }
@@ -82,7 +82,7 @@ class FeedBackForm extends React.Component {
         return (
             <Box sx={style}>
                 <div className='new-feedbackack-header'>
-                    <Typography id='new-feedback-header' variant='h4' component='h4'> New Feedback </Typography>
+                    <Typography id='new-feedback-header' variant='h4' component='h4'> Feedback </Typography>
                 </div>
                 <Button onClick={()=>{this.setState({show:!this.state.show})}}>{ this.state.show? 'Hide' : 'Show'} Feedback</Button>
                 <div id="feedback">
@@ -104,7 +104,10 @@ class FeedBackForm extends React.Component {
                                     <Button onClick={this.submitFeedback} startIcon={<Check />}> Submit </Button>
                                 </div>
                             </div> 
-                        </>: null
+                        </>:
+                        <div className='feedback-field'>
+                            Show Feedback
+                        </div>
                     }
                 </div>
             </Box>

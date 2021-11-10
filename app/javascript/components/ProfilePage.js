@@ -3,7 +3,7 @@ import {Button} from "@material-ui/core";
 import {Box} from "@material-ui/core";
 import {Typography} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
-
+import FeedBackForm from "./FeedBackForm";
 /**
  * Profile Page Component 
  * Written by Noah Miner
@@ -229,6 +229,7 @@ class ProfilePage extends React.Component {
           {this.state.is_owner ? 
             this.returnDuesStatement(paid_dues) : ""}
         </div>
+        <FeedBackForm {...this.props}/>
       </Box></>
     );
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport, GridActionsCellItem} from '@mui/x-data-grid';
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
@@ -147,14 +147,7 @@ QuickSearchToolbar.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-//var data;
-
 export default function DataTable(data) {
-  
-  /*if (data == undefined) {
-    data = getData(props);
-    //console.log(data);
-  }*/
   
   const classes = useStyles();
   
@@ -175,23 +168,12 @@ export default function DataTable(data) {
   React.useEffect(() => {
     setDataRows(data.rows);
   }, [data.rows]);
-  
-  const deleteRow = React.useCallback(
-    (id) => () => {
-      setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      });
-    },
-    [],
-  );
     
   console.log(data.columns);
   
   const dataColumns = React.useMemo(
-    () => data.columns,
-    [deleteRow],
+    () => data.columns
   );
-
 
   return (
     <div style={{ height: '50em', width: '100%'}}>

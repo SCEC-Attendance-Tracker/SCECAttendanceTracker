@@ -41,21 +41,9 @@ function getData(props) {
     }
   ];
   
-  var test_rows = [
-    {
-      id: 1,
-      event_id: 1,
-      title: 'Title',
-      event_rating_score: 5,
-      event_review: 'The event was great!' 
-    },
-  ];
-  
   var rows = [];
-  
   for (var i in feedbacks) {
     console.log(feedbacks[i])
-    
     var entry = {
       id: i,
       event_id: feedbacks[i].event_id,

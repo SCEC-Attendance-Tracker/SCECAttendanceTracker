@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+require 'time'
 
 class EventsController < ApplicationController
   skip_before_action :authenticate_member!, only: [:index]
@@ -30,6 +30,9 @@ class EventsController < ApplicationController
   # POST /events or /events.json
   def create
     @event = Event.new(event_params)
+
+    code = create_code
+    @event.code = code
 
     respond_to do |format|
       if @event.save
@@ -65,6 +68,20 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def create_code
+    code = ''
+    i = 0
+    while i < 4 do
+      char = rand(97..122)
+      if rand(0..1).zero?
+        char = char - 32
+      end 
+      code = code + char.chr
+      i += 1
+    end 
+    return code
+  end
 
   def sort_column
     Event.column_names.include?(params[:sort]) ? params[:sort] : "id"

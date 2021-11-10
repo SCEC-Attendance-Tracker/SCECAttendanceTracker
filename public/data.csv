@@ -1,0 +1,4 @@
+Members
+id,admin,first_name,last_name,email,description,paid_dues,total_attendance,img_url,created_at,updated_at
+1,,Noah,Miner,noahjminer@gmail.com,,false,0,https://lh3.googleusercontent.com/a-/AOh14Gj_-BmTQnkjALEuwjICAzm9Lc2utzOj7-4yrWMPiw=s96-c,2021-11-06 14:39:44 -0500,2021-11-06 14:39:44 -0500
+Events

@@ -16,6 +16,12 @@ module V1
 			render json: @event.errors 
 		end
 	end
+	
+	def destroy
+		@event = Event.find(params[:id])
+		@event.destroy
+		render json: { notice: 'Event deleted' }
+	  end
 
 	private 
 

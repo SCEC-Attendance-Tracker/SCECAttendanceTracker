@@ -50,6 +50,13 @@ function getData(props) {
     },
     {
       headerClassName: 'theme-header',
+      field: 'end_date',
+      headerName: 'Date',
+      width: 120,
+      hide: true
+    },
+    {
+      headerClassName: 'theme-header',
       field: 'start_time',
       headerName: 'From',
       width: 120,
@@ -109,6 +116,7 @@ function getData(props) {
         event_id: myEvents[i].id,
         title: myEvents[i].title,
         start_date: new Date(myEvents[i].start_date).toLocaleDateString(),
+        end_date: new Date(myEvents[i].end_date).toLocaleDateString(),
         start_time: new Date(myEvents[i].start_date).toLocaleTimeString(),
         end_time: new Date(myEvents[i].end_date).toLocaleTimeString(),
         description: myEvents[i].description,
@@ -140,8 +148,11 @@ export default function MyEventsDataTable(props) {
     data = getData(props);
   }
   console.log(data.rows);
+  var attendances = props.props.attendances;
+  var member = props.props.members[0];
+  
   return (
-    EventList({events: data.rows})
+    EventList({events: data.rows, attendances: attendances, member: member})
     //DataTable(data)
   );
 }

@@ -1,13 +1,15 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
+import Button from '@mui/material/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid';
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport, GridActionsCellItem} from '@mui/x-data-grid';
 import DataTable from "./DataTable";
 
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 
@@ -39,7 +41,7 @@ function getData(props) {
       field: 'title',
       headerName: 'Event',
       minWidth: 150,
-      flex: 1
+      flex: 1,
     },
     {
       headerClassName: 'theme-header',
@@ -84,10 +86,55 @@ function getData(props) {
       field: 'attended',
       headerName: 'Mark Attendance',
       width: 160,
-      editable: true,
-      type: 'boolean'
+      type: 'actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={ params.row.attended ? <CheckIcon /> : <ClearIcon />}
+          label="Mark Attendance"
+          onClick={() => {
+            console.log(params);
+            markAttendance(params.row);
+          }}
+        />
+      ],
     },
   ];
+  
+  const markAttendance = (row) => {
+    const token = document.querySelector('[name=csrf-token]').content;
+    var att = attendances.find(e => (e.event_id == row.event_id) && (e.member_id == member.id))
+    if (!att) {
+      att = {
+        id: attendances.length + 1,
+        member_id: member.id,
+        event_id: row.event_id,
+        rsvp: false,
+        attended: true,
+        created_at: new Date(),
+        updated_at: new Date()
+      }
+      
+      attendances.push(att);
+      console.log(attendances);
+      
+      return (fetch(`/api/v1/attendances`, {
+        method: 'POST', 
+        body: JSON.stringify(att),
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+      })).then(() => {
+        location.reload();
+      })
+    }
+    
+    att.attended = !att.attended;
+    console.log(att);
+    
+    fetch(`/api/v1/attendances/${att.id}`, {
+      method: 'PUT', 
+      body: JSON.stringify(att),
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+    });
+  }
   
   var rows = [];
   

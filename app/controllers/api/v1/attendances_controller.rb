@@ -3,6 +3,19 @@ module Api
     class AttendancesController < ApplicationController
       respond_to :json
       
+      # POST /attendances or /attendances.json
+      def create
+        @attendance = Attendance.new(attendance_params)
+        @attendance.attended = false
+        @attendance.rsvp = false
+        
+        if @attendance.save 
+          render json: @attendance 
+        else 
+          render json: @attendance.errors 
+        end
+      end
+      
       # GET /attendances or /attendances.json
       def index
         @attendance = Attendance.all
@@ -30,30 +43,13 @@ module Api
         
       end
 
-      # POST /attendances or /attendances.json
-      def create
-        @attendance = Attendance.new(attendance_params)
-        
-        if @attendance.save 
-          render json: @attendance 
-        else 
-          render json: @attendance.errors 
-        end
-      end
-
       # PATCH/PUT /attendances/1 or /attendances/1.json
       def update
-        respond_to do |format|
-          if @attendance.update(attendance_params)
-            format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
-            format.json { render :show, status: :ok, location: @attendance }
-            render json: @attendance
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @attendance.errors, status: :unprocessable_entity }
-            render json: @attendance.errors
-          end
-        end
+        @attendance = Attendance.find(params[:id])
+        puts @attendance
+        @attendance.update(attendance_params)
+        puts @attendance
+        respond_with json: @attendance
       end
 
       # DELETE /attendances/1 or /attendances/1.json
@@ -74,7 +70,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def attendance_params
-        params.require(:attendance).permit(:member_id, :event_id)
+        params.require(:attendance).permit(:member_id, :event_id, :attended, :rsvps)
       end
     end
   end

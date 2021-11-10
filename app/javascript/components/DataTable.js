@@ -8,24 +8,26 @@ import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridTool
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
-import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import { createTheme, makeStyles, createStyles } from "@material-ui/core";
+// import { EditEventModal } from './EditEventModal.js';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-const newTheme = createTheme({   
-  palette: {      
+const newTheme = createTheme({
+  palette: {
     primary: {
       main: "#500000" // Maroon
     },
-    secondary: {         
-      main: "#ffff33" // Yellow               
+    secondary: {
+      main: "#ffff33" // Yellow
     },
-    divider: {         
+    divider: {
       main: 'rgba(0, 0, 0, 0.2)' // Maroon
-    },      
+    },
   },fontFamily: 'Roboto Mono'
 });
 
@@ -42,16 +44,16 @@ const useStyles = makeStyles(
       },
       grid: {
         marginTop: '30px',
-        
+
         '& .MuiDataGrid-main': {
           width: '100%',
         },
-        
+
         '& .MuiDataGrid-columnHeaderTitle': {
           fontWeight: '800',
           textOverflow: 'clip',
         },
-        
+
       },
       toolbar: {
         justifyContent: 'space-between',
@@ -79,8 +81,8 @@ const useStyles = makeStyles(
       button: {
         backgroundColor: '#500000',
         color: '#fff',
-        padding: '1em', 
-        paddingTop: '0.5em', 
+        padding: '1em',
+        paddingTop: '0.5em',
         paddingBottom: '0.5em',
         '&:hover': {
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -107,7 +109,7 @@ const useStyles = makeStyles(
 
 function QuickSearchToolbar(props) {
   const classes = useStyles();
-  
+
   return (
     <div className={classes.toolbar}>
       <div>
@@ -150,15 +152,15 @@ QuickSearchToolbar.propTypes = {
 
 //var data;
 
-export default function DataTable(data) {
-  
+export default function DataTable(data, editable, deletable) {
+
   /*if (data == undefined) {
     data = getData(props);
     //console.log(data);
   }*/
-  
+
   const classes = useStyles();
-  
+
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
 
@@ -176,7 +178,7 @@ export default function DataTable(data) {
   React.useEffect(() => {
     setDataRows(data.rows);
   }, [data.rows]);
-  
+
   const deleteRow = React.useCallback(
     (id) => () => {
       setTimeout(() => {
@@ -185,23 +187,33 @@ export default function DataTable(data) {
     },
     [],
   );
-  
+
+  console.log(data)
+
   data.columns.push(
     {
       field: 'actions',
       type: 'actions',
       width: 80,
       getActions: (params) => [
-        <GridActionsCellItem
+        editable && <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={() => {
+            console.log(params)
+          }}
+        />,
+        deletable && <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
           onClick={deleteRow(params.id)}
         />,
       ],
     });
-    
-  console.log(data.columns);
-  
+
+
+  console.log(data.columns.getActions);
+
   const dataColumns = React.useMemo(
     () => data.columns,
     [deleteRow],

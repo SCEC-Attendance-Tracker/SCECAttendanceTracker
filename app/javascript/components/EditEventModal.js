@@ -1,4 +1,4 @@
-// CreateEventForm.js imports
+// EditEventForm.js imports
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
 import { CloseIcon } from '@material-ui/icons';
 import { Check, Close } from '@material-ui/icons';
@@ -22,19 +22,19 @@ const style = {
   p: 4,
 };
 
-export default function NewEventModal() {
+export function EditEventModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  class CreateEventForm extends React.Component {
+  class EditEventForm extends React.Component {
       constructor(props) {
           super(props);
           console.log(props);
           this.state = { // gonna need event JSON
               beginDate: new Date(),
               endDate: new Date(),
-              created: false,
+              updated: false,
               onClose: props.onClose,
               event: {
                   start_date: this.convertDate(new Date()),
@@ -104,7 +104,7 @@ export default function NewEventModal() {
           } else if (name == 'title') {
               eventDiff.title = change.target.value;
           }
-          this.setState({created: false}); // reset if another event creation
+          this.setState({updated: false}); // reset if another event creation
           this.setState({event: eventDiff})
       }
 
@@ -116,13 +116,13 @@ export default function NewEventModal() {
           }
           const token = document.querySelector('[name=csrf-token]').content;
           fetch(`/api/v1/events/`, {
-              method: 'POST',
+              method: 'PUT',
               body: JSON.stringify({event: this.state.event}),
               headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
           }).then((response) => {
               if (response.ok) {
                   console.log("WENT THROUGH");
-                  this.setState({created: true})
+                  this.setState({updated: true})
                   this.state.onClose;
                   location.reload();
                   return response.json;
@@ -144,11 +144,11 @@ export default function NewEventModal() {
           return (
               <Box sx={style}>
                   <div className='new-event-header'>
-                      <Typography id='new-event-header' variant='h4' component ='h4'> New Event </Typography>
+                      <Typography id='new-event-header' variant='h4' component ='h4'> Edit Event </Typography>
 
                   </div>
                   <div className='event-field'>
-                      {this.state.created ? <Typography id='submitted'> Event created! </Typography> : ""}
+                      {this.state.updated ? <Typography id='submitted'> Event updated! </Typography> : ""}
                       <TextField required id='outlined' label='Event Title' name='title' onChange={this.handleInputChange}/>
 
                   </div>
@@ -197,7 +197,7 @@ export default function NewEventModal() {
         color="primary"
         onClick={handleOpen}
       >
-        New Event
+        Edit Event
       </Button>
       <Modal
         open={open}
@@ -206,7 +206,7 @@ export default function NewEventModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <CreateEventForm onClose={handleClose}/>
+          <EditEventForm onClose={handleClose}/>
         </Box>
 
       </Modal>

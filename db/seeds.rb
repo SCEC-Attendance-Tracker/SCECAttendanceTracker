@@ -43,8 +43,8 @@ member = Member.create([
 event = Event.create([
                        {
                          title: 'SCEC Meeting 1',
-                         start_date: Time.new(2021, 0o11, 0o1, 11, 00, 0o0, '-06:00'),
-                         end_date: Time.new(2021, 0o11, 0o1, 12, 00, 0o0, '-06:00'),
+                         start_date: Time.new(2021, 11, 1, 11, 00, 0o0, '-06:00'),
+                         end_date: Time.new(2021, 11, 1, 12, 00, 0o0, '-06:00'),
                          description: 'This meeting occurred in the past.',
                          # avg_rating: 4.4,
                          location: 'Zoom'
@@ -52,8 +52,8 @@ event = Event.create([
 
                        {
                          title: 'SCEC Meeting 2',
-                         start_date: Time.new(2021, 0o11, 0o2, 19, 00, 0o0, '-06:00'),
-                         end_date: Time.new(2021, 0o11, 0o2, 20, 00, 0o0, '-06:00'),
+                         start_date: Time.new(2021, 11, 6, 19, 00, 0o0, '-06:00'),
+                         end_date: Time.new(2021, 11,19, 20, 00, 0o0, '-06:00'),
                          description: 'This meeting is currently happening.',
                          # avg_rating: 4.8,
                          location: 'MS Teams'
@@ -61,8 +61,8 @@ event = Event.create([
 
                        {
                          title: 'SCEC Meeting 3',
-                         start_date: Time.new(2021, 0o11, 0o20, 19, 30, 0o0, '-06:00'),
-                         end_date: Time.new(2021, 0o11, 0o20, 20, 00, 0o0, '-06:00'),
+                         start_date: Time.new(2021, 11, 20, 19, 30, 0o0, '-06:00'),
+                         end_date: Time.new(2021, 11, 20, 20, 00, 0o0, '-06:00'),
                          description: 'This meeting will happen in the future.',
                          # avg_rating: 2.5,
                          location: 'ZACH 213'

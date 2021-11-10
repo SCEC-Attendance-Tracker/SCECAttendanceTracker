@@ -92,6 +92,10 @@ function getData(props) {
   var rows = [];
   console.log(events)
 
+  // const getRSVP(member_id, event_id) => {
+  //   attendance.find()
+  // }
+
   for (var i in events) {
     // console.log(a)
 
@@ -104,8 +108,16 @@ function getData(props) {
       end_time: new Date(events[i].end_date).toLocaleTimeString(),
       description: events[i].description,
       location: events[i].location,
-      rsvp: ((attendances && attendances.length != 0) ? (attendances.find(e => e.event_id == events[i].id && e.member_id == member.id).rsvp ? true : false ) : false),
-      attended: ((new Date(events[i].start_date) < new Date()) ? (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id).attended ? true : false )) : false)
+      rsvp: (attendances ?
+        (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ?
+          ((attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).rsvp) ? true : false )
+        : false)
+      : false),
+      attended: (attendances ?
+      (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ?
+        (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).attended ? true : false )
+      : false)
+    : false)
     }
     rows.push(entry)
   }
@@ -118,8 +130,47 @@ var data;
 
 export default function EventsDataTable(props) {
   data = getData(props);
+  // console.log(data)
+  // console.log(data.rows)
+
+  const [rows, setRows] = React.useState(data.rows);
+  console.log(rows)
+  console.log(setRows)
+
+  // const EditEventRow = React.useCallback(
+  //   (id) => () => {
+  //     // setTimeout(() => {
+  //     //   setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+  //     // });
+  //
+  //   },
+  //   [],
+  //   console.log("EDIT EVENT")
+  // );
+
+  console.log(data)
+  // data.columns.push(
+  //   {
+  //     field: 'actions',
+  //     type: 'actions',
+  //     width: 80,
+  //     getActions: (params) => [
+  //       <GridActionsCellItem
+  //         icon={<EditIcon />}
+  //         label="Edit"
+  //         onClick={
+  //           console.log("DO SOMETHING")
+  //         }
+  //       />,
+  //       // <GridActionsCellItem
+  //       //   icon={<DeleteIcon />}
+  //       //   label="Delete"
+  //       //   onClick={deleteRow(params.id)}
+  //       // />,
+  //     ],
+  //   });
 
   return (
-    DataTable(data)
+    DataTable(data, true, true)
   );
 }

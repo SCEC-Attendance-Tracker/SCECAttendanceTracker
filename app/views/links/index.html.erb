@@ -2,4 +2,4 @@
 props: {member: Member.where({id: session[:member_id]}), page: "Links"} )%>
 
 <%= react_component("LinkDataTable", 
-props: {links: @links})%>
+props: {member: Member.where({id: session[:member_id]}), links: @links})%>

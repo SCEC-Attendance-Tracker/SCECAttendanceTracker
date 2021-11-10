@@ -10,6 +10,10 @@ module Api
 
             def create 
                 @event = Event.new(event_params)
+
+                code = create_code
+                @event.code = code
+
                 if @event.save
                     render json: @event 
                 else 
@@ -19,6 +23,20 @@ module Api
             end
 
             private 
+
+            def create_code
+                code = ''
+                i = 0
+                    while i < 4 do
+                        char = rand(97..122)
+                        if rand(0..1).zero?
+                        char = char - 32
+                        end 
+                        code = code + char.chr
+                        i += 1
+                    end 
+                return code
+            end
 
             def event_params
                 params.require(:event).permit(:title, :start_date, :end_date, :description, :location)

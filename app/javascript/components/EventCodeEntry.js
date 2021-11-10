@@ -5,30 +5,86 @@ class EventCodeEntry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            event_id: this.props.event_id, 
+            event_id: 2, 
             //event_code: this.props.event_code,
             member_id: this.props.member_id,
+            attendance_data: {},
             show: false,
             code: '',
-            show_error: false
+            show_error: false,
+            create_new: false,
+            has_attended: false,
         }
     }
 
     componentDidMount = () => {
         this.render();
-    }
-
-    handleOpen = e => {
-        e.preventDefault();
-        this.setState({show: true})
+        this.validateAttendance();
     }
     
     handleClose = () => {
         this.setState({show: false})
     }
 
-    sendAttendance = () => {
-        console.log('Correct Entry');
+    // see if attendance exists
+    validateAttendance = () => {
+        const mid = encodeURIComponent(this.state.member_id);
+        const eid = encodeURIComponent(this.state.event_id);
+        fetch(`/api/v1/attendance?member_id=${mid}&event_id=${eid}`, {
+            method: 'GET', 
+            headers: { 'ACCEPT': 'application/json'}
+        }).then(response => response.json()
+        ).then(data => {
+            console.log(data.length);
+            console.log(data);
+            console.log(this.state);
+            if (data.length == 0) {
+                this.setState({create_new: true});
+            } else {
+                if (!data.attended)
+                    this.setState({has_attended: true})
+                this.setState({attendance_data: data})
+            }
+        }
+        ).catch((error) => {console.log(error);
+        });
+    }
+
+    updateAttendance = () => {
+        data = this.state.attendance_data;
+
+        const token = document.querySelector('[name=csrf-token]').content; 
+        fetch(`api/v1/attendance/${data.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data), 
+            headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+        }).then((response) => {
+            if (response.ok) {
+                return true;
+            }
+        }).catch(error => {console.log(error)});
+    }
+
+    postAttendance = () => {
+        var item = {
+            member_id: this.state.member_id,
+            event_id: this.state.event_id,
+            rsvp: false,
+            attended: true
+        }
+
+        const token = document.querySelector('[name=csrf-token]').content; 
+        fetch(`api/v1/attendance`, {
+            method: 'POST', 
+            body: JSON.stringify({attendance: item}), 
+            headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+        }).then((response) => {
+            if(response.ok) {
+                this.setState({has_attended: true})
+                console.log('Attendance Created');
+                return true;
+            }
+        }).catch(error => {console.log(error)});
     }
 
     handleInputChange = (event) => {
@@ -37,9 +93,12 @@ class EventCodeEntry extends React.Component {
 
         if (entry.length == 4) {
             if (entry == code) {
-                // close modal, send attendance
-                this.sendAttendance(); 
-                this.setState({show: false})
+                if (this.state.create_new) {
+                    this.postAttendance()
+                } else {
+                    this.updateAttendance()
+                }
+                // DO SNACKBAR ON ATTENDANCE SUCCESS
             } else {
                 this.setState({show_error: true});
             }
@@ -53,10 +112,6 @@ class EventCodeEntry extends React.Component {
     render = () => {
         const code = this.state.code;
         const boxStyle = {
-            position: 'fixed',
-            top: '25%', 
-            left: '50%', 
-            transform: 'translate(-50%,0)', 
             width: '300',
             maxWidth: '100%',
             bgcolor: 'background.paper',  
@@ -65,15 +120,9 @@ class EventCodeEntry extends React.Component {
         }
 
         return (
-            <><Button variant='outlined' onClick={this.handleOpen}> Enter Code </Button>
-            <Modal
-                open={this.state.show}
-                onClose={this.handleClose}
-                aria-labelledby="profile-page-label"
-                aria-describedby="profile-page-text"
-            >
-                <Box sx={boxStyle}>
-                <DialogContent>
+            <>
+            <div sx={boxStyle}>
+                {!this.state.has_attended ? 
                 <div style={{
                     flexDirection: 'column', 
                     alignContent: 'center'
@@ -106,9 +155,15 @@ class EventCodeEntry extends React.Component {
                         />}
                     </div>
                 </div>
-                </DialogContent>
-                </Box>
-            </Modal>
+                :
+                <div style={{
+                    flexDirection: 'column', 
+                    alignContent: 'center'
+                }}>
+                    <Typography>Attendance already logged!</Typography>
+                </div>
+                }
+            </div>
             </>
         );
     }

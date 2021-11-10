@@ -4,14 +4,21 @@ module Api
   module V1
     class AttendanceController < ApplicationController
       before_action :set_attendance, only: %i[show edit update destroy]
+      respond_to :json
 
       # GET /attendances or /attendances.json
       def index
-        @attendance = Attendance.all
-        @member = Member.all
-        @event = Event.all
-
-        render json: @attendence
+        attendances = []
+        if params.key?('member_id') && params.key?('event_id') # For code entry fetch
+          @event = Event.find(params[:event_id])
+          if @event.attendances.exists?(member_id: params[:member_id])
+            attendances = @event.attendances
+          end
+        else 
+          @events = Event.all
+          @events.each {|e| attendances << e.attendances }
+        end
+        render json: attendances
       end
 
       # GET /attendances/1 or /attendances/1.json
@@ -33,18 +40,16 @@ module Api
 
       # POST /attendances or /attendances.json
       def create
-        @attendance = Attendance.new(attendance_params)
+        @event = Event.find(attendance_params[:event_id])
+        @event.attendances << Attendance.new(attendance_params)
+        puts @event.attendances
 
-        respond_to do |format|
-          if @attendance.save
-            format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
-            format.json { render :show, status: :created, location: @attendance }
-            render json: @attendance
-          else
-            format.html { render :new, status: :unprocessable_entity }
-            format.json { render json: @attendance.errors, status: :unprocessable_entity }
-            render json: @attendance.errors
-          end
+        if @event.save
+          member = Member.find(attendance_params[:member_id])
+          member.update(total_attendance: member.total_attendance - 1)
+          render json: @event
+        else
+          render json: @event.errors
         end
       end
 

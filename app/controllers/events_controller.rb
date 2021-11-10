@@ -4,7 +4,6 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_member!, only: [:index]
   before_action :set_event, only: %i[show edit update destroy]
   skip_before_action :authenticate_member!, only: [:index]
-
   helper_method :sort_column, :sort_direction
   
   # GET /events or /events.json

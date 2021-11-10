@@ -133,19 +133,18 @@ function getData(props) {
         body: JSON.stringify(att),
         headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
       })).then(() => {
-        //location.reload();
+        location.reload();
       })
     }
     
     att.rsvp = !att.rsvp;
-    console.log(att);
     
     fetch(`/api/v1/attendances/${att.id}`, {
       method: 'PUT', 
       body: JSON.stringify(att),
       headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
     }).then(() => {
-      //location.reload();
+      location.reload();
     });
   }
   
@@ -172,9 +171,6 @@ function getData(props) {
         updated_at: new Date()
       }
       
-      attendances.push(att);
-      console.log(attendances);
-      
       return (fetch(`/api/v1/attendances`, {
         method: 'POST', 
         body: JSON.stringify(att),
@@ -185,7 +181,6 @@ function getData(props) {
     }
     
     att.attended = !att.attended;
-    console.log(att);
     
     fetch(`/api/v1/attendances/${att.id}`, {
       method: 'PUT', 

@@ -24,6 +24,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :members, only: %i[index update show delete destroy]
+      resources :events, only: %i[index update show delete destroy]
+      resources :attendances, only: %i[index update show delete destroy create]
+      get 'events/index'
+      get 'attendances/index'
     end
   end
 end

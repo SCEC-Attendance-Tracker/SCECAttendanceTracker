@@ -6,8 +6,9 @@ import ListItemText from '@mui/material/ListItemText'
 import {Dialog} from "@material-ui/core";
 import {DialogContent} from '@material-ui/core';
 import {Typography} from "@material-ui/core";
+import EventCodeEntry from './EventCodeEntry';
 
-export default function EventList({events}) {
+export default function EventList({events, member_id}) {
     const [open, setOpen] = React.useState(false);
     const [element, setElement] = React.useState(false);
     const handleClose = () => {
@@ -17,6 +18,13 @@ export default function EventList({events}) {
     const handleItemClick = (e) => {
         setElement(e)
         setOpen(true)
+    }
+
+    const withinEventTime = (d) => {
+        var now = new Date();
+        d = new Date(Date.parse(d));
+        d.setMinutes(d.getMinutes() - 10);
+        return now >= d;
     }
 
     return (
@@ -77,6 +85,17 @@ export default function EventList({events}) {
                             <Typography variant = 'subtitle1'>
                                 {element.description}
                             </Typography>
+                            { withinEventTime(element.start_date) ?
+                            <div style={{
+                                flexDirection:'column', 
+                                justifyContent:'center'
+                            }}>
+                                <EventCodeEntry event_id={element.id} member_id={member_id} event_code={element.code}/>
+                            </div>
+                            : 
+                            <>
+                            </>
+                            }
                         </DialogContent>
                     </Dialog>
                 }

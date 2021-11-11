@@ -46,7 +46,7 @@ module Api
 
         if @event.save
           member = Member.find(attendance_params[:member_id])
-          member.update(total_attendance: member.total_attendance - 1)
+          member.update(total_attendance: member.total_attendance + 1)
           render json: @event
         else
           render json: @event.errors

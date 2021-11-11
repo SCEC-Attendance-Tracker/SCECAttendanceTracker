@@ -1,12 +1,12 @@
 import React from 'react' 
-import { DialogContent, Box, Typography, Modal, TextField, Button } from '@material-ui/core'
+import { Typography, TextField } from '@material-ui/core'
 
 class EventCodeEntry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            event_id: 2, 
-            //event_code: this.props.event_code,
+            event_id: this.props.event_id, 
+            event_code: this.props.event_code,
             member_id: this.props.member_id,
             attendance_data: {},
             show: false,
@@ -35,9 +35,6 @@ class EventCodeEntry extends React.Component {
             headers: { 'ACCEPT': 'application/json'}
         }).then(response => response.json()
         ).then(data => {
-            console.log(data.length);
-            console.log(data);
-            console.log(this.state);
             if (data.length == 0) {
                 this.setState({create_new: true});
             } else {
@@ -89,16 +86,14 @@ class EventCodeEntry extends React.Component {
 
     handleInputChange = (event) => {
         var entry = event.target.value;
-        var code = 'poop';
 
         if (entry.length == 4) {
-            if (entry == code) {
+            if (entry == this.state.event_code) {
                 if (this.state.create_new) {
                     this.postAttendance()
                 } else {
                     this.updateAttendance()
                 }
-                // DO SNACKBAR ON ATTENDANCE SUCCESS
             } else {
                 this.setState({show_error: true});
             }
@@ -111,8 +106,7 @@ class EventCodeEntry extends React.Component {
 
     render = () => {
         const code = this.state.code;
-        const boxStyle = {
-            width: '300',
+        const style = {
             maxWidth: '100%',
             bgcolor: 'background.paper',  
             boxShadow: 24, 
@@ -121,13 +115,13 @@ class EventCodeEntry extends React.Component {
 
         return (
             <>
-            <div sx={boxStyle}>
+            <div sx={style}>
                 {!this.state.has_attended ? 
                 <div style={{
                     flexDirection: 'column', 
                     alignContent: 'center'
                 }}>
-                    <Typography> Enter Attendance Code </Typography>
+                    <Typography variant='h6'> Enter Attendance Code: </Typography>
                     <div className='code-entry' style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between'
@@ -136,7 +130,7 @@ class EventCodeEntry extends React.Component {
                         <TextField
                             inputProps={{
                                 maxLength: 4, 
-                                fontSize: 24,
+                                fontSize: 12,
                             }}
                             error
                             value={code}
@@ -151,16 +145,18 @@ class EventCodeEntry extends React.Component {
                             }}
                             value={code}
                             helperText={`${code.length}/${4}`}
+                            variant='filled'
                             onChange={this.handleInputChange}
                         />}
                     </div>
                 </div>
                 :
                 <div style={{
+                    display: 'flex',
                     flexDirection: 'column', 
                     alignContent: 'center'
                 }}>
-                    <Typography>Attendance already logged!</Typography>
+                    <Typography>Attendance logged for event.</Typography>
                 </div>
                 }
             </div>

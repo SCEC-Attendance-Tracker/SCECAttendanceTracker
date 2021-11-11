@@ -21,10 +21,9 @@ export default function EventList({events, member_id}) {
     }
 
     const withinEventTime = (d) => {
-        var now = new Date();
         d = new Date(Date.parse(d));
         d.setMinutes(d.getMinutes() - 10);
-        return now >= d;
+        return new Date() >= d;
     }
 
     return (

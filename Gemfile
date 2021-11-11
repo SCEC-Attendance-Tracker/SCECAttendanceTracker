@@ -33,6 +33,7 @@ gem 'rubocop', '~> 1.22', require: false
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
 gem 'figaro'
+gem 'browser', '~> 1.1'
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-google-oauth2'
 gem 'react-rails'

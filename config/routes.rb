@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :attendances
   resources :events do
-    resources :feedbacks 
+    resources :feedbacks
   end
 
   devise_for :members, controllers: { omniauth_callbacks: 'members/omniauth_callbacks' }

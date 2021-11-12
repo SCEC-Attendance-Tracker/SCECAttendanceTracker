@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # class AttendanceControllerTest < ActionDispatch::IntegrationTest
 # 	  test 'assert_react_component' do
 # 		get "/attendances"

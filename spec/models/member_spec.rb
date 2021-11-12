@@ -26,8 +26,8 @@ RSpec.describe Member, type: :model do
     expect(subject).not_to be_valid
   end
 
-  it 'is not valid without an img_url' do 
-    subject.img_url = nil 
+  it 'is not valid without an img_url' do
+    subject.img_url = nil
     expect(subject).not_to be_valid
-  end 
+  end
 end

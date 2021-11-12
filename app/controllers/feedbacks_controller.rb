@@ -1,21 +1,20 @@
+# frozen_string_literal: true
+
 class FeedbacksController < ApplicationController
-  before_action :set_feedback, only: %i[ show edit update destroy ]
-  before_action :set_event, only: %i[ show edit update destroy ]
+  before_action :set_feedback, only: %i[show edit update destroy]
+  before_action :set_event, only: %i[show edit update destroy]
 
   # GET /feedbacks or /feedbacks.json
   def index
     @feedbacks = Feedback.all
     @event = Event.all
 
-    if params[:id]
-      @event = Event.where(:id => params[:id])
-    end
-    @feedback = Feedback.where(:event_id => @event.ids)#.where(:event_id => @event.ids)
+    @event = Event.where(id: params[:id]) if params[:id]
+    @feedback = Feedback.where(event_id: @event.ids) # .where(:event_id => @event.ids)
   end
 
   # GET /feedbacks/1 or /feedbacks/1.json
-  def show
-  end
+  def show; end
 
   # GET /feedbacks/new
   def new
@@ -23,8 +22,7 @@ class FeedbacksController < ApplicationController
   end
 
   # GET /feedbacks/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /feedbacks or /feedbacks.json
   def create
@@ -36,16 +34,16 @@ class FeedbacksController < ApplicationController
       redirect_to event_path(@event)
     else
       respond_to do |format|
-        format.html { redirect_to new_attendance_path({event_id: @event.id}) , notice: "Need to mark attendence" }
+        format.html { redirect_to new_attendance_path({ event_id: @event.id }), notice: 'Need to mark attendence' }
       end
     end
   end
-  
+
   # PATCH/PUT /feedbacks/1 or /feedbacks/1.json
   def update
     respond_to do |format|
       if @feedback.update(feedback_params)
-        format.html { redirect_to @event, notice: "Feedback was successfully updated." }
+        format.html { redirect_to @event, notice: 'Feedback was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,24 +56,25 @@ class FeedbacksController < ApplicationController
   def destroy
     @feedback.destroy
     respond_to do |format|
-      format.html { redirect_to @event, notice: "Feedback was successfully destroyed." }
+      format.html { redirect_to @event, notice: 'Feedback was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
-  
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:event_id])
-    end
 
-    def set_feedback
-      set_event
-      @feedback = @event.feedbacks.find(params[:id])
-    end
-    
-    # Only allow a list of trusted parameters through.
-    def feedback_params
-      params.require(:feedback).permit(:event_id, :event_review, :event_rating_score)
-    end
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:event_id])
+  end
+
+  def set_feedback
+    set_event
+    @feedback = @event.feedbacks.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def feedback_params
+    params.require(:feedback).permit(:event_id, :event_review, :event_rating_score)
+  end
 end

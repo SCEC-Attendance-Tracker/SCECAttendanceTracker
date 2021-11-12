@@ -31,9 +31,9 @@ gem 'rubocop', '~> 1.22', require: false
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'browser', '~> 1.1'
 gem 'devise'
 gem 'figaro'
-gem 'browser', '~> 1.1'
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-google-oauth2'
 gem 'react-rails'

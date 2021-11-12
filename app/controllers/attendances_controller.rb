@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AttendancesController < ApplicationController
-  before_action :set_attendance, only: %i[ show edit update destroy ]
+  before_action :set_attendance, only: %i[show edit update destroy]
   # GET /attendances or /attendances.json
   def index
     @attendances = Attendance.all
@@ -10,27 +10,27 @@ class AttendancesController < ApplicationController
 
     # For Filtering Attendance
     if params[:first_name]
-      @member = Member.where(:first_name => params[:first_name])
+      @member = Member.where(first_name: params[:first_name])
     elsif params[:last_name]
-      @member = Member.where(:last_name => params[:last_name])
+      @member = Member.where(last_name: params[:last_name])
     elsif params[:title]
-      @event = Event.where(:title => params[:title])
+      @event = Event.where(title: params[:title])
     elsif params[:start_date]
-      @event = Event.where(:start_date => params[:start_date])
+      @event = Event.where(start_date: params[:start_date])
     end
 
-    @attendances = Attendance.where(:member_id => @member.ids).where(:event_id => @event.ids)
-    
+    @attendances = Attendance.where(member_id: @member.ids).where(event_id: @event.ids)
+
     # If RSVP status is updated
     if params[:rsvp]
       @attendance = Attendance.where(member_id: session[:member_id], event_id: params[:event_id]).first
       @attendance ||= Attendance.new(member_id: session[:member_id], event_id: params[:event_id])
-      
+
       if @event.find(@attendance.event_id).start_date > DateTime.now
         @attendance.toggle(:rsvp)
         @attendance.save
-      
-        if @attendance.rsvp 
+
+        if @attendance.rsvp
           redirect_to events_url, notice: 'RSVP was successful.'
         else
           redirect_to events_url, notice: 'RSVP was cancelled.'
@@ -38,12 +38,12 @@ class AttendancesController < ApplicationController
       else
         redirect_to events_url, alert: 'RSVP cannot be updated after the event has started.'
       end
-      
+
     end
-    
-    #if params[:member_id]
+
+    # if params[:member_id]
     #  @attendances = Attendance.where(:member_id => params[:member_id])
-    #end
+    # end
   end
 
   # GET /attendances/1 or /attendances/1.json
@@ -52,21 +52,18 @@ class AttendancesController < ApplicationController
   # GET /attendances/new
   def new
     @params = request.query_parameters
-    
+
     @attendance = Attendance.where(member_id: session[:member_id], event_id: @params['event_id']).first
     @attendance ||= Attendance.new(member_id: session[:member_id], event_id: @params['event_id'])
-      
-    if @params['mark']
-      @attendance.toggle(:attended)
-    end
-      
+
+    @attendance.toggle(:attended) if @params['mark']
+
     @attendance.save
-    
-    #@attendance = Attendance.new
-    #@params = request.query_parameters
-    #@attendance.event_id = @params['event_id']
+
+    # @attendance = Attendance.new
+    # @params = request.query_parameters
+    # @attendance.event_id = @params['event_id']
     @attendance.member_id = session[:member_id]
-    
   end
 
   # GET /attendances/1/edit

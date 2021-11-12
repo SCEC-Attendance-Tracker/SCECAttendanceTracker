@@ -6,10 +6,10 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_member!, only: [:index]
 
   helper_method :sort_column, :sort_direction
-  
+
   # GET /events or /events.json
   def index
-    @events = Event.order(sort_column + " " + sort_direction)
+    @events = Event.order("#{sort_column} #{sort_direction}")
   end
 
   def current_events
@@ -67,11 +67,11 @@ class EventsController < ApplicationController
   private
 
   def sort_column
-    Event.column_names.include?(params[:sort]) ? params[:sort] : "id"
+    Event.column_names.include?(params[:sort]) ? params[:sort] : 'id'
   end
-  
+
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
   end
 
   # Use callbacks to share common setup or constraints between actions.

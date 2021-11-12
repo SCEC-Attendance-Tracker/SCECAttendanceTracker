@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "feedbacks/edit", type: :view do
+RSpec.describe 'feedbacks/edit', type: :view do
   before(:each) do
-    @feedback = assign(:feedback, Feedback.create!())
+    @feedback = assign(:feedback, Feedback.create!)
   end
 
-  xit "renders the edit feedback form" do
+  xit 'renders the edit feedback form' do
     render
 
-    assert_select "form[action=?][method=?]", feedback_path(@feedback), "post" do
+    assert_select 'form[action=?][method=?]', feedback_path(@feedback), 'post' do
     end
   end
 end

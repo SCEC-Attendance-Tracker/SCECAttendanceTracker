@@ -76,6 +76,20 @@ const handleCellClick = (param, event) => {
   event.stopPropagation();
 };
 
+const editRow = (row) => {
+  
+}
+
+const deleteRow = (row) => {
+  const token = document.querySelector('[name=csrf-token]').content;
+  fetch(`/api/v1/links/${row.id}`, {
+    method: 'DELETE', 
+    headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+  }).then(() => {
+    location.reload();
+  })
+}
+
 const columns = [
   {
     headerClassName: 'theme-header', 
@@ -96,7 +110,7 @@ const columns = [
     minWidth: 150,
     flex: 1,
     renderCell: (cellValues) => {
-      return <Link href={cellValues.row.url}>{cellValues.row.name}</Link>;
+      return <Link href={cellValues.row.url} target="_blank">{cellValues.row.name}</Link>;
     }
   },
   { 
@@ -115,14 +129,7 @@ export default function LinkDataTable(props) {
   }
   var rows = props.props.links;
   const classes = useStyles();
-  const deleteRow = React.useCallback(
-    (id) => () => {
-      setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      });
-    },
-    [],
-  );
+  
   { (member != undefined) && (member.admin) &&
     columns.push(
       { 
@@ -133,13 +140,19 @@ export default function LinkDataTable(props) {
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
-            onClick={deleteRow(params.id)}
+            onClick={() => {
+              console.log(params);
+              editRow(params.row)
+            }}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={deleteRow(params.id)}
-          />,
+            onClick={() => {
+              console.log(params);
+              deleteRow(params.row)
+            }}
+          />
         ],
       }
     )

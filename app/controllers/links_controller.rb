@@ -1,4 +1,5 @@
 class LinksController < ApplicationController
+  skip_before_action :authenticate_member!, only: [:index]
   before_action :set_link, only: %i[ show edit update destroy ]
 
   # GET /links or /links.json

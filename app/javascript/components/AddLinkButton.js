@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { TextField, Button }from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 export default function AddLinkButton(props) {
@@ -30,7 +30,7 @@ export default function AddLinkButton(props) {
       description: inputDescription.current.value,
     }
     
-    fetch(`/api/v1/links`, {
+    fetch('/api/v1/links', {
       method: 'POST', 
       body: JSON.stringify(newLink),
       headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
@@ -48,7 +48,7 @@ export default function AddLinkButton(props) {
     <div>
       { (member != undefined) && (member.admin) &&
       <Button sx = {{mt: 2, mb: 1}} variant="contained" startIcon={<AddCircleOutlineIcon/>} onClick={handleClickOpen}>
-        Add Link
+        Create Link
       </Button>
       }
       <Dialog open={open} onClose={handleClose}>
@@ -66,6 +66,7 @@ export default function AddLinkButton(props) {
             fullWidth
             variant="standard"
             required
+            inputRef = {inputName}
           />
           <TextField
             autoFocus
@@ -76,6 +77,7 @@ export default function AddLinkButton(props) {
             fullWidth
             variant="standard"
             required
+            inputRef = {inputUrl}
           />
           <TextField
             autoFocus
@@ -86,6 +88,7 @@ export default function AddLinkButton(props) {
             fullWidth
             variant="standard"
             required
+            inputRef = {inputDescription}
           />
         </DialogContent>
         <DialogActions>

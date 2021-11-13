@@ -7,10 +7,11 @@ class FeedbacksController < ApplicationController
     @feedbacks = Feedback.all
     @event = Event.all
 
-    if params[:id]
-      @event = Event.where(:id => params[:id])
+    if params[:event_id]
+      @event = Event.where(:id => params[:event_id])
     end
-    @feedback = Feedback.where(:event_id => @event.ids)#.where(:event_id => @event.ids)
+    
+    @feedbacks = Feedback.where(:event_id => @event.ids)
   end
 
   # GET /feedbacks/1 or /feedbacks/1.json

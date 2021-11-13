@@ -138,7 +138,10 @@ export default function LinkDataTable(props) {
     columns.push(
       { 
         field: 'edit', 
-        width: 80,
+        headerName: " ",
+        disableColumnMenu: true,
+        sortable: false,
+        width: 60,
         renderCell: (params) => {
           const [open, setOpen] = React.useState(false);
           const inputName = useRef('')
@@ -175,7 +178,7 @@ export default function LinkDataTable(props) {
           
           return (
             <div>
-              <IconButton onClick={handleClickOpen}>
+              <IconButton size="medium" sx={{justifyContent: 'center'}} onClick={handleClickOpen}>
                 <EditIcon/>
               </IconButton>
               <Dialog open={open} onClose={handleClose}>
@@ -193,6 +196,7 @@ export default function LinkDataTable(props) {
                     fullWidth
                     variant="standard"
                     required
+                    defaultValue= {params.row.name}
                     inputRef = {inputName}
                   />
                   <TextField
@@ -204,6 +208,7 @@ export default function LinkDataTable(props) {
                     fullWidth
                     variant="standard"
                     required
+                    defaultValue= {params.row.url}
                     inputRef = {inputUrl}
                   />
                   <TextField
@@ -215,6 +220,7 @@ export default function LinkDataTable(props) {
                     fullWidth
                     variant="standard"
                     required
+                    defaultValue= {params.row.description}
                     inputRef = {inputDescription}
                   />
                 </DialogContent>
@@ -233,11 +239,12 @@ export default function LinkDataTable(props) {
       { 
         field: 'actions', 
         type: 'actions',
-        width: 80,
+        width: 60,
         getActions: (params) => [
           <GridActionsCellItem
             icon={<DeleteIcon />}
-            label="Delete"
+            size='Medium'
+            label='Delete'
             onClick={() => {
               console.log(params);
               deleteRow(params.row)

@@ -46,9 +46,11 @@ export default function AddLinkButton(props) {
 
   return (
     <div>
-      <Button variant="contained" disableElevation startIcon={<AddCircleOutlineIcon/>} onClick={handleClickOpen}>
+      { (member != undefined) && (member.admin) &&
+      <Button sx = {{mt: 2, mb: 1}} variant="contained" startIcon={<AddCircleOutlineIcon/>} onClick={handleClickOpen}>
         Add Link
       </Button>
+      }
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Link</DialogTitle>
         <DialogContent>
@@ -64,7 +66,6 @@ export default function AddLinkButton(props) {
             fullWidth
             variant="standard"
             required
-            inputRef = {inputName}
           />
           <TextField
             autoFocus
@@ -75,7 +76,6 @@ export default function AddLinkButton(props) {
             fullWidth
             variant="standard"
             required
-            inputRef = {inputUrl}
           />
           <TextField
             autoFocus
@@ -86,7 +86,6 @@ export default function AddLinkButton(props) {
             fullWidth
             variant="standard"
             required
-            inputRef = {inputDescription}
           />
         </DialogContent>
         <DialogActions>

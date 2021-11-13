@@ -13,7 +13,6 @@ export default function AddLinkButton(props) {
     member = props.props.member[0]
   }
   const [open, setOpen] = React.useState(false);
-  const [] = React.useState(false);
   const inputName = useRef('')
   const inputUrl = useRef('')
   const inputDescription = useRef('')

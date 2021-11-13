@@ -1,9 +1,17 @@
-import * as React from "react";
+import React, { useRef } from 'react';
+import EditLinkButton from "./EditLinkButton";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 import { Link } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { TextField, Button }from '@material-ui/core';
 
 const newTheme = createTheme({   
   palette: {      
@@ -76,10 +84,6 @@ const handleCellClick = (param, event) => {
   event.stopPropagation();
 };
 
-const editRow = (row) => {
-  
-}
-
 const deleteRow = (row) => {
   const token = document.querySelector('[name=csrf-token]').content;
   fetch(`/api/v1/links/${row.id}`, {
@@ -129,22 +133,108 @@ export default function LinkDataTable(props) {
   }
   var rows = props.props.links;
   const classes = useStyles();
-  
+
   { (member != undefined) && (member.admin) &&
     columns.push(
+      { 
+        field: 'edit', 
+        width: 80,
+        renderCell: (params) => {
+          const [open, setOpen] = React.useState(false);
+          const inputName = useRef('')
+          const inputUrl = useRef('')
+          const inputDescription = useRef('')
+          
+          const handleClickOpen = () => {
+            setOpen(true);
+          };
+          
+          const handleSubmit = (row) => {
+            const token = document.querySelector('[name=csrf-token]').content;
+            
+            var editedLink = {
+              name: inputName.current.value,
+              url: inputUrl.current.value,
+              description: inputDescription.current.value,
+            }
+            
+            fetch(`/api/v1/links/${row.id}`, {
+              method: 'PUT', 
+              body: JSON.stringify(editedLink),
+              headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+            }).then(() => {
+              location.reload();
+            });
+          
+            setOpen(false);
+          };
+
+          const handleClose = () => {
+            setOpen(false);
+          };
+          
+          return (
+            <div>
+              <IconButton onClick={handleClickOpen}>
+                <EditIcon/>
+              </IconButton>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Edit Link</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    To edit the link, please update the attributes below:
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Link Name"
+                    type="string"
+                    fullWidth
+                    variant="standard"
+                    required
+                    inputRef = {inputName}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="url"
+                    label="Link URL (https://www.example.com)"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    required
+                    inputRef = {inputUrl}
+                  />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="description"
+                    label="Description"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    required
+                    inputRef = {inputDescription}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => {
+                    handleSubmit(params.row);
+                  }}
+                  >Edit</Button>
+                  <Button onClick={handleClose}>Cancel</Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+          )
+        }
+      },
       { 
         field: 'actions', 
         type: 'actions',
         width: 80,
         getActions: (params) => [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            onClick={() => {
-              console.log(params);
-              editRow(params.row)
-            }}
-          />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
@@ -161,7 +251,7 @@ export default function LinkDataTable(props) {
   return (
     <div style={{ height: '50em', width: "100%" }}>
       <DataGrid
-        rowHeight={120}
+        rowHeight={80}
         className={classes.root}
         rows={rows}
         columns={columns}

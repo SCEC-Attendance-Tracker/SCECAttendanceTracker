@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :feedbacks, only: %i[index show create]
       get 'events/index'
       get 'attendances/index'
+      resources :feedbacks, only: %i[index show create]
     end
   end
 end

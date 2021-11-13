@@ -162,7 +162,6 @@ export default function NavBar(props) {
 						<Link href={"/events"}>
 							<MenuItem className={classes.menuItem}>Events</MenuItem>
 						</Link>
-						
 						{ (member != undefined) && (member.admin) &&
 							<Link href={"/attendances"}>
 								<MenuItem className={classes.menuItem}>Attendances</MenuItem>

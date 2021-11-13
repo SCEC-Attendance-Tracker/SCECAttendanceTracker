@@ -3,7 +3,7 @@ import {Button} from "@material-ui/core";
 import {Box} from "@material-ui/core";
 import {Typography} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
-
+import FeedBackForm from "./FeedBackForm";
 /**
  * Profile Page Component 
  * Written by Noah Miner
@@ -66,7 +66,7 @@ class ProfilePage extends React.Component {
   returnDuesStatement(paid_dues) {
     if (paid_dues) {
       return (
-        <Typography id="profile-page-text">
+        <Typography id="">
           Your dues are paid!
         </Typography>
       );
@@ -265,7 +265,7 @@ class ProfilePage extends React.Component {
           <Typography id="profile-page-label" variant="overline" component="h2">
             About Me:
           </Typography>
-          <Typography id="profile-page-text" sx={{ mt: 2 }}>
+          <Typography id="" sx={{ mt: 2 }}>
             {this.state.member_info.description}
           </Typography>
           </>

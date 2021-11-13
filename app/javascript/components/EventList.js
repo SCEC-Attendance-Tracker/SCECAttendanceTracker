@@ -13,6 +13,8 @@ import RsvpIcon from '@mui/icons-material/Rsvp';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 //import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
+import FeedBackForm from './FeedBackForm'
+
 const newTheme = createTheme();
 const useStyles = makeStyles(
   (theme) =>
@@ -174,11 +176,7 @@ export default function EventList({events, attendances = null, member = null}) {
                           <ListItemText className={classes.listActionText}
                           primary = {'Feedback'}/>
                           
-                          <ListItemButton className={classes.listCardButton} onClick={() => {console.log(`${e.attended}`); console.log(`${e.attended}` != 'true'); console.log((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today); console.log((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today); }}>
-                              <ListItemIcon className={classes.icon}>
-                                  <CreateIcon />
-                              </ListItemIcon>
-                          </ListItemButton>
+                          <FeedBackForm event = {e} className={classes.listCardButton} />
                       </div>
                       }
                       

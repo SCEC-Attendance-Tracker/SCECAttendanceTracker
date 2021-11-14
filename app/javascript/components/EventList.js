@@ -11,7 +11,7 @@ import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 import CreateIcon from '@mui/icons-material/Create';
 import RsvpIcon from '@mui/icons-material/Rsvp';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
-//import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import CheckIcon from '@mui/icons-material/Check';
 
 import FeedBackForm from './FeedBackForm'
 
@@ -62,7 +62,10 @@ const useStyles = makeStyles(
 
 export default function EventList({events, attendances = null, member = null}) {
   console.log(events);
-  console.log(attendances);
+  console.log(member);
+  const onHome = member == null;
+  const onEvents = !onHome;
+  console.log(onEvents);
   
   const classes = useStyles();
   var today = new Date();
@@ -156,13 +159,12 @@ export default function EventList({events, attendances = null, member = null}) {
                           primary = {`${e.title}`}
                           secondary = {`${e.start_date}`}/>
                       
-                      {/* Home Page: Mark Attendance */}
-                      {attendances == null && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {/* Home Page: Mark Attendance FIX e.attended (no such attribute when passed from home) */}
+                      {(`${e.attended}` != 'true') && onHome && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
-                          
-                          <ListItemButton className={classes.listCardButton} onClick={(param) => {console.log(param);}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {markAttendance(e)}}>
                               <ListItemIcon className={classes.icon}>
                                   <EmojiPeopleIcon />
                               </ListItemIcon>
@@ -170,8 +172,16 @@ export default function EventList({events, attendances = null, member = null}) {
                       </div>
                       }
                       
+                      {(`${e.attended}` == 'true') && onHome && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'Attended'}/>
+                          <CheckIcon />
+                      </div>
+                      }
+                      
                       {/* Events Page: Feedback */}
-                      {(`${e.attended}` == 'true') &&
+                      {(`${e.attended}` == 'true') && onEvents &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Feedback'}/>
@@ -181,7 +191,7 @@ export default function EventList({events, attendances = null, member = null}) {
                       }
                       
                       {/* Events Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) &&
+                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) && onEvents &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -192,10 +202,18 @@ export default function EventList({events, attendances = null, member = null}) {
                               </ListItemIcon>
                           </ListItemButton>
                       </div>
-                    }
+                      }
+                      {(`${e.attended}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'Attended'}/>
+                          
+                          <CheckIcon />
+                      </div>
+                      }
                       
                       {/* Events Page: RSVP */}
-                      {(`${e.attended}` != 'true') && (`${e.rsvp}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) > today) && 
+                      {(`${e.attended}` != 'true') && (`${e.rsvp}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) > today) && onEvents &&
                       <div className={classes.listActions}>
                           {(`${e.rsvp}` == 'true') &&
                           <ListItemText className={classes.listActionText}

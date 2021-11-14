@@ -17,12 +17,12 @@ class FeedBackForm extends React.Component {
             id: this.props.id,
             show: false,
             event: this.props.event,
-            rating: "",
+            rating: 0,
             feedback: {
                 //figure out how to pull the event_id
                 event_id: this.props.event.id,
                 event_review: "",
-                event_rating_score: ""
+                event_rating_score: 0
             }
         };
     }
@@ -42,6 +42,7 @@ class FeedBackForm extends React.Component {
             alert("Please fill out all required forms.");
             return false;
         }
+        
         return true;
     }
     
@@ -57,7 +58,7 @@ class FeedBackForm extends React.Component {
         // reset if another feedback is created
         this.setState({created: false}); 
         this.setState({feedback: feedbackDiff});
-
+        
     }
 
     submitFeedback = () => {
@@ -99,7 +100,6 @@ class FeedBackForm extends React.Component {
             width: 400, 
             bgcolor: 'background.paper',  
             boxShadow: 24, 
-
             borderRadius: '10px',
             p: 4
         }
@@ -131,7 +131,6 @@ class FeedBackForm extends React.Component {
                     onClose={this.handleClose} >
                     <Box sx={style}>
                         <DialogContent>
-
                             {this.state.created ? <Typography id='submitted'> Feedback created! </Typography> : ""}
                             {/* <Button onClick={() => { this.setState({ show: !this.state.show }) }}>{this.state.show ? 'Hide' : 'Show'} Feedback</Button> */}
                             <div id="feedback">

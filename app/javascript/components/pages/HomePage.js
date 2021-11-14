@@ -8,13 +8,13 @@ import Typography from '@mui/material/Typography'
 
 export default function HomePage(props) {
 
-  if(!props.events.current_events){
-    props.events.current_events = null
+  if(!props.props.events.current_events){
+    props.props.events.current_events = null
   }
-  if(!props.events.upcoming_events){
-    props.events.upcoming_events = null
+  if(!props.props.events.upcoming_events){
+    props.props.events.upcoming_events = null
   }
-  console.log(props)
+  console.log(props.props)
   return (
     <Box>
         <Grid container spacing = {5} alignItems = 'stretch'>
@@ -25,11 +25,11 @@ export default function HomePage(props) {
               <Typography variant="h5">
                 Current Events
               </Typography>
-              <EventList events = {props.events.current_events}/>
+              <EventList events = {props.props.events.current_events} attendances = {props.props.attendances}/>
               <Typography variant="h5">
                 Upcoming Events
               </Typography>
-              <EventList events = {props.events.upcoming_events}/>
+              <EventList events = {props.props.events.upcoming_events} attendances = {props.props.attendances}/>
             </Grid>
         </Grid>
     </Box>

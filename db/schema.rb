@@ -41,14 +41,15 @@ ActiveRecord::Schema.define(version: 20_211_003_040_234) do
     t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table 'events', force: :cascade do |t|
-    t.string 'title'
-    t.datetime 'start_date'
-    t.datetime 'end_date'
-    t.string 'description'
-    t.string 'location'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string "description"
+    t.string "location"
+    t.string "code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table 'feedbacks', force: :cascade do |t|

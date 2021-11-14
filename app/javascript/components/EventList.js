@@ -28,12 +28,12 @@ export default function EventList({events}) {
                 {events && events.map((e) => {
                     var s_date = new Date(e.start_date).toLocaleString();
                     return (
-                        <ListItem>
+                        <ListItem key = {e.id}>
                             <ListItemButton
                                 onClick = {(event) => handleItemClick(e)}
+                                selected = {element === e}
                             >
                             <ListItemText 
-                                key = {e.id}
                                 primary = {`${e.title}`}
                                 secondary = {`Start Date: ${s_date}`}
                                  />

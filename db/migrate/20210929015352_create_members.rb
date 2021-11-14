@@ -2,6 +2,7 @@ class CreateMembers < ActiveRecord::Migration[6.1]
   def change
     create_table :members do |t|
       t.boolean :admin
+      t.boolean :member
       t.string :first_name
       t.string :last_name
       t.string :email

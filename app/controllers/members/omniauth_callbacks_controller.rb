@@ -8,7 +8,11 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         if(auth.info.image != check_member.img_url)
           check_member.update({img_url: auth.info.image})
         end 
+        #save session variables: id, member & admin
         session[:member_id] = check_member.id
+        session[:member] = check_member.member
+        session[:admin] = check_member.admin
+
         redirect_to root_path
       elsif defined?(google_params)
         sign_out_all_scopes
@@ -17,7 +21,12 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         member = Member.from_google(**google_params)
 
         sign_in member, event: :authentication
+        
+        #save session variables: id, member & admin
         session[:member_id] = member.id
+        session[:member] = member.member
+        session[:admin] = member.admin
+
         redirect_to new_member_path({email: google_params[:email]})
       else
         flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."

@@ -6,15 +6,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
 
-export default function HomePage(props) {
+export default function HomePage({roles, events}) {
 
-  if(!props.events.current_events){
-    props.events.current_events = null
-  }
-  if(!props.events.upcoming_events){
-    props.events.upcoming_events = null
-  }
-  console.log(props)
   return (
     <Box>
         <Grid container spacing = {5} alignItems = 'stretch'>
@@ -25,13 +18,13 @@ export default function HomePage(props) {
               <Typography variant="h5">
                 Current Events
               </Typography>
-              <EventList events = {props.events.current_events}/>
+              <EventList events = {events.current_events} roles />
               <Typography variant="h5">
                 Upcoming Events
               </Typography>
-              <EventList events = {props.events.upcoming_events}/>
+              <EventList events = {events.upcoming_events} roles />
             </Grid>
         </Grid>
     </Box>
-  );
+  ); 
 }

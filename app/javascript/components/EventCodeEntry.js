@@ -15,6 +15,7 @@ class EventCodeEntry extends React.Component {
             create_new: false,
             has_attended: false,
         }
+        console.log(this.state);
     }
 
     componentDidMount = () => {
@@ -35,6 +36,7 @@ class EventCodeEntry extends React.Component {
             headers: { 'ACCEPT': 'application/json'}
         }).then(response => response.json()
         ).then(data => {
+            console.log(data);
             if (data.length == 0) {
                 this.setState({create_new: true});
             } else {
@@ -49,7 +51,8 @@ class EventCodeEntry extends React.Component {
 
     updateAttendance = () => {
         data = this.state.attendance_data;
-
+        data.attended = true;
+        
         const token = document.querySelector('[name=csrf-token]').content; 
         fetch(`api/v1/attendance/${data.id}`, {
             method: 'PUT',

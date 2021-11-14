@@ -1,5 +1,5 @@
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
-import { Check, Close } from '@material-ui/icons';
+import { Check } from '@material-ui/icons';
 import { DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -9,7 +9,7 @@ import './stylesheets/EventForm.css'
 class CreateEventForm extends React.Component {
     constructor(props) {
         super(props); 
-        this.state = { // gonna need event JSON
+        this.state = { 
             beginDate: new Date(), 
             endDate: new Date(),
             created: false,

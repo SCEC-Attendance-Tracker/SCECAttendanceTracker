@@ -42,7 +42,6 @@ module Api
       def create
         @event = Event.find(attendance_params[:event_id])
         @event.attendances << Attendance.new(attendance_params)
-        puts @event.attendances
 
         if @event.save
           member = Member.find(attendance_params[:member_id])
@@ -57,6 +56,10 @@ module Api
       def update
         respond_to do |format|
           if @attendance.update(attendance_params)
+            if attendance_params[:attended]
+              member = Member.find(attendance_params[:member_id])
+              member.update(total_attendance: member.total_attendance + 1)
+            end
             format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
             format.json { render :show, status: :ok, location: @attendance }
             render json: @attendance
@@ -86,7 +89,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def attendance_params
-        params.require(:attendance).permit(:member_id, :event_id)
+        params.require(:attendance).permit(:member_id, :event_id, :attended, :rsvp)
       end
     end
   end

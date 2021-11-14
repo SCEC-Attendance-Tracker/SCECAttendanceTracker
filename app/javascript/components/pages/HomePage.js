@@ -12,7 +12,7 @@ export default function HomePage(props) {
   }
   if(!props.events.upcoming_events){
     props.events.upcoming_events = null
-  }
+  } 
 
   return (
     <Box>
@@ -37,11 +37,11 @@ export default function HomePage(props) {
         <Typography variant="h5">
           Current Events
         </Typography>
-        <EventList events = {props.events.current_events}/>
+        <EventList events = {props.events.current_events} member_id={props.member_id}/>
         <Typography variant="h5">
           Upcoming Events
         </Typography>
-        <EventList events = {props.events.upcoming_events}/>
+        <EventList events = {props.events.upcoming_events} member_id={props.member_id}/>
         </>
         }
     </Box>

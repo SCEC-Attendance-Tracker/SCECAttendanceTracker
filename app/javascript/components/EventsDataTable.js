@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
+import { Link } from "@material-ui/core";
 import Button from '@mui/material/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -21,7 +22,7 @@ function getData(props) {
   var events = props.props.events;
   var attendances = props.props.attendances;
   var a = attendances != undefined;
-  
+
   const columns = [
     {
       headerClassName: 'theme-header',
@@ -79,6 +80,13 @@ function getData(props) {
       field: 'location',
       headerName: 'Location',
       width: 150,
+      renderCell: (cellValues) => {
+        if (cellValues.row.location.substring(0,5) == "https") {
+          return <Link href={cellValues.row.location} target="_blank">{'Link'}</Link>;
+        } else {
+          return cellValues.row.location;
+        }
+      }
     },
     {
       headerClassName: 'theme-header',

@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2021_10_03_040234) do
     t.string "description"
     t.boolean "paid_dues"
     t.integer "total_attendance"
+    t.string "img_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

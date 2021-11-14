@@ -14,7 +14,7 @@ export default function HomePage(props) {
   if(!props.props.events.upcoming_events){
     props.props.events.upcoming_events = null
   }
-  console.log(props.props)
+  
   return (
     <Box>
         <Grid container spacing = {5} alignItems = 'stretch'>

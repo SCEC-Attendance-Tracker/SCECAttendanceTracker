@@ -1,54 +1,80 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class AttendancesController < ApplicationController
+      before_action :set_attendance, only: %i[show edit update destroy]
       respond_to :json
-      
-      # POST /attendances or /attendances.json
-      def create
-        @attendance = Attendance.new(attendance_params)
-        
-        
-        if @attendance.save 
-          render json: @attendance 
-        else 
-          render json: @attendance.errors 
-        end
-      end
-      
+
       # GET /attendances or /attendances.json
       def index
-        @attendance = Attendance.all
+        attendances = []
+        if params.key?('member_id') && params.key?('event_id') # For code entry fetch
+          @event = Event.find(params[:event_id])
+          if @event.attendances.exists?(member_id: params[:member_id])
+            attendances = @event.attendances
+          end
+          # @attendances = Attendance
+          #   .joins(Event)
+          #   .where(events: { event_id: params[:event_id] })
+          #   .where(attendances: { member_id: params[:member_id] })
+          # puts @attendances
+          # render json: @attendances
+        else 
+          @events = Event.all
+          @events.each {|e| attendances << e.attendances }
+        end
+        render json: attendances
+      end
 
-        render json: @attendence
+      # GET /attendances/1 or /attendances/1.json
+      def show
+        if @attendance
+          render json: @attendance
+        else
+          render json: @attendance.errors
+        end
       end
 
       # GET /attendances/new
       def new
-        @params = request.query_parameters
-        
-        @attendance = Attendance.where(member_id: session[:member_id], event_id: @params['event_id']).first
-        @attendance ||= Attendance.new(member_id: session[:member_id], event_id: @params['event_id'])
-          
-        if @params['mark']
-          @attendance.toggle(:attended)
+        @attendance = Attendance.new
+      end
+
+      # GET /attendances/1/edit
+      def edit; end
+
+      # POST /attendances or /attendances.json
+      def create
+        @event = Event.find(attendance_params[:event_id])
+        @event.attendances << Attendance.new(attendance_params)
+
+        if @event.save
+          member = Member.find(attendance_params[:member_id])
+          member.update(total_attendance: member.total_attendance + 1)
+          render json: @event
+        else
+          render json: @event.errors
         end
-          
-        @attendance.save
-        
-        #@attendance = Attendance.new
-        #@params = request.query_parameters
-        #@attendance.event_id = @params['event_id']
-        @attendance.member_id = session[:member_id]
-        
       end
 
       # PATCH/PUT /attendances/1 or /attendances/1.json
       def update
-        @attendance = Attendance.find(params[:id])
-        puts @attendance
-        @attendance.update(attendance_params)
-        puts @attendance
-        respond_with json: @attendance
+        respond_to do |format|
+          if @attendance.update(attendance_params)
+            if attendance_params[:attended]
+              member = Member.find(attendance_params[:member_id])
+              member.update(total_attendance: member.total_attendance + 1)
+            end
+            format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
+            format.json { render :show, status: :ok, location: @attendance }
+            render json: @attendance
+          else
+            format.html { render :edit, status: :unprocessable_entity }
+            format.json { render json: @attendance.errors, status: :unprocessable_entity }
+            render json: @attendance.errors
+          end
+        end
       end
 
       # DELETE /attendances/1 or /attendances/1.json

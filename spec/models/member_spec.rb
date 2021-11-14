@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Member, type: :model do
   subject do
-    described_class.new(first_name: 'Noah', last_name: 'Miner', email: 'noahjminer@gmail.com')
+    described_class.new(first_name: 'Noah', last_name: 'Miner', email: 'noahjminer@gmail.com', img_url: 'url.com')
   end
 
   it 'is valid with valid attributes' do
@@ -21,8 +21,13 @@ RSpec.describe Member, type: :model do
     expect(subject).not_to be_valid
   end
 
-  it 'is not valid without an enmail' do
+  it 'is not valid without an email' do
     subject.email = nil
     expect(subject).not_to be_valid
   end
+
+  it 'is not valid without an img_url' do 
+    subject.img_url = nil 
+    expect(subject).not_to be_valid
+  end 
 end

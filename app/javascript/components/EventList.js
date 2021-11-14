@@ -1,9 +1,13 @@
 import React from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import {Dialog} from "@material-ui/core";
+import {DialogContent} from '@material-ui/core';
+import {Typography} from "@material-ui/core";
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 //import markAttendance from './EventsDataTable'
@@ -13,7 +17,8 @@ import RsvpIcon from '@mui/icons-material/Rsvp';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import CheckIcon from '@mui/icons-material/Check';
 
-import FeedBackForm from './FeedBackForm'
+import FeedBackForm from './FeedBackForm';
+import EventCodeEntry from './EventCodeEntry';
 
 const newTheme = createTheme();
 const useStyles = makeStyles(
@@ -69,6 +74,23 @@ export default function EventList({events, attendances = null, member = null}) {
   
   const classes = useStyles();
   var today = new Date();
+  
+  const [open, setOpen] = React.useState(false);
+  const [element, setElement] = React.useState(false);
+  const handleClose = () => {
+      setOpen(false);
+      setElement(null);
+  };
+  const handleItemClick = (e) => {
+      setElement(e)
+      setOpen(true)
+  }
+
+  const withinEventTime = (d) => {
+      d = new Date(Date.parse(d));
+      d.setMinutes(d.getMinutes() - 10);
+      return new Date() >= d;
+  }
   
   const markRsvp = (row) => {
     const token = document.querySelector('[name=csrf-token]').content;
@@ -164,7 +186,7 @@ export default function EventList({events, attendances = null, member = null}) {
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
-                          <ListItemButton className={classes.listCardButton} onClick={() => {markAttendance(e)}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e)}}>
                               <ListItemIcon className={classes.icon}>
                                   <EmojiPeopleIcon />
                               </ListItemIcon>
@@ -196,7 +218,7 @@ export default function EventList({events, attendances = null, member = null}) {
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
                           
-                          <ListItemButton className={classes.listCardButton} onClick={() => {markAttendance(e)}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e)}}>
                               <ListItemIcon className={classes.icon}>
                                   <EmojiPeopleIcon />
                               </ListItemIcon>
@@ -234,6 +256,56 @@ export default function EventList({events, attendances = null, member = null}) {
                   </ListItem>
               );
           })}
+          {
+            open && 
+            <Dialog
+                open = {open}
+                onClose = {handleClose}
+                fullWidth = {true}
+                maxWidth = 'sm'
+            >
+                <DialogContent>
+                    <Typography variant = 'h4' component = 'h4'>
+                        {element.title}
+                    </Typography>
+                    <Typography variant = 'h6' component = 'h6'>
+                        Start Date:
+                    </Typography>
+                    <Typography variant = 'subtitle1'>
+                        {new Date(element.start_date).toLocaleString()}
+                    </Typography>
+                    <Typography variant = 'h6' component = 'h6'>
+                        End Date:
+                    </Typography>
+                    <Typography variant = 'subtitle1'>
+                        {new Date(element.end_date).toLocaleString()}
+                    </Typography>
+                    <Typography variant = 'h6' component = 'h6'>
+                        Location:
+                    </Typography>
+                    <Typography variant = 'subtitle1'>
+                        {element.location}
+                    </Typography>
+                    <Typography variant = 'h6' component = 'h6'>
+                        Description:
+                    </Typography>
+                    <Typography variant = 'subtitle1'>
+                        {element.description}
+                    </Typography>
+                    { withinEventTime(element.start_date) ?
+                    <div style={{
+                        flexDirection:'column', 
+                        justifyContent:'center'
+                    }}>
+                        <EventCodeEntry event_id={element.id} member_id={member.id} event_code={element.code}/>
+                    </div>
+                    : 
+                    <>
+                    </>
+                    }
+                </DialogContent>
+            </Dialog>
+          }
           {!events &&
               <ListItem>
                   <ListItemText 

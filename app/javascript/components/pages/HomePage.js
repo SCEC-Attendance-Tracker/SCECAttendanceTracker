@@ -18,11 +18,11 @@ export default function HomePage({roles, events}) {
               <Typography variant="h5">
                 Current Events
               </Typography>
-              <EventList events = {events.current_events} roles />
+              <EventList events = {events.current_events} roles = {roles}/>
               <Typography variant="h5">
                 Upcoming Events
               </Typography>
-              <EventList events = {events.upcoming_events} roles />
+              <EventList events = {events.upcoming_events} roles = {roles}/>
             </Grid>
         </Grid>
     </Box>

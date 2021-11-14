@@ -3,11 +3,11 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
-import {Dialog} from "@material-ui/core";
-import {DialogContent} from '@material-ui/core';
-import {Typography} from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from '@material-ui/core/DialogContent';
+import Typography from "@material-ui/core/Typography";
 
-export default function EventList({events}) {
+export default function EventList({events, roles}) {
     const [open, setOpen] = React.useState(false);
     const [element, setElement] = React.useState(false);
     const handleClose = () => {
@@ -25,7 +25,7 @@ export default function EventList({events}) {
                 sx = {{
                     position: 'relative'
                 }}>
-                {events && events.map((e) => {
+                {events.length !== 0 ? events.map((e) => {
                     var s_date = new Date(e.start_date).toLocaleString();
                     return (
                         <ListItem key = {e.id}>
@@ -39,8 +39,13 @@ export default function EventList({events}) {
                                  />
                             </ListItemButton>
                         </ListItem>
-                    );
-                })}
+                    ); 
+                }) :
+                <ListItem>
+                    <ListItemText 
+                        secondary = {'No events.'}
+                    />
+                </ListItem>}
                 {
                     open && 
                     <Dialog
@@ -53,6 +58,9 @@ export default function EventList({events}) {
                             <Typography variant = 'h4' component = 'h4'>
                                 {element.title}
                             </Typography>
+                            {
+
+                            }
                             <Typography variant = 'h6' component = 'h6'>
                                 Start Date:
                             </Typography>

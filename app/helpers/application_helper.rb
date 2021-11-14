@@ -5,11 +5,11 @@ module ApplicationHelper
     render(partial: 'application/error_messages', locals: { object: object })
   end
 
-  def user_device
+  def is_mobile
     agent = request.user_agent
-    return 'mobile' if agent =~ /Mobile/
-
-    'desktop'
+    puts request.user_agent
+    return true if agent =~ /Mobile/
+    return false
   end
 end
 

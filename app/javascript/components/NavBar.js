@@ -35,10 +35,10 @@ const theme = createTheme({
 
 const useStyles = makeStyles({
 	root: {
-		width: '100vw',
+		width: '100vm',
 		margin: 0,
 		marginTop: '-8px',
-		marginLeft: '-8px',
+		marginLeft: '-8px'
 	},
 	title: {
 		flex: '1',

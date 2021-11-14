@@ -1,5 +1,5 @@
 import React from "react";
-import { DialogContent, IconButton, Typography, TextField, Box, Button, Modal, Avatar } from "@material-ui/core";
+import { DialogContent, IconButton, Typography, TextField, Box, Button, Dialog, Avatar } from "@material-ui/core";
 import { DeleteOutlined, EditOutlined, Check, Close } from "@material-ui/icons";
 import './stylesheets/Profile.css';
 
@@ -245,8 +245,7 @@ class ProfilePageModal extends React.Component {
             top: '25%', 
             left: '50%', 
             transform: 'translate(-50%,0)', 
-            width: '600px',
-            maxWidth: '100%',
+            width: '90%',
             bgcolor: 'background.paper',  
             boxShadow: 24, 
             p: 4
@@ -254,7 +253,7 @@ class ProfilePageModal extends React.Component {
         return (
             <>
                 <Button onClick={this.handleOpen}> <Avatar src={this.state.member_info.img_url}/> </Button>
-                <Modal
+                <Dialog
                 open={this.state.show}
                 onClose={this.handleClose}
                 aria-labelledby="profile-page-label"
@@ -263,7 +262,7 @@ class ProfilePageModal extends React.Component {
                     <DialogContent>
                         {this.renderProfilePage(style)}
                     </DialogContent>
-                </Modal>
+                </Dialog>
             </>
         );
     }

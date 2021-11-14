@@ -14,10 +14,11 @@ export default function HomePage(props) {
   if(!props.events.upcoming_events){
     props.events.upcoming_events = null
   }
-  console.log(props)
+
   return (
     <Box>
-        <Grid container spacing = {5} alignItems = 'stretch'>
+        {!props.mobile ? 
+        <Grid container spacing = {1} alignItems = 'stretch'>
             <Grid item xs = {8} style = {{height: '100%'}}>
               <GoogleCalendar />
             </Grid>
@@ -32,6 +33,18 @@ export default function HomePage(props) {
               <EventList events = {props.events.upcoming_events}/>
             </Grid>
         </Grid>
+        :
+        <>
+        <Typography variant="h5">
+          Current Events
+        </Typography>
+        <EventList events = {props.events.current_events}/>
+        <Typography variant="h5">
+          Upcoming Events
+        </Typography>
+        <EventList events = {props.events.upcoming_events}/>
+        </>
+        }
     </Box>
   );
 }

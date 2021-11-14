@@ -112,11 +112,15 @@ class FeedBackForm extends React.Component {
             justifyContent: 'center !important',
             marginLeft: '20px !important'
         }
+        
+        const styleIcon = {
+            minWidth: '10px !important'
+        }
 
         return (
             <>
                 <ListItemButton sx={styleButton} onClick={this.handleOpen}> 
-                    <ListItemIcon>
+                    <ListItemIcon sx={styleIcon} >
                         <CreateIcon />
                     </ListItemIcon>
                 </ListItemButton>
@@ -149,7 +153,7 @@ class FeedBackForm extends React.Component {
                                                 variant="filled"
                                                 rows={4} 
                                                 id='outlined' 
-                                                label='Event Review:' 
+                                                label='Event Review' 
                                                 name='event_review' 
                                                 onChange={this.handleInputChange} 
                                             />

@@ -6,8 +6,7 @@ module Api
       # POST /attendances or /attendances.json
       def create
         @attendance = Attendance.new(attendance_params)
-        @attendance.attended = false
-        @attendance.rsvp = false
+        
         
         if @attendance.save 
           render json: @attendance 

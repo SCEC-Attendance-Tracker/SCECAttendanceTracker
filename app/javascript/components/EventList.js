@@ -176,7 +176,7 @@ export default function EventList({events, attendances = null, member = null}) {
                           <ListItemText className={classes.listActionText}
                           primary = {'Feedback'}/>
                           
-                          <FeedBackForm event = {e} className={classes.listCardButton} />
+                          <FeedBackForm event = {e} />
                       </div>
                       }
                       

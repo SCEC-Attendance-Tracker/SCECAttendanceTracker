@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AttendanceController < ApplicationController
+    class AttendancesController < ApplicationController
       before_action :set_attendance, only: %i[show edit update destroy]
       respond_to :json
 
@@ -14,6 +14,12 @@ module Api
           if @event.attendances.exists?(member_id: params[:member_id])
             attendances = @event.attendances
           end
+          # @attendances = Attendance
+          #   .joins(Event)
+          #   .where(events: { event_id: params[:event_id] })
+          #   .where(attendances: { member_id: params[:member_id] })
+          # puts @attendances
+          # render json: @attendances
         else 
           @events = Event.all
           @events.each {|e| attendances << e.attendances }
@@ -42,7 +48,6 @@ module Api
       def create
         @event = Event.find(attendance_params[:event_id])
         @event.attendances << Attendance.new(attendance_params)
-        puts @event.attendances
 
         if @event.save
           member = Member.find(attendance_params[:member_id])
@@ -57,6 +62,10 @@ module Api
       def update
         respond_to do |format|
           if @attendance.update(attendance_params)
+            if attendance_params[:attended]
+              member = Member.find(attendance_params[:member_id])
+              member.update(total_attendance: member.total_attendance + 1)
+            end
             format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
             format.json { render :show, status: :ok, location: @attendance }
             render json: @attendance
@@ -86,7 +95,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def attendance_params
-        params.require(:attendance).permit(:member_id, :event_id)
+        params.require(:attendance).permit(:member_id, :event_id, :attended, :rsvp)
       end
     end
   end

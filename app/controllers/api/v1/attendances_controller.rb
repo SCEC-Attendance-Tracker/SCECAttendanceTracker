@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AttendanceController < ApplicationController
+    class AttendancesController < ApplicationController
       before_action :set_attendance, only: %i[show edit update destroy]
       respond_to :json
 
@@ -14,6 +14,12 @@ module Api
           if @event.attendances.exists?(member_id: params[:member_id])
             attendances = @event.attendances
           end
+          # @attendances = Attendance
+          #   .joins(Event)
+          #   .where(events: { event_id: params[:event_id] })
+          #   .where(attendances: { member_id: params[:member_id] })
+          # puts @attendances
+          # render json: @attendances
         else 
           @events = Event.all
           @events.each {|e| attendances << e.attendances }

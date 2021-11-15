@@ -10,9 +10,10 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         end 
         #save session variables: id, member & admin
         session[:member_id] = check_member.id
-        session[:member] = check_member.member
-        session[:admin] = check_member.admin
+        session[:member] = check_member.is_member
+        session[:admin] = check_member.is_admin
 
+        session[:g_credentials] = request.env['omniauth.auth'].credentials
         redirect_to root_path
       elsif defined?(google_params)
         sign_out_all_scopes
@@ -21,12 +22,13 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         member = Member.from_google(**google_params)
 
         sign_in member, event: :authentication
-        
+
         #save session variables: id, member & admin
         session[:member_id] = member.id
-        session[:member] = member.member
-        session[:admin] = member.admin
+        session[:member] = member.is_member
+        session[:admin] = member.is_admin
 
+        session[:g_credentials] = request.env['omniauth.auth'].credentials
         redirect_to new_member_path({email: google_params[:email]})
       else
         flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."

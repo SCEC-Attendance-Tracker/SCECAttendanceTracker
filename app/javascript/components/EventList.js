@@ -30,7 +30,7 @@ export default function EventList({events, roles}) {
                     return (
                         <ListItem key = {e.id}>
                             <ListItemButton
-                                onClick = {(event) => handleItemClick(e)}
+                                onClick = {() => handleItemClick(e)}
                                 selected = {element === e}
                             >
                             <ListItemText 

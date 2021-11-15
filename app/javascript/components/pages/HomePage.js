@@ -11,10 +11,10 @@ export default function HomePage({roles, events}) {
   return (
     <Box>
         <Grid container spacing = {5} alignItems = 'stretch'>
-            <Grid item xs = {8} style = {{height: '100%'}}>
+            <Grid item xs = {12} md = {8} style = {{height: '100%'}}>
               <GoogleCalendar />
             </Grid>
-            <Grid item xs = {4}>
+            <Grid item xs = {12} md = {4} >
               <Typography variant="h5">
                 Current Events
               </Typography>

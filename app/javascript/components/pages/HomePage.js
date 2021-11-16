@@ -25,11 +25,11 @@ export default function HomePage(props) {
               <Typography variant="h5">
                 Current Events
               </Typography>
-              <EventList events = {props.props.events.current_events} attendances = {props.props.attendances}/>
+              <EventList page = "Home" events = {props.props.events.current_events} attendances = {props.props.attendances} member = {props.props.member}/>
               <Typography variant="h5">
                 Upcoming Events
               </Typography>
-              <EventList events = {props.props.events.upcoming_events} attendances = {props.props.attendances}/>
+              <EventList pagee = "Home" events = {props.props.events.upcoming_events} attendances = {props.props.attendances} member = {props.props.member}/>
             </Grid>
         </Grid>
     </Box>

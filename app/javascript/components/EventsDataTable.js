@@ -22,6 +22,9 @@ function getData(props) {
   var attendances = props.props.attendances;
   var a = attendances != undefined;
   
+  console.log(member.admin ? false : true);
+  var showCode = member.admin ? false : true;
+  
   const columns = [
     {
       headerClassName: 'theme-header',
@@ -35,6 +38,13 @@ function getData(props) {
       headerName: 'Event ID',
       width: 100,
       hide: true
+    },
+    {
+      headerClassName: 'theme-header', 
+      field: 'code', 
+      headerName: 'Code',
+      width: 120,
+      hide: showCode
     },
     {
       headerClassName: 'theme-header',
@@ -51,7 +61,7 @@ function getData(props) {
     },
     {
       headerClassName: 'theme-header',
-      field: 'start_date',
+      field: 'end_date',
       headerName: 'Date',
       width: 120,
       hide: true
@@ -199,6 +209,7 @@ function getData(props) {
       id: i,
       event_id: events[i].id,
       title: events[i].title,
+      code: events[i].code,
       start_date: new Date(events[i].start_date).toLocaleDateString(),
       end_date: new Date(events[i].end_date).toLocaleDateString(),
       start_time: new Date(events[i].start_date).toLocaleTimeString(),

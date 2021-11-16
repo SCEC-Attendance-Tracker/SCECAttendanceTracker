@@ -156,9 +156,6 @@ export default function NavBar(props) {
 						open={Boolean(anchorEl)}
 						onClose={handleClose}
 					>
-						{ (member != undefined) && 
-							<ProfilePageModal member={member} is_owner={true}/>
-						}
 						<Link href={"/events"}>
 							<MenuItem className={classes.menuItem}>Events</MenuItem>
 						</Link>

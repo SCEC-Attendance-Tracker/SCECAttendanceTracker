@@ -3,7 +3,6 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
-import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import {Dialog} from "@material-ui/core";
 import {DialogContent} from '@material-ui/core';
@@ -60,15 +59,19 @@ const useStyles = makeStyles(
       },
       icon: {
         minWidth: '10px !important'
+      },
+      attendedIcon: {
+        color: '#00BB66',
+        padding: '10px',
       }
     }),
   { newTheme },
 );
 
-export default function EventList({events, attendances = null, member = null}) {
+export default function EventList({events, attendances = null, member = null, page = ""}) {
   console.log(events);
   console.log(member);
-  const onHome = member == null;
+  const onHome = (page == "Home") ? true : false;
   const onEvents = !onHome;
   console.log(onEvents);
   
@@ -175,6 +178,10 @@ export default function EventList({events, attendances = null, member = null}) {
               position: 'relative'
           }}>
           {events && events.map((e) => {
+            if (onHome) {
+              e.attended = attendances.find(att => att.event_id == e.id).attended;
+              e.rsvp = attendances.find(att => att.event_id == e.id).rsvp;
+            }
               return (
                   <ListItem className={classes.listCardItem}>
                       <ListItemText 
@@ -198,7 +205,7 @@ export default function EventList({events, attendances = null, member = null}) {
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
-                          <CheckIcon />
+                          <CheckIcon className={classes.attendedIcon}/>
                       </div>
                       }
                       
@@ -230,7 +237,7 @@ export default function EventList({events, attendances = null, member = null}) {
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
                           
-                          <CheckIcon />
+                          <CheckIcon className={classes.attendedIcon}/>
                       </div>
                       }
                       

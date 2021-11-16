@@ -24,6 +24,18 @@ function getData(props) {
       headerName: 'ID',
       hide: true
     },
+    {
+      headerClassName: 'theme-header',
+      field: 'admin',
+      headerName: 'Admin?',
+      hide: true
+    },
+    {
+      headerClassName: 'theme-header',
+      field: 'img_url',
+      headerName: 'ProfileImg',
+      hide: true
+    },
     { 
       headerClassName: 'theme-header',
       field: 'member_id', 
@@ -51,8 +63,16 @@ function getData(props) {
       headerName: 'Paid Dues?',
       width: 160,
       flex: 1,
-      editable: true,
-      type: 'boolean',
+      type: 'actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+        icon={ params.row.dues ? <CheckIcon /> : <ClearIcon />}
+        label="Paid Dues"
+        onClick={() => {
+          markDues(params.row);
+        }}
+      />
+      ]
     },
     {
       headerClassName: 'theme-header',
@@ -78,6 +98,23 @@ function getData(props) {
       ],
     },
   ];
+  
+  const markDues = (row) => {
+    const token = document.querySelector('[name=csrf-token]').content;
+    
+    var mem = {
+      id: row.member_id,
+      paid_dues: !row.dues
+    }
+    
+    fetch(`/api/v1/members/${row.member_id}`, {
+      method: 'PUT', 
+      body: JSON.stringify(mem),
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+    }).then(() => {
+      location.reload();
+    });
+  }
 
   const markMembership = (row) => {
     const token = document.querySelector('[name=csrf-token]').content;
@@ -104,6 +141,8 @@ function getData(props) {
     
     var entry = {
       id: i,
+      admin: ((members[i].admin) ? true : false),
+      img_url: members[i].img_url,
       member_id: members[i].id,
       first_name: members[i].first_name,
       last_name: members[i].last_name,

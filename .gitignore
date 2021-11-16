@@ -37,6 +37,7 @@
 yarn-debug.log*
 .yarn-integrity
 *.csv
+*.txt
 
 /public/packs
 /public/packs-test

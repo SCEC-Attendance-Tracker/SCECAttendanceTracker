@@ -13,9 +13,36 @@ class SettingsController < ApplicationController
         export_database
     end
 
+    def wipe
+        @member = Member.find(session[:member_id])
+
+        if @member.admin == false 
+            redirect_to(root_path)
+        end
+
+        if @member.admin == nil 
+            redirect_to(root_path)
+        end 
+
+        if !params[:delete]
+            redirect_to(root_path)
+        end
+
+        wipe_database
+    end
+
     private 
 
-    def export_database() 
+    def wipe_database
+        Member.where(admin: false, admin: nil).delete_all
+        Event.delete_all 
+        Feedback.delete_all 
+        Attendance.delete_all
+        Attachment.delete_all
+        AttachmentLink.delete_all
+    end
+
+    def export_database
         # Export to csv 
         file = "#{Rails.root}/public/SCECDATA.csv"
         member_table = Member.all

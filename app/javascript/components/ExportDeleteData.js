@@ -26,9 +26,9 @@ class ExportDeleteData extends React.Component {
         if (burnItDown) {
             alert("Exporting data and emptying database...");
             this.downloadCSV();
-            return (
-                '<%= wipe_database %>'
-            );
+            fetch(`/settings/wipe?wipe=true`, {
+                method: 'GET'
+            }).catch((error) => {console.log(error)})
         } 
     }
 

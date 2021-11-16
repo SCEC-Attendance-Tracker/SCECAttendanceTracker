@@ -1,15 +1,4 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid';
 import DataTable from "./DataTable";
-
-import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
-
-import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 
 function getData(props) {
   
@@ -135,6 +124,7 @@ function getData(props) {
   }
   
   var data = {columns: columns, rows: rows}
+  console.log(data.rows);
   return data;
 }
 

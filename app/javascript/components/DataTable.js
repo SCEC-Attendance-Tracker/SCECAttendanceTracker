@@ -36,7 +36,7 @@ const useStyles = makeStyles(
         padding: theme.spacing(0.5, 0.5, 0),
         justifyContent: 'space-between',
         display: 'flex',
-        alignItems: 'flex-start',
+        //alignItems: 'flex-start',
         flexWrap: 'wrap',
         width: '100%',
       },
@@ -203,7 +203,8 @@ export default function DataTable(data) {
           }}
         />,
       ],
-    });
+    }
+    );
     
   console.log(data.columns);
   

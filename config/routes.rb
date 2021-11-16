@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :links
   resources :feedbacks
   root to: 'home#show'
 
@@ -26,8 +27,16 @@ Rails.application.routes.draw do
       resources :members, only: %i[index update show delete destroy]
       resources :events, only: %i[index update show delete destroy]
       resources :attendances, only: %i[index update show delete destroy create]
+      resources :feedbacks, only: %i[index show create]
       get 'events/index'
       get 'attendances/index'
+      resources :links, only: %i[update delete destroy create] 
+      resources :calendar, only: %i[] do
+        collection do
+          get :is_subscribed
+          put :subscribe
+        end
+      end
     end
   end
 end

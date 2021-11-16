@@ -1,0 +1,28 @@
+.paid-dues-icon-footer {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.name {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    vertical-align: middle;
+}
+
+.name-icons-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.delete-close {
+    display: flex;
+    flex-direction: row;
+}
+
+.delete-close Button {
+    margin: auto;
+}

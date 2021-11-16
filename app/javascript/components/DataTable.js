@@ -170,15 +170,6 @@ export default function DataTable(data) {
     setDataRows(data.rows);
   }, [data.rows]);
   
-  /*const deleteRow = React.useCallback(
-    (id) => () => {
-      setTimeout(() => {
-        setDataRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      });
-    },
-    [],
-  );
-  */
   const deleteRow = (row, controller) => {
     const token = document.querySelector('[name=csrf-token]').content;
     fetch(`/api/v1/${controller}/${row.event_id}`, {

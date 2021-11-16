@@ -1,18 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-
+import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Link } from "@material-ui/core";
-import Button from '@mui/material/Button';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport, GridActionsCellItem} from '@mui/x-data-grid';
 import DataTable from "./DataTable";
-
 import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
 import CheckIcon from '@mui/icons-material/Check';
-
-import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 
 function getData(props) {
   

@@ -176,8 +176,8 @@ export default function EventList({events, attendances = null, member = null, pa
           }}>
           {events && events.map((e) => {
             if (onHome) {
-              e.attended = attendances.find(att => att.event_id == e.id).attended;
-              e.rsvp = attendances.find(att => att.event_id == e.id).rsvp;
+              e.attended = attendances.find(att => att.event_id == e.id && att.member_id == member.id).attended;
+              e.rsvp = attendances.find(att => att.event_id == e.id && att.member_id == member.id).rsvp;
             }
               return (
                   <ListItem className={classes.listCardItem}>
@@ -207,7 +207,7 @@ export default function EventList({events, attendances = null, member = null, pa
                       }
                       
                       {/* Events Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) && onEvents &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -219,7 +219,7 @@ export default function EventList({events, attendances = null, member = null, pa
                           </ListItemButton>
                       </div>
                       }
-                      {(`${e.attended}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      {(`${e.attended}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) && onEvents &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>

@@ -15,7 +15,7 @@ class EventCodeEntry extends React.Component {
             create_new: false,
             has_attended: false,
         }
-
+        console.log(this.state.member_id);
         console.log(this.state.event_code);
     }
 

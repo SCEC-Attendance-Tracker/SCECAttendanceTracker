@@ -271,7 +271,7 @@ export default function EventsDataTable(props) {
   
   return (
     <>
-      <DataTable data = {data} />
+      <DataTable data = {data} member = {member}/>
       {open && 
         <Dialog
             open = {open}

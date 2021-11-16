@@ -2,7 +2,6 @@ import React from "react"
 import FullCalendar from '@fullcalendar/react'
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { gapi } from "gapi-script"
 
 class GoogleCalendar extends React.Component {
   constructor() {

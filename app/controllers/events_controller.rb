@@ -8,6 +8,7 @@ class EventsController < ApplicationController
   # GET /events or /events.json
   def index
     @events = Event.order(sort_column + " " + sort_direction)
+    @attendances = Attendance.all
   end
 
   def current_events

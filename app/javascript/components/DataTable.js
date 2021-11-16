@@ -36,12 +36,12 @@ const useStyles = makeStyles(
         padding: theme.spacing(0.5, 0.5, 0),
         justifyContent: 'space-between',
         display: 'flex',
-        alignItems: 'flex-start',
+        //alignItems: 'flex-start',
         flexWrap: 'wrap',
         width: '100%',
       },
       grid: {
-        marginTop: '30px',
+        marginTop: '10px',
         
         '& .MuiDataGrid-main': {
           width: '100%',
@@ -170,14 +170,25 @@ export default function DataTable(data) {
     setDataRows(data.rows);
   }, [data.rows]);
   
-  const deleteRow = React.useCallback(
+  /*const deleteRow = React.useCallback(
     (id) => () => {
       setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        setDataRows((prevRows) => prevRows.filter((row) => row.id !== id));
       });
     },
     [],
   );
+  */
+  const deleteRow = (row, controller) => {
+    const token = document.querySelector('[name=csrf-token]').content;
+    fetch(`/api/v1/${controller}/${row.event_id}`, {
+      method: 'DELETE', 
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+    }).then(() => {
+      location.reload();
+    })
+  }
+  
   data.columns.push(
     {
       field: 'actions',
@@ -187,7 +198,18 @@ export default function DataTable(data) {
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={deleteRow(params.id)}
+          onClick={() => {
+            console.log(params);
+            if (params.row.start_time) {
+              deleteRow(params.row, 'events')
+            }
+            else if (params.row.first_name) {
+              deleteRow(params.row, 'members')
+            }
+            else if (params.rows.member_id && params.row.event_id) {
+              deleteRow(params.row, 'attendances')
+            }
+          }}
         />,
       ],
     }
@@ -199,7 +221,6 @@ export default function DataTable(data) {
     () => data.columns,
     [deleteRow],
   );
-
 
   return (
     <div style={{ height: '50em', width: '100%'}}>
@@ -217,6 +238,7 @@ export default function DataTable(data) {
         columns={dataColumns}
         pageSize={10}
         rowsPerPageOptions={[10]}
+        checkboxSelection
       />
     </div>
   );

@@ -71,7 +71,6 @@ const useStyles = makeStyles(
 export default function EventList({events, attendances = null, member = null, page = ""}) {
   const onHome = (page == "Home") ? true : false;
   const onEvents = !onHome;
-  console.log(onEvents);
   
   const classes = useStyles();
   var today = new Date();
@@ -186,7 +185,7 @@ export default function EventList({events, attendances = null, member = null, pa
                           primary = {`${e.title}`}
                           secondary = {`${e.start_date}`}/>
                       
-                      {/* Home Page: Mark Attendance FIX e.attended (no such attribute when passed from home) */}
+                      {/* Home Page: Mark Attendance */}
                       {(`${e.attended}` != 'true') && onHome && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
@@ -204,16 +203,6 @@ export default function EventList({events, attendances = null, member = null, pa
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
                           <CheckIcon className={classes.attendedIcon}/>
-                      </div>
-                      }
-                      
-                      {/* Events Page: Feedback */}
-                      {(`${e.attended}` == 'true') && onEvents &&
-                      <div className={classes.listActions}>
-                          <ListItemText className={classes.listActionText}
-                          primary = {'Feedback'}/>
-                          
-                          <FeedBackForm event = {e} />
                       </div>
                       }
                       
@@ -236,6 +225,16 @@ export default function EventList({events, attendances = null, member = null, pa
                           primary = {'Attended'}/>
                           
                           <CheckIcon className={classes.attendedIcon}/>
+                      </div>
+                      }
+                      
+                      {/* Events Page: Feedback */}
+                      {(`${e.attended}` == 'true') && onEvents &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'Feedback'}/>
+                          
+                          <FeedBackForm event = {e} />
                       </div>
                       }
                       

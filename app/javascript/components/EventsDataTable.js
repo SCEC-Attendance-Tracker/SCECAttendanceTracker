@@ -312,7 +312,7 @@ export default function EventsDataTable(props) {
                     flexDirection:'column', 
                     justifyContent:'center'
                 }}>
-                    <EventCodeEntry event_id={element.id} member_id={member.id} event_code={element.code}/>
+                    <EventCodeEntry event_id={element.event_id} member_id={member.id} event_code={element.code}/>
                 </div>
                 : 
                 <>

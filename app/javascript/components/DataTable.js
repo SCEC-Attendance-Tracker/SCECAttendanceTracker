@@ -150,13 +150,13 @@ QuickSearchToolbar.propTypes = {
 
 //var data;
 
-export default function DataTable(data) {
+export default function DataTable({data}) {
   
   /*if (data == undefined) {
     data = getData(props);
     //console.log(data);
   }*/
-  
+  console.log(data);
   const classes = useStyles();
   
   const [searchText, setSearchText] = React.useState('');

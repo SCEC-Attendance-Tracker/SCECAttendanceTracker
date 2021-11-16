@@ -67,7 +67,8 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
   end
 
   create_table "members", force: :cascade do |t|
-    t.boolean "admin"
+    t.boolean "is_admin"
+    t.boolean "is_member"
     t.string "first_name"
     t.string "last_name"
     t.string "email"

@@ -71,7 +71,6 @@ const useStyles = makeStyles(
 export default function EventList({events, attendances = null, member = null, page = ""}) {
   const onHome = (page == "Home") ? true : false;
   const onEvents = !onHome;
-  console.log(onEvents);
   
   const classes = useStyles();
   var today = new Date();
@@ -302,7 +301,7 @@ export default function EventList({events, attendances = null, member = null, pa
                         flexDirection:'column', 
                         justifyContent:'center'
                     }}>
-                        <EventCodeEntry event_id={element.id} member_id={member.id} event_code={element.code}/>
+                        <EventCodeEntry event_id={element.id} member_id={member[0].id} event_code={element.code}/>
                     </div>
                     : 
                     <>

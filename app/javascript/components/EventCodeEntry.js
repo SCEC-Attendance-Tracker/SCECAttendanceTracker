@@ -16,7 +16,7 @@ class EventCodeEntry extends React.Component {
             has_attended: false,
         }
 
-        console.log(this.state.event_code);
+        console.log(this.state);
     }
 
     componentDidMount = () => {

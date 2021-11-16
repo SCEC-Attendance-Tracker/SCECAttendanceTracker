@@ -7,7 +7,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         sign_in check_member, event: :authentication
         if(auth.info.image != check_member.img_url)
           check_member.update({img_url: auth.info.image})
-        end 
+        end
         #save session variables: id, member & admin
         session[:member_id] = check_member.id
         session[:member] = check_member.is_member

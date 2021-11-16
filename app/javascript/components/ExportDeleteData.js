@@ -65,7 +65,8 @@ class ExportDeleteData extends React.Component {
     render = () => {        
         return (
             <div style={{
-                display: 'flex', 
+                display: 'flex',
+                alignContent: 'middle', 
                 flexDirection: 'column'
             }}> 
                 <Typography variant='h2'>Admin Actions</Typography>

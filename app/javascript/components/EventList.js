@@ -82,6 +82,7 @@ export default function EventList({events, attendances = null, member = null, pa
       setElement(null);
   };
   const handleItemClick = (e) => {
+      console.log(e)
       setElement(e)
       setOpen(true)
   }
@@ -175,9 +176,11 @@ export default function EventList({events, attendances = null, member = null, pa
               position: 'relative'
           }}>
           {events && events.map((e) => {
-            if (onHome) {
-              e.attended = attendances.find(att => att.event_id == e.id).attended;
-              e.rsvp = attendances.find(att => att.event_id == e.id).rsvp;
+            if (onHome && member) {
+              console.log(e.id);
+              console.log(member);
+              e.attended = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).attended;
+              e.rsvp = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).rsvp;
             }
               return (
                   <ListItem className={classes.listCardItem}>
@@ -185,8 +188,8 @@ export default function EventList({events, attendances = null, member = null, pa
                           primary = {`${e.title}`}
                           secondary = {`${e.start_date}`}/>
                       
-                      {/* Home Page: Mark Attendance FIX e.attended (no such attribute when passed from home) */}
-                      {(`${e.attended}` != 'true') && onHome && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {/* Home Page: Mark Attendance */}
+                      {(`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -198,10 +201,32 @@ export default function EventList({events, attendances = null, member = null, pa
                       </div>
                       }
                       
-                      {(`${e.attended}` == 'true') && onHome && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` == 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
+                          <CheckIcon className={classes.attendedIcon}/>
+                      </div>
+                      }
+                      
+                      {/* Events Page: Mark Attendance */}
+                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'Mark Attendance'}/>
+                          
+                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e)}}>
+                              <ListItemIcon className={classes.icon}>
+                                  <EmojiPeopleIcon />
+                              </ListItemIcon>
+                          </ListItemButton>
+                      </div>
+                      }
+                      {(`${e.attended}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'Attended'}/>
+                          
                           <CheckIcon className={classes.attendedIcon}/>
                       </div>
                       }
@@ -213,28 +238,6 @@ export default function EventList({events, attendances = null, member = null, pa
                           primary = {'Feedback'}/>
                           
                           <FeedBackForm event = {e} />
-                      </div>
-                      }
-                      
-                      {/* Events Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) && onEvents &&
-                      <div className={classes.listActions}>
-                          <ListItemText className={classes.listActionText}
-                          primary = {'Mark Attendance'}/>
-                          
-                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e)}}>
-                              <ListItemIcon className={classes.icon}>
-                                  <EmojiPeopleIcon />
-                              </ListItemIcon>
-                          </ListItemButton>
-                      </div>
-                      }
-                      {(`${e.attended}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.start_date + ' ' + e.end_time}`)) >= today) && onEvents &&
-                      <div className={classes.listActions}>
-                          <ListItemText className={classes.listActionText}
-                          primary = {'Attended'}/>
-                          
-                          <CheckIcon className={classes.attendedIcon}/>
                       </div>
                       }
                       
@@ -301,7 +304,7 @@ export default function EventList({events, attendances = null, member = null, pa
                         flexDirection:'column', 
                         justifyContent:'center'
                     }}>
-                        <EventCodeEntry event_id={element.id} member_id={member[0].id} event_code={element.code}/>
+                        <EventCodeEntry event_id={element.event_id} member_id={member.id} event_code={element.code}/>
                     </div>
                     : 
                     <>

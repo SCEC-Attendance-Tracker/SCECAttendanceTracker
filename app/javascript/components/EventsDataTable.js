@@ -37,8 +37,8 @@ export default function EventsDataTable(props) {
     var attendances = props.props.attendances;
     var a = attendances != undefined;
     
-    console.log(member.admin ? false : true);
-    var showCode = member.admin ? false : true;
+    console.log(member);
+    var showCode = member ? (member.admin ? false : true) : false;
     
     const columns = [
       {
@@ -232,12 +232,12 @@ export default function EventsDataTable(props) {
         end_time: new Date(events[i].end_date).toLocaleTimeString(),
         description: events[i].description,
         location: events[i].location,
-        rsvp: (attendances ? 
+        rsvp: (attendances && member ? 
           (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ? 
             ((attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).rsvp) ? true : false ) 
           : false) 
         : false),
-        attended: (attendances ? 
+        attended: (attendances && member ? 
         (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ? 
           (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)).attended ? true : false ) 
         : false)
@@ -271,7 +271,7 @@ export default function EventsDataTable(props) {
   
   return (
     <>
-      <DataTable data = {data} />
+      <DataTable data = {data} member = {member}/>
       {open && 
         <Dialog
             open = {open}

@@ -20,6 +20,7 @@ function getData(props) {
   var events = props.props.events;
   var attendances = props.props.attendances;
   var a = attendances != undefined;
+  var showCode = member ? (member.admin ? false : true) : false;
   
   const columns = [
     {
@@ -34,6 +35,13 @@ function getData(props) {
       headerName: 'Event ID',
       width: 100,
       hide: true
+    },
+    {
+      headerClassName: 'theme-header', 
+      field: 'code', 
+      headerName: 'Code',
+      width: 120,
+      hide: showCode
     },
     {
       headerClassName: 'theme-header',
@@ -114,6 +122,7 @@ function getData(props) {
       var entry = {
         id: i,
         event_id: myEvents[i].id,
+        code: myEvents[i].code,
         title: myEvents[i].title,
         start_date: new Date(myEvents[i].start_date).toLocaleDateString(),
         end_date: new Date(myEvents[i].end_date).toLocaleDateString(),
@@ -144,15 +153,20 @@ function getData(props) {
 var data;
 
 export default function MyEventsDataTable(props) {
-  if (data == undefined) {
-    data = getData(props);
-  }
-  console.log(data.rows);
-  var attendances = props.props.attendances;
-  var member = props.props.members[0];
   
-  return (
-    EventList({events: data.rows, attendances: attendances, member: member})
-    //DataTable(data)
-  );
+  if (props.props.members.length > 0) {
+  
+    if (data == undefined) {
+      data = getData(props);
+    }
+    console.log(data.rows);
+    var attendances = props.props.attendances;
+    var member = props.props.members[0];
+    
+    return (
+      EventList({events: data.rows, attendances: attendances, member: member})
+      //DataTable(data)
+    );
+  }
+  return (<></>);
 }

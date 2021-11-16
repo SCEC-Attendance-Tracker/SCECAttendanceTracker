@@ -148,14 +148,7 @@ QuickSearchToolbar.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-//var data;
-
 export default function DataTable(data) {
-  
-  /*if (data == undefined) {
-    data = getData(props);
-    //console.log(data);
-  }*/
   
   const classes = useStyles();
   
@@ -197,7 +190,8 @@ export default function DataTable(data) {
           onClick={deleteRow(params.id)}
         />,
       ],
-    });
+    }
+    );
     
   console.log(data.columns);
   

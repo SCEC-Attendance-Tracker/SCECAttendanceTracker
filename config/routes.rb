@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :links
   resources :feedbacks
   root to: 'home#show'
 
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :members, only: %i[index update show delete destroy]
+      resources :links, only: %i[update delete destroy create] 
       resources :calendar, only: %i[] do
         collection do
           get :is_subscribed

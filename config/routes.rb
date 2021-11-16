@@ -24,6 +24,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :members, only: %i[index update show delete destroy]
+      resources :calendar, only: %i[] do
+        collection do
+          get :is_subscribed
+          put :subscribe
+        end
+      end
     end
   end
 end

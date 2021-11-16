@@ -56,6 +56,8 @@ class EventCodeEntry extends React.Component {
     updateAttendance = () => {
         data = this.state.attendance_data;
 
+        data.attended = true;
+
         const token = document.querySelector('[name=csrf-token]').content; 
         fetch(`api/v1/attendances/${data.id}`, {
             method: 'PUT',

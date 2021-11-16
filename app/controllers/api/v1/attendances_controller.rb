@@ -60,20 +60,14 @@ module Api
 
       # PATCH/PUT /attendances/1 or /attendances/1.json
       def update
-        respond_to do |format|
-          if @attendance.update(attendance_params)
-            if attendance_params[:attended]
-              member = Member.find(attendance_params[:member_id])
-              member.update(total_attendance: member.total_attendance + 1)
-            end
-            format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
-            format.json { render :show, status: :ok, location: @attendance }
-            render json: @attendance
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @attendance.errors, status: :unprocessable_entity }
-            render json: @attendance.errors
+        if @attendance.update(attendance_params)
+          if attendance_params[:attended]
+            member = Member.find(attendance_params[:member_id])
+            member.update(total_attendance: member.total_attendance + 1)
           end
+          render json: @attendance
+        else
+          render json: @attendance.errors
         end
       end
 

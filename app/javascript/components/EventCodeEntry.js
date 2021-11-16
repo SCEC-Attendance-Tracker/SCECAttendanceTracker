@@ -44,9 +44,9 @@ class EventCodeEntry extends React.Component {
             if (data.length == 0) {
                 this.setState({create_new: true});
             } else {
-                if (!data.attended)
+                if (data[0].attended)
                     this.setState({has_attended: true})
-                this.setState({attendance_data: data})
+                this.setState({attendance_data: data[0]})
             }
         }
         ).catch((error) => {console.log(error);
@@ -54,17 +54,24 @@ class EventCodeEntry extends React.Component {
     }
 
     updateAttendance = () => {
-        data = this.state.attendance_data;
+        var data = this.state.attendance_data;
 
-        data.attended = true;
+        var update = {
+            event_id: data.event_id,
+            member_id: data.member_id,
+            rsvp: data.rsvp,
+            attended: true
+        }
 
         const token = document.querySelector('[name=csrf-token]').content; 
-        fetch(`api/v1/attendances/${data.id}`, {
+        fetch(`api/v1/attendances/${this.state.attendance_data.id}`, {
             method: 'PUT',
-            body: JSON.stringify(data), 
+            body: JSON.stringify(update), 
             headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
         }).then((response) => {
             if (response.ok) {
+                this.setState({has_attended: true})
+                console.log('Attendance Updated');
                 return true;
             }
         }).catch(error => {console.log(error)});
@@ -149,6 +156,7 @@ class EventCodeEntry extends React.Component {
                                     maxLength: 4, 
                                     fontSize: 12,
                                 }}
+                                autoFocus
                                 error
                                 value={code}
                                 helperText='Incorrect Code.'
@@ -160,6 +168,7 @@ class EventCodeEntry extends React.Component {
                                     maxLength: 4, 
                                     fontSize: 24,
                                 }}
+                                autoFocus
                                 value={code}
                                 helperText={`${code.length}/${4}`}
                                 variant='filled'

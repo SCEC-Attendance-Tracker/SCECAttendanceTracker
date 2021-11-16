@@ -145,6 +145,7 @@ class EventCodeEntry extends React.Component {
                         }}>
                             {this.state.show_error ? 
                             <TextField
+                                autoFocus
                                 inputProps={{
                                     maxLength: 4, 
                                     fontSize: 12,
@@ -160,6 +161,7 @@ class EventCodeEntry extends React.Component {
                                     maxLength: 4, 
                                     fontSize: 24,
                                 }}
+                                autoFocus
                                 value={code}
                                 helperText={`${code.length}/${4}`}
                                 variant='filled'

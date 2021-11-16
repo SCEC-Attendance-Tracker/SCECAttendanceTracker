@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :members, only: %i[index update show delete destroy]
       resources :events, only: %i[create index]
-      resources :attendances, only: %i[create index]
+      resources :attendances, only: %i[create index show update]
     end
   end
 end

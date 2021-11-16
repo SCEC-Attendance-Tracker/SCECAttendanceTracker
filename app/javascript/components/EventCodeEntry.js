@@ -16,7 +16,8 @@ class EventCodeEntry extends React.Component {
             has_attended: false,
         }
         console.log(this.state.member_id);
-        console.log(this.state.event_code);
+        console.log(this.state.event_id);
+        console.log(this.props);
     }
 
     componentDidMount = () => {
@@ -44,7 +45,7 @@ class EventCodeEntry extends React.Component {
             if (data.length == 0) {
                 this.setState({create_new: true});
             } else {
-                if (!data.attended)
+                if (data.attended)
                     this.setState({has_attended: true})
                 this.setState({attendance_data: data})
             }
@@ -54,7 +55,7 @@ class EventCodeEntry extends React.Component {
     }
 
     updateAttendance = () => {
-        data = this.state.attendance_data;
+        var data = this.state.attendance_data;
 
         data.attended = true;
 

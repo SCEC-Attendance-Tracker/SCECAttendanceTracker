@@ -1,4 +1,5 @@
-module V1
+module Api
+  module V1
     class EventsController < ApplicationController
         respond_to :json
 
@@ -19,6 +20,12 @@ module V1
                 puts @event.errors.full_messages
                 render json: @event.errors 
             end
+        end
+        
+        def destroy
+          @event = Event.find(params[:id])
+          @event.destroy
+          render json: { notice: 'Event deleted' }
         end
 
         private 
@@ -45,4 +52,5 @@ module V1
             @event = Event.find(params[:id])
         end
     end 
+  end
 end 

@@ -1,6 +1,7 @@
 // EditEventForm.js imports
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
 import { CloseIcon } from '@material-ui/icons';
+import { EditIcon } from '@material-ui/icons';
 import { Check, Close } from '@material-ui/icons';
 import { DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -23,7 +24,7 @@ const style = {
 };
 
 export default function EditEventModal() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -140,6 +141,7 @@ export default function EditEventModal() {
           const begin = this.state.beginDate;
           const end = this.state.endDate;
           const closeImg = {cursor:'pointer', float:'right', marginTop: '5px', width: '20px'};
+          console.log(this)
 
           return (
               <Box sx={style}>
@@ -193,11 +195,11 @@ export default function EditEventModal() {
   return (
     <div>
       <Button
-        variant="contained"
+        variant="text"
         color="primary"
         onClick={handleOpen}
       >
-        Edit Event
+        Edit
       </Button>
       <Modal
         open={open}
@@ -208,7 +210,6 @@ export default function EditEventModal() {
         <Box sx={style}>
           <EditEventForm onClose={handleClose}/>
         </Box>
-
       </Modal>
     </div>
   )

@@ -3,7 +3,7 @@ props: {member: Member.where({id: session[:member_id]}), page: "Events"} )%>
 
 <br>
 <%= react_component("CreateEventModal", {}) %>
-<%= react_component("EditEventModal", {}) %>
+<!-- <%= react_component("EditEventModal", {}) %> -->
 <br>
 
 <%= react_component("EventsDataTable",

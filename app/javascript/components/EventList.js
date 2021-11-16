@@ -270,15 +270,6 @@ export default function EventList({events, attendances = null, member = null, pa
                 maxWidth = 'sm'
             >
                 <DialogContent>
-<Typography variant = 'h6' component = 'h6'>
-{element.id}
-</Typography>
-<Typography variant = 'h6' component = 'h6'>
-{member.id}
-</Typography>
-<Typography variant = 'h6' component = 'h6'>
-{element.code}
-</Typography>
                     <Typography variant = 'h4' component = 'h4'>
                         {element.title}
                     </Typography>

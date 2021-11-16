@@ -63,6 +63,6 @@ var data;
 export default function AttendanceDataTable(props) {
   data = getData(props);
   return (
-    DataTableAlt(data)
+    <DataTableAlt data = {data} />
   );
 }

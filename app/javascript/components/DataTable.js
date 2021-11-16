@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core";
-// import { EditEventModal } from './EditEventModal.js';
+import { EditEventModal } from './EditEventModal.js';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -188,6 +188,20 @@ export default function DataTable(data, editable, deletable) {
     [],
   );
 
+  // const updateRow = React.useCallback(
+  //   (id) => () => {
+  //     console.log("Reached here"),
+  //     <EditEventModal id={id} open={true}/>
+  //   }
+  // )
+
+  const updateRow = (row) => {
+        console.log("Reached here")
+        return (
+          <EditEventModal id={row.event_id} open={true}/>
+        )
+  }
+
   console.log(data)
 
   data.columns.push(
@@ -201,6 +215,7 @@ export default function DataTable(data, editable, deletable) {
           label="Edit"
           onClick={() => {
             console.log(params)
+            updateRow(params.row)
           }}
         />,
         deletable && <GridActionsCellItem
@@ -210,9 +225,6 @@ export default function DataTable(data, editable, deletable) {
         />,
       ],
     });
-
-
-  console.log(data.columns.getActions);
 
   const dataColumns = React.useMemo(
     () => data.columns,

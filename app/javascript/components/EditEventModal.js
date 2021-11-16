@@ -22,8 +22,8 @@ const style = {
   p: 4,
 };
 
-export function EditEventModal() {
-  const [open, setOpen] = React.useState(false);
+export default function EditEventModal() {
+  const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -109,7 +109,7 @@ export function EditEventModal() {
       }
 
       // submits POST form to index route
-      submitEvent = () => {
+      updateEvent = () => {
           // gotta validate
           if (!this.validateInput()) {
               return;
@@ -180,7 +180,7 @@ export function EditEventModal() {
                           flexDirection: 'row-reverse'
                       }}>
                           <Button onClick={() => {
-                            this.submitEvent();
+                            this.updateEvent();
                           }}
                           startIcon={<Close/>}> Submit </Button>
                       </div>

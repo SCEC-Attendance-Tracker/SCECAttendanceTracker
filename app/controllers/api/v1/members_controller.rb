@@ -56,7 +56,7 @@ module Api
       private
 
       def member_params
-        params.require(:member).permit(:first_name, :last_name, :description)
+        params.require(:member).permit(:first_name, :last_name, :description, :is_member)
       end
 
       def set_member

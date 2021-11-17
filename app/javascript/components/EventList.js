@@ -193,7 +193,7 @@ export default function EventList({events, attendances = null, member = null, pa
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
-                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e)}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e).then(location.reload())}}>
                               <ListItemIcon className={classes.icon}>
                                   <EmojiPeopleIcon />
                               </ListItemIcon>

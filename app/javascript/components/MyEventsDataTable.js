@@ -19,6 +19,7 @@ function getData(props) {
   var member = props.props.members[0];
   var events = props.props.events;
   var attendances = props.props.attendances;
+  var isHome = props.props.page ? (props.props.page == "Home" ? true : false) : false;
   var a = attendances != undefined;
   var showCode = member ? (member.admin ? false : true) : false;
   
@@ -117,6 +118,10 @@ function getData(props) {
   }
   console.log(myEvents);
   
+  if (isHome) {
+    myEvents = events;
+  }
+  
   for (var i in myEvents) {
     if (myEvents[i]) {
       var entry = {
@@ -154,7 +159,9 @@ var data;
 
 export default function MyEventsDataTable(props) {
   
-  if (props.props.members.length > 0) {
+  console.log(props);
+  
+  if ((props.props.members[0]) || (props.props.page == "Home")) {
   
     if (data == undefined) {
       data = getData(props);

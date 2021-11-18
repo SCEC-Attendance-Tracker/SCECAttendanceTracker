@@ -161,7 +161,7 @@ export default function MyEventsDataTable(props) {
   
   console.log(props);
   
-  if ((props.props.members[0]) || (props.props.page == "Home")) {
+  if ((props.props.members.length > 0) || (props.props.page == "Home")) {
   
     if (data == undefined) {
       data = getData(props);

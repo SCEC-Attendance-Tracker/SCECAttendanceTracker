@@ -7,7 +7,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
 
-export default function HomePage(props) {
+export default function HomePage({roles, events}) {
 
   if(!props.props.events.current_events){
     props.props.events.current_events = null
@@ -15,15 +15,12 @@ export default function HomePage(props) {
   if(!props.props.events.upcoming_events){
     props.props.events.upcoming_events = null
   }
-  console.log(props.props.events.current_events);
-  
+  console.log(props.props.events);
+
   return (
     <Box>
-        <Grid container spacing = {5} alignItems = 'stretch'>
-            <Grid item xs = {8} style = {{height: '100%'}}>
-              <GoogleCalendar />
-            </Grid>
-            <Grid item xs = {4}>
+        <Grid container spacing = {5} alignItems = 'flex-start'>
+            <Grid item xs = {12} lg = {4} >
               <Typography variant="h5">
                 Current Events
               </Typography>
@@ -33,7 +30,10 @@ export default function HomePage(props) {
               </Typography>
               <MyEventsDataTable props = {{page: "Home", events: props.props.events.upcoming_events, attendances: props.props.attendances, members: props.props.member}}/>
             </Grid>
+            <Grid item xs = {12} lg = {8} style = {{height: '100%'}}>
+              <GoogleCalendar />
+            </Grid>
         </Grid>
     </Box>
-  );
+  ); 
 }

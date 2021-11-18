@@ -175,7 +175,7 @@ export default function EventList({events, attendances = null, member = null, pa
           sx = {{
               position: 'relative'
           }}>
-          {events && events.map((e) => {
+          {events.length !== 0 ? events.map((e) => {
             if (onHome && member) {
               console.log(e.id);
               console.log(member);
@@ -262,7 +262,13 @@ export default function EventList({events, attendances = null, member = null, pa
                       
                   </ListItem>
               );
-          })}
+          }
+          :
+            <ListItem>
+                <ListItemText 
+                    primary = {'No events in this category!'}/>
+            </ListItem>
+          )}
           {
             open && 
             <Dialog
@@ -313,11 +319,6 @@ export default function EventList({events, attendances = null, member = null, pa
                 </DialogContent>
             </Dialog>
           }
-          {!events &&
-              <ListItem>
-                  <ListItemText 
-                      primary = {'No events in this category!'}/>
-              </ListItem>}
       </List>
   );
 }

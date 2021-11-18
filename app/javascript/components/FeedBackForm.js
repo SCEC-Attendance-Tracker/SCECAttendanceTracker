@@ -19,7 +19,6 @@ class FeedBackForm extends React.Component {
             event: this.props.event,
             rating: 0,
             feedback: {
-                //figure out how to pull the event_id
                 event_id: this.props.event.id,
                 event_review: "",
                 event_rating_score: 0
@@ -166,10 +165,7 @@ class FeedBackForm extends React.Component {
                                                 <Button onClick={this.submitFeedback} startIcon={<Check />}> Submit </Button>
                                             </div>
                                         </div>
-                                    </> :
-                                    <div className='feedback-field'>
-                                        Show Feedback
-                                    </div>
+                                    </> :null
                                 }
                             </div>
                         </DialogContent>

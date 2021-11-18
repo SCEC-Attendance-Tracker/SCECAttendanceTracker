@@ -9,7 +9,8 @@
 				current_events: Event.where("? BETWEEN start_date AND end_date", DateTime.current),
 				upcoming_events: Event.where("? < start_date", DateTime.current)}, 
 			attendances: Attendance.all,
-			member: Member.where({id: session[:member_id]})
+			member: Member.where({id: session[:member_id]}),
+			roles: {member: session[:member], admin: session[:admin]}
 		}
 	)%>
 </div>

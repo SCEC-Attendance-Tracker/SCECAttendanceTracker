@@ -1,4 +1,4 @@
-import DataTableAlt from "./DataTableAlt";
+import DataTableAlt from "./DataTableAlt"; 
 
 function getData(props) {
   
@@ -61,7 +61,9 @@ function getData(props) {
 var data;
 
 export default function AttendanceDataTable(props) {
-  data = getData(props);
+  if (data == undefined) {
+    data = getData(props);
+  }
   return (
     <DataTableAlt data = {data} />
   );

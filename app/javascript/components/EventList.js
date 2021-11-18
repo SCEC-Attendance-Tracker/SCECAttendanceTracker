@@ -23,7 +23,9 @@ export default function EventList({events, roles}) {
         <div>
             <List
                 sx = {{
-                    position: 'relative'
+                    position: 'relative',
+                    maxHeight: '50%',
+                    overflow: 'auto'
                 }}>
                 {events.length !== 0 ? events.map((e) => {
                     var s_date = new Date(e.start_date).toLocaleString();
@@ -33,10 +35,10 @@ export default function EventList({events, roles}) {
                                 onClick = {() => handleItemClick(e)}
                                 selected = {element === e}
                             >
-                            <ListItemText 
-                                primary = {`${e.title}`}
-                                secondary = {`Start Date: ${s_date}`}
-                                 />
+                                <ListItemText 
+                                    primary = {`${e.title}`}
+                                    secondary = {`Start Date: ${s_date}\n`}
+                                />
                             </ListItemButton>
                         </ListItem>
                     ); 

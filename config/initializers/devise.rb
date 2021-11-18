@@ -11,7 +11,7 @@
 Devise.setup do |config|
   # Following line is for Google OAuth
   config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'], {
-    scope: 'userinfo.email,userinfo.profile,calendar.calendarlist'
+    scope: 'userinfo.email,userinfo.profile,calendar.calendarlist,calendar.events'
   }
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing

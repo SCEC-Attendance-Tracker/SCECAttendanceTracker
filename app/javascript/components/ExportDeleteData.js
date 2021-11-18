@@ -65,15 +65,16 @@ class ExportDeleteData extends React.Component {
     render = () => {        
         return (
             <div style={{
+                width: '100vm',
                 display: 'flex',
-                alignContent: 'middle', 
+                justifyContent: 'center', 
                 flexDirection: 'column'
             }}> 
                 <Typography variant='h2'>Admin Actions</Typography>
-                <div>
+                <div style={{width: '100%', margin: 'auto'}}>
                     <Typography margin='auto'>Export or Delete Website Data</Typography>
                 </div> 
-                <div>
+                <div margin='auto'>
                     <Button variant='outlined' margin='auto' onClick={this.createCSV}> Download Data </Button>
                     <Button variant='outlined' margin='auto' onClick={this.deleteDatabase}> Delete All Data </Button>
                 </div>

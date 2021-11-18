@@ -4,10 +4,12 @@ class SettingsController < ApplicationController
 
         if @member.admin == false 
             redirect_to(root_path)
+            return
         end 
 
         if @member.admin == nil 
             redirect_to(root_path)
+            return
         end 
 
         export_database
@@ -18,17 +20,22 @@ class SettingsController < ApplicationController
 
         if @member.admin == false 
             redirect_to(root_path)
+            return
         end
 
         if @member.admin == nil 
             redirect_to(root_path)
+            return
         end 
 
-        if !params[:delete]
+        if !params[:wipe]
             redirect_to(root_path)
+            return
         end
 
         wipe_database
+
+        redirect_to(root_path)
     end
 
     private 
@@ -39,7 +46,7 @@ class SettingsController < ApplicationController
         Feedback.delete_all 
         Attendance.delete_all
         Attachment.delete_all
-        AttachmentLink.delete_all
+        Link.delete_all
     end
 
     def export_database

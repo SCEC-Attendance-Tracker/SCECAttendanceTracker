@@ -1,15 +1,14 @@
 <%= react_component("NavBar", 
 props: {page: "SCEC Portal"} )%>
 
-<h6>You're Logged out! Log in to the Member Dashboard</h6>
-
-<%= react_component("pages/HomePage",
-	props: {
-		events: {
-			current_events: Event.where("? BETWEEN start_date AND end_date", DateTime.current),
-			upcoming_events: Event.where("? < start_date", DateTime.current)
-		}, 
-		attendances: Attendance.all
-	}
-)%>
+<div style = "margin-top: .5em;" >
+	<%= react_component("pages/HomePage",
+			events: {
+				current_events: Event.where("? BETWEEN start_date AND end_date", DateTime.current),
+				upcoming_events: Event.where("? < start_date", DateTime.current)}, 
+			attendances: Attendance.all,
+			member: Member.where({id: session[:member_id]}),
+			roles: {member: session[:member], admin: session[:admin]}
+	)%>
+</div>
 

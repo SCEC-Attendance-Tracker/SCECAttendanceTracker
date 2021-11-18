@@ -175,8 +175,8 @@ export default function EventList({events, attendances = null, member = null, pa
           sx = {{
               position: 'relative'
           }}>
-          {events.length !== 0 ? events.map((e) => {
-            if (onHome && member) {
+          {events && events.map((e) => {
+            if (onHome && (member == null)) {
               console.log(e.id);
               console.log(member);
               e.attended = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).attended;
@@ -189,7 +189,7 @@ export default function EventList({events, attendances = null, member = null, pa
                           secondary = {`${e.start_date}`}/>
                       
                       {/* Home Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` != 'true') && onHome && (member == null) && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -201,7 +201,7 @@ export default function EventList({events, attendances = null, member = null, pa
                       </div>
                       }
                       
-                      {(`${e.attended}` == 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` == 'true') && onHome && (member == null) && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
@@ -262,13 +262,7 @@ export default function EventList({events, attendances = null, member = null, pa
                       
                   </ListItem>
               );
-          }
-          :
-            <ListItem>
-                <ListItemText 
-                    primary = {'No events in this category!'}/>
-            </ListItem>
-          )}
+          })}
           {
             open && 
             <Dialog
@@ -319,6 +313,11 @@ export default function EventList({events, attendances = null, member = null, pa
                 </DialogContent>
             </Dialog>
           }
+          {!events &&
+              <ListItem>
+                  <ListItemText 
+                      primary = {'No events in this category!'}/>
+              </ListItem>}
       </List>
   );
 }

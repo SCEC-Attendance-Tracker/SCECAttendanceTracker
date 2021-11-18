@@ -159,9 +159,31 @@ var data;
 
 export default function MyEventsDataTable(props) {
   
-  console.log(props);
   
-  if ((props.props.members.length > 0) || (props.props.page == "Home")) {
+  
+  if (props.props.member == undefined) {
+    console.log("DOIFHOWDJKLNXOCILJBWDNOSJLFNOXJL");
+    console.log(props);
+    
+      var guest = {
+        id: -1,
+        is_member: false,
+        admin: false
+      }
+      props.props.members.push(guest);
+      console.log(props);
+      
+      data = getData(props);
+    console.log(data.rows);
+    var attendances = props.props.attendances;
+    var member = props.props.members[0];
+    
+    return (
+      EventList({events: data.rows, attendances: attendances})
+      //DataTable(data)
+    );
+  }
+  else if ((props.props.members.length > 0) || (props.props.page == "Home")) {
   
     if (data == undefined) {
       data = getData(props);

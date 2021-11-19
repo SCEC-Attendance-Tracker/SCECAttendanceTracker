@@ -166,6 +166,6 @@ export default function MemberDataTable(props) {
   data = getData(props);
   }
   return (
-    DataTable(data)
+    <DataTable data = {data}/>
   );
 }

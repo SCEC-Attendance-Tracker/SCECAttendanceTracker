@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
     t.datetime "end_date"
     t.string "description"
     t.string "location"
+    t.string "code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

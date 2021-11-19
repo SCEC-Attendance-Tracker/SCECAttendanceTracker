@@ -148,8 +148,16 @@ QuickSearchToolbar.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default function DataTable(data) {
+//var data;
+
+export default function DataTable({data, member = null}) {
   
+  /*if (data == undefined) {
+    data = getData(props);
+    //console.log(data);
+  }*/
+  console.log(member);
+  console.log(data);
   const classes = useStyles();
   
   const [searchText, setSearchText] = React.useState('');
@@ -180,31 +188,32 @@ export default function DataTable(data) {
     })
   }
   
-  data.columns.push(
-    {
-      field: 'actions',
-      type: 'actions',
-      width: 80,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Delete"
-          onClick={() => {
-            console.log(params);
-            if (params.row.start_time) {
-              deleteRow(params.row, 'events')
-            }
-            else if (params.row.first_name) {
-              deleteRow(params.row, 'members')
-            }
-            else if (params.rows.member_id && params.row.event_id) {
-              deleteRow(params.row, 'attendances')
-            }
-          }}
-        />,
-      ],
-    }
-    );
+  if (member != null) {
+    data.columns.push(
+      {
+        field: 'actions',
+        type: 'actions',
+        width: 80,
+        getActions: (params) => [
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={() => {
+              console.log(params);
+              if (params.row.start_time) {
+                deleteRow(params.row, 'events')
+              }
+              else if (params.row.first_name) {
+                deleteRow(params.row, 'members')
+              }
+              else if (params.rows.member_id && params.row.event_id) {
+                deleteRow(params.row, 'attendances')
+              }
+            }}
+          />,
+        ],
+      });
+  }
     
   console.log(data.columns);
   

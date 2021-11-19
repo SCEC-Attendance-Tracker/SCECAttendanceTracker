@@ -1,6 +1,9 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  ENV['GOOGLE_CALENDAR_API_KEY'] = 'AIzaSyCR2x14NDYQHh94VS3ag0j-uPk96U-7Z1I'
+  ENV['GOOGLE_OAUTH_CLIENT_ID'] = '466639305196-3o5i5nlsgoeau5gbq64j2oc8afg3imq6.apps.googleusercontent.com'
+  ENV['GOOGLE_OAUTH_CLIENT_SECRET'] = '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'
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time

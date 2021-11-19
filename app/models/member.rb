@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Member < ApplicationRecord
-  devise :omniauthable, omniauth_providers: [:google_oauth2]
+  devise :timeoutable, :omniauthable, omniauth_providers: [:google_oauth2]
 
   def self.from_google(email:, first_name:, last_name:, img_url:)
       create_with(email: email, first_name: first_name, last_name: last_name, 

@@ -11,7 +11,7 @@ export default function HomePage({roles, events}) {
   return (
     <Box>
         <Grid container spacing = {5} alignItems = 'flex-start'>
-            <Grid item xs = {12} lg = {4} >
+            <Grid item xs = {12} lg = {4}  sx = {{maxHeight: '100%'}}>
               <Typography variant="h5">
                 Current Events
               </Typography>

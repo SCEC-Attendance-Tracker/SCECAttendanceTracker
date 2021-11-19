@@ -1,29 +1,26 @@
 require 'google/api_client/client_secrets.rb'
 require 'google/apis/calendar_v3'
 require 'googleauth'
+
 module Api
     module V1
         $subscribed = nil
         class CalendarController < ApplicationController
             def is_subscribed 
-                if($subscribed.nil?)
-                    service = Google::Apis::CalendarV3::CalendarService.new
-                    service.authorization = google_secret.to_authorization
+                service = Google::Apis::CalendarV3::CalendarService.new
+                service.authorization = google_secret.to_authorization
 
-                    calendar_id = 'scecattendancetracker@gmail.com'
-                    begin 
-                        response = service.get_calendar_list(calendar_id)
-                    rescue Google::Apis::ClientError 
-                        $subscribed = false
-                    rescue Google::Apis::AuthorizationError
-                        sign_out_all_scopes
-                    else
-                        $subscribed = true
-                    end
-                    render json: {is_subscribed: $subscribed}
-                else 
-                    render json: {is_subscribed: $subscribed}
+                calendar_id = 'scecattendancetracker@gmail.com'
+                begin 
+                    response = service.get_calendar_list(calendar_id)
+                rescue Google::Apis::ClientError 
+                    $subscribed = false
+                rescue Google::Apis::AuthorizationError
+                    sign_out_all_scopes
+                else
+                    $subscribed = true
                 end
+                render json: {is_subscribed: $subscribed}
             end
 
             def subscribe

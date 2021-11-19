@@ -178,9 +178,9 @@ export default function EventList({events, attendances = null, member = false, p
           {events && events.map((e) => {
             console.log(member);
             if (onHome && member) {
-              console.log(e.id);
-              e.attended = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).attended;
-              e.rsvp = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).rsvp;
+              console.log(e.event_id);
+              e.attended = attendances.find(att => (att.event_id == e.event_id) && (att.member_id == member.id)).attended;
+              e.rsvp = attendances.find(att => (att.event_id == e.event_id) && (att.member_id == member.id)).rsvp;
             }
               return (
                   <ListItem className={classes.listCardItem}>

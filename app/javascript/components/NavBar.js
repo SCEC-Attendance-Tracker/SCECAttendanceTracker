@@ -169,6 +169,11 @@ export default function NavBar(props) {
 							</Link>
 						}
 						{ (member != undefined) &&
+							<Link href="/help">
+								<MenuItem className={classes.menuItem}>Help</MenuItem>
+							</Link>
+						}
+						{ (member != undefined) &&
 							<Link href="/members/sign_out">
 								<MenuItem className={classes.menuItem}>Sign Out</MenuItem>
 							</Link>

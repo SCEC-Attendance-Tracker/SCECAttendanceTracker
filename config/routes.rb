@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   resources :links
   resources :feedbacks
+  resources :help
   root to: 'home#show'
 
   resources :attendances

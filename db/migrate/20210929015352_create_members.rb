@@ -3,7 +3,6 @@ class CreateMembers < ActiveRecord::Migration[6.1]
     create_table :members do |t|
       t.boolean :is_member
       t.boolean :admin
-      t.string :google_event_id
       t.string :first_name
       t.string :last_name
       t.string :email

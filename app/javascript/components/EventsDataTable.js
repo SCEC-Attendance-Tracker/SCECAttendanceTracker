@@ -34,7 +34,7 @@ export default function EventsDataTable(props) {
     var a = attendances != undefined;
     
     console.log(member);
-    var showCode = member ? (member.admin ? false : true) : false;
+    var hideCode = member ? (member.admin ? false : true) : true;
     
     const columns = [
       {
@@ -55,7 +55,7 @@ export default function EventsDataTable(props) {
         field: 'code', 
         headerName: 'Code',
         width: 120,
-        hide: showCode
+        hide: hideCode
       },
       {
         headerClassName: 'theme-header',

@@ -68,9 +68,9 @@ const useStyles = makeStyles(
   { newTheme },
 );
 
-export default function EventList({events, attendances = null, member = null, page = ""}) {
+export default function EventList({events, attendances = null, member = false, page = ""}) {
   const onHome = (page == "Home") ? true : false;
-  const onEvents = !onHome;
+  const onEvents = onHome ? false : true;
   
   const classes = useStyles();
   var today = new Date();
@@ -176,9 +176,9 @@ export default function EventList({events, attendances = null, member = null, pa
               position: 'relative'
           }}>
           {events && events.map((e) => {
-            if (onHome && (member == null)) {
+            console.log(member);
+            if (onHome && member) {
               console.log(e.id);
-              console.log(member);
               e.attended = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).attended;
               e.rsvp = attendances.find(att => (att.event_id == e.id) && (att.member_id == member[0].id)).rsvp;
             }
@@ -189,7 +189,7 @@ export default function EventList({events, attendances = null, member = null, pa
                           secondary = {`${e.start_date}`}/>
                       
                       {/* Home Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && onHome && (member == null) && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -201,7 +201,7 @@ export default function EventList({events, attendances = null, member = null, pa
                       </div>
                       }
                       
-                      {(`${e.attended}` == 'true') && onHome && (member == null) && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` == 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
@@ -210,7 +210,7 @@ export default function EventList({events, attendances = null, member = null, pa
                       }
                       
                       {/* Events Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      {(`${e.attended}` != 'true') && onEvents && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -222,7 +222,7 @@ export default function EventList({events, attendances = null, member = null, pa
                           </ListItemButton>
                       </div>
                       }
-                      {(`${e.attended}` == 'true') && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) && onEvents &&
+                      {(`${e.attended}` == 'true') && onEvents && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>

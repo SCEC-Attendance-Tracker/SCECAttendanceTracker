@@ -110,17 +110,21 @@ function getData(props) {
   console.log(events)
   
   var myEvents = [];
-  for (var i in attendances) {
-    if (attendances[i].member_id == member.id) {
-      var e = events.find(x => x.id == attendances[i].event_id);
-      myEvents.push(e);
+  if (props.props.members && props.props.members.length > 0) {
+    for (var i in attendances) {
+      if (attendances[i].member_id == member.id) {
+        var e = events.find(x => x.id == attendances[i].event_id);
+        myEvents.push(e);
+      }
     }
   }
-  console.log(myEvents);
   
+  console.log(member)
   if (isHome) {
     myEvents = events;
   }
+  
+  console.log(myEvents);
   
   for (var i in myEvents) {
     if (myEvents[i]) {
@@ -135,12 +139,12 @@ function getData(props) {
         end_time: new Date(myEvents[i].end_date).toLocaleTimeString(),
         description: myEvents[i].description,
         location: myEvents[i].location,
-        rsvp: (attendances ? 
+        rsvp: (attendances && props.props.members ? 
                 (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)) ? 
                   ((attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)).rsvp) ? true : false ) 
                 : false) 
               : false),
-        attended: (attendances ? 
+        attended: (attendances && props.props.members ? 
                     (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)) ? 
                       (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)).attended ? true : false ) 
                     : false)
@@ -159,27 +163,18 @@ var data;
 
 export default function MyEventsDataTable(props) {
   
+  console.log(props);
   
-  
-  if (props.props.member == undefined) {
+  if (props.props.members == false) {
     console.log("DOIFHOWDJKLNXOCILJBWDNOSJLFNOXJL");
     console.log(props);
-    
-      var guest = {
-        id: -1,
-        is_member: false,
-        admin: false
-      }
-      props.props.members.push(guest);
-      console.log(props);
       
       data = getData(props);
     console.log(data.rows);
     var attendances = props.props.attendances;
-    var member = props.props.members[0];
     
     return (
-      EventList({events: data.rows, attendances: attendances})
+      EventList({events: data.rows, attendances: attendances, page: props.props.page})
       //DataTable(data)
     );
   }
@@ -187,13 +182,16 @@ export default function MyEventsDataTable(props) {
   
     if (data == undefined) {
       data = getData(props);
+    } else if (data != getData(props)){
+      data = getData(props);
     }
     console.log(data.rows);
     var attendances = props.props.attendances;
     var member = props.props.members[0];
     
+    console.log(member);
     return (
-      EventList({events: data.rows, attendances: attendances, member: member})
+      EventList({events: data.rows, attendances: attendances, member: member, page: props.props.page})
       //DataTable(data)
     );
   }

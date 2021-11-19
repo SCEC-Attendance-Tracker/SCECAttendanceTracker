@@ -52,6 +52,8 @@ class EventsController < ApplicationController
                                           event_params["end_date(4i)"].to_i,
                                           event_params["end_date(5i)"].to_i).change(:offset => '-0600')
 
+    code = create_code
+    @event.code = code
     event_object = Google::Apis::CalendarV3::Event.new
     event_object.summary = event_params[:title]
     event_object.start = start_date

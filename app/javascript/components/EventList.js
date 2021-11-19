@@ -96,6 +96,7 @@ export default function EventList({events, attendances = null, member = false, p
   const markRsvp = (row) => {
     const token = document.querySelector('[name=csrf-token]').content;
     var att = attendances.find(e => (e.event_id == row.event_id) && (e.member_id == member.id))
+    console.log(row);
     if (!att) {
       att = {
         id: attendances.length + 1,
@@ -176,12 +177,6 @@ export default function EventList({events, attendances = null, member = false, p
               position: 'relative'
           }}>
           {events && events.map((e) => {
-            console.log(member);
-            if (onHome && member) {
-              console.log(e.event_id);
-              e.attended = attendances.find(att => (att.event_id == e.event_id) && (att.member_id == member.id)).attended;
-              e.rsvp = attendances.find(att => (att.event_id == e.event_id) && (att.member_id == member.id)).rsvp;
-            }
               return (
                   <ListItem className={classes.listCardItem}>
                       <ListItemText 
@@ -201,11 +196,32 @@ export default function EventList({events, attendances = null, member = false, p
                       </div>
                       }
                       
-                      {(`${e.attended}` == 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` == 'true') && onHome && member &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
                           <CheckIcon className={classes.attendedIcon}/>
+                      </div>
+                      }
+                      
+                      {/* Home Page: RSVP */}
+                      {(`${e.rsvp}` == 'true') && (`${e.attended}` != 'true') && onHome && member &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'RSVP\'d'}/>
+                          <CheckIcon className={classes.attendedIcon}/>
+                      </div>
+                      }
+                      
+                      {(`${e.rsvp}` != 'true') && (`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date + ' ' + e.start_time}`)) > today) &&
+                      <div className={classes.listActions}>
+                          <ListItemText className={classes.listActionText}
+                          primary = {'RSVP'}/>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {markRsvp(e)}}>
+                              <ListItemIcon className={classes.icon}>
+                                  <RsvpIcon />
+                              </ListItemIcon>
+                          </ListItemButton>
                       </div>
                       }
                       

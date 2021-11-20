@@ -28,6 +28,22 @@ class EventsController < ApplicationController
   # POST /events or /events.json
   def create
     @event = Event.new(event_params)
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = google_secret.to_authorization
+    calendar_id = 'scectamu@gmail.com'
+    puts event_params[:start_date]
+    start_date = Google::Apis::CalendarV3::EventDateTime.new
+    start_date.date_time =  DateTime.new(event_params["start_date(1i)"].to_i, 
+                                          event_params["start_date(2i)"].to_i,
+                                          event_params["start_date(3i)"].to_i,
+                                          event_params["start_date(4i)"].to_i,
+                                          event_params["start_date(5i)"].to_i).change(:offset => '-0600')
+    end_date = Google::Apis::CalendarV3::EventDateTime.new
+    end_date.date_time =  DateTime.new(event_params["end_date(1i)"].to_i, 
+                                          event_params["end_date(2i)"].to_i,
+                                          event_params["end_date(3i)"].to_i,
+                                          event_params["end_date(4i)"].to_i,
+                                          event_params["end_date(5i)"].to_i).change(:offset => '-0600')
 
     respond_to do |format|
       if @event.save
@@ -42,6 +58,34 @@ class EventsController < ApplicationController
 
   # PATCH/PUT /events/1 or /events/1.json
   def update
+    @event = Event.find(params[:id])
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = google_secret.to_authorization
+    calendar_id = 'scectamu@gmail.com'
+
+    start_date = Google::Apis::CalendarV3::EventDateTime.new
+    start_date.date_time =  DateTime.new(event_params["start_date(1i)"].to_i, 
+                                          event_params["start_date(2i)"].to_i,
+                                          event_params["start_date(3i)"].to_i,
+                                          event_params["start_date(4i)"].to_i,
+                                          event_params["start_date(5i)"].to_i).change(:offset => '-0600')
+    end_date = Google::Apis::CalendarV3::EventDateTime.new
+    end_date.date_time =  DateTime.new(event_params["end_date(1i)"].to_i, 
+                                          event_params["end_date(2i)"].to_i,
+                                          event_params["end_date(3i)"].to_i,
+                                          event_params["end_date(4i)"].to_i,
+                                          event_params["end_date(5i)"].to_i).change(:offset => '-0600')
+
+    event_object = Google::Apis::CalendarV3::Event.new
+    event_object.summary = event_params[:title]
+    event_object.start = start_date
+    event_object.end = end_date
+    event_object.description = event_params[:description]
+    event_object.location = event_params[:location]
+    puts @event.google_event_id
+			
+		response = service.update_event(calendar_id, @event.google_event_id, event_object)
+
     respond_to do |format|
       if @event.update(event_params)
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
@@ -55,6 +99,11 @@ class EventsController < ApplicationController
 
   # DELETE /events/1 or /events/1.json
   def destroy
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = google_secret.to_authorization
+    calendar_id = 'scectamu@gmail.com'
+
+    response = service.delete_event(calendar_id, @event.google_event_id, send_updates: 'all')
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }

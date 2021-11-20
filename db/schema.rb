@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2021_10_03_040234) do
     t.string "title"
     t.datetime "start_date"
     t.datetime "end_date"
+    t.string "google_event_id"
     t.string "description"
     t.string "location"
     t.datetime "created_at", precision: 6, null: false

@@ -1,13 +1,20 @@
+
+require 'time'
+require 'google/api_client/client_secrets.rb'
+require 'google/apis/calendar_v3'
+require 'googleauth'
 # frozen_string_literal: true
+
 class EventsController < ApplicationController
   skip_before_action :authenticate_member!, only: [:index]
   before_action :set_event, only: %i[show edit update destroy]
-
+  skip_before_action :authenticate_member!, only: [:index]
   helper_method :sort_column, :sort_direction
   
   # GET /events or /events.json
   def index
     @events = Event.order(sort_column + " " + sort_direction)
+    @attendances = Attendance.all
   end
 
   def current_events
@@ -45,6 +52,17 @@ class EventsController < ApplicationController
                                           event_params["end_date(4i)"].to_i,
                                           event_params["end_date(5i)"].to_i).change(:offset => '-0600')
 
+    code = create_code
+    @event.code = code
+    event_object = Google::Apis::CalendarV3::Event.new
+    event_object.summary = event_params[:title]
+    event_object.start = start_date
+    event_object.end = end_date
+    event_object.description = event_params[:description]
+    event_object.location = event_params[:location]
+			
+		response = service.insert_event(calendar_id, event_object)
+    @event.google_event_id = response.id
     respond_to do |format|
       if @event.save
         format.html { redirect_to events_url, notice: 'Event was successfully created.' }
@@ -113,6 +131,20 @@ class EventsController < ApplicationController
 
   private
 
+  def create_code
+    code = ''
+    i = 0
+    while i < 4 do
+      char = rand(97..122)
+      if rand(0..1).zero?
+        char = char - 32
+      end 
+      code = code + char.chr
+      i += 1
+    end 
+    return code
+  end
+
   def sort_column
     Event.column_names.include?(params[:sort]) ? params[:sort] : "id"
   end
@@ -130,4 +162,16 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(:title, :start_date, :end_date, :description, :location)
   end
+
+  def google_secret
+		scope = 'https://www.googleapis.com/auth/calendar.events.owned'
+		Google::APIClient::ClientSecrets.new ({
+			'web' => {
+				'access_token' => session[:g_credentials]['token'],
+				'client_id' => ENV['GOOGLE_OAUTH_CLIENT_ID'],
+				'client_secret' => ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
+				'scope' => scope
+			}
+		}) 
+	end
 end

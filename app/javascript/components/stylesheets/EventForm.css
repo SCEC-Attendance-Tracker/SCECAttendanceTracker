@@ -1,0 +1,15 @@
+.event-field {
+    display: flex; 
+    flex-direction: column; 
+}
+
+.event-field-dates {
+    display: flex;
+    flex-direction: row;
+}
+
+.time-pick {
+    width: 50%;
+    display: flex; 
+    flex-direction:column;
+}

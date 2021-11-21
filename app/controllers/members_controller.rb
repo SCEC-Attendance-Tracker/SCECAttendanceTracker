@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: true 
 
 class MembersController < ApplicationController
   skip_before_action :authenticate_member!, only: [:new]

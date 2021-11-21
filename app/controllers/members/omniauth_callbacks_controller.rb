@@ -11,7 +11,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         #save session variables: id, member & admin
         session[:member_id] = check_member.id
         session[:member] = check_member.is_member
-        session[:admin] = check_member.is_admin
+        session[:admin] = check_member.admin
 
         session[:g_credentials] = request.env['omniauth.auth'].credentials
         redirect_to root_path
@@ -26,7 +26,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         #save session variables: id, member & admin
         session[:member_id] = member.id
         session[:member] = member.is_member
-        session[:admin] = member.is_admin
+        session[:admin] = member.admin
 
         session[:g_credentials] = request.env['omniauth.auth'].credentials
         redirect_to new_member_path({email: google_params[:email]})

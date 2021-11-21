@@ -83,7 +83,7 @@ class AttendancesController < ApplicationController
           member = Member.find(attendance_params[:member_id])
           member.update(total_attendance: member.total_attendance + 1)
 
-          format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
+          format.html { redirect_to attendances_url, notice: 'Attendance was successfully created.' }
           format.json { render :show, status: :created, location: @attendance }
         else
           format.html { render :new, status: :unprocessable_entity }
@@ -103,7 +103,7 @@ class AttendancesController < ApplicationController
   def update
     respond_to do |format|
       if @attendance.update(attendance_params)
-        format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
+        format.html { redirect_to attendances_url, notice: 'Attendance was successfully updated.' }
         format.json { render :show, status: :ok, location: @attendance }
       else
         format.html { render :edit, status: :unprocessable_entity }

@@ -5,7 +5,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       check_member = Member.find_by(email: google_params[:email])
       if(check_member)
         sign_in check_member, event: :authentication
-        if(auth.info.image != check_member.img_url)
+        if(!defined?(check_member.img_url) & auth.info.image != check_member.img_url)
           check_member.update({img_url: auth.info.image})
         end 
         #save session variables: id, member & admin

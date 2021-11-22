@@ -178,7 +178,7 @@ export default function EventList({events, attendances = null, member = false, p
           }}>
           {events && events.map((e) => {
               return (
-                  <ListItem className={classes.listCardItem}>
+                  <ListItem className={classes.listCardItem} onClick={() => {handleItemClick(e)}}>
                       <ListItemText 
                           primary = {`${e.title}`}
                           secondary = {`${e.start_date}`}/>

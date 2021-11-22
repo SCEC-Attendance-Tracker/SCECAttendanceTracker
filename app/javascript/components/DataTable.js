@@ -162,6 +162,7 @@ export default function DataTable({data, member = null}) {
   
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
+  var hideColumn = member ? (member.admin ? false : true) : true;
 
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
@@ -194,6 +195,7 @@ export default function DataTable({data, member = null}) {
         field: 'actions',
         type: 'actions',
         width: 80,
+        hide: hideColumn,
         getActions: (params) => [
           <GridActionsCellItem
             icon={<DeleteIcon />}

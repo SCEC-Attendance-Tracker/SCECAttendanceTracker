@@ -59,6 +59,7 @@ const useStyles = makeStyles(
         alignItems: 'flex-start',
         flexWrap: 'wrap',
         width: '100%',
+        padding: '0 10px'
       },
       textField: {
         [theme.breakpoints.down('xs')]: {
@@ -105,6 +106,34 @@ const useStyles = makeStyles(
   { newTheme },
 );
 
+const deleteRow = (row, controller) => {
+  const token = document.querySelector('[name=csrf-token]').content;
+  fetch(`/api/v1/${controller}/${row.event_id}`, {
+    method: 'DELETE', 
+    headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+  }).then(() => {
+    //location.reload();
+  })
+}
+
+function DeleteSelected(props) {
+  return (
+    <IconButton
+      aria-label="Delete"
+      size="small"
+      onClick={() => {
+        console.log(props.rows);
+        for (var i in props.rows) {
+          console.log(props.rows[i]);
+          deleteRow(props.rows[i], props.controller)
+        }
+      }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  )
+}
+
 function QuickSearchToolbar(props) {
   const classes = useStyles();
   
@@ -137,6 +166,9 @@ function QuickSearchToolbar(props) {
           }}
         />
         <GridToolbarExport className={classes.actionButton}/>
+        {props.admin &&
+          <DeleteSelected rows={props.selectedRows} controller={props.controller} />
+        }
       </div>
     </div>
   );
@@ -156,12 +188,32 @@ export default function DataTable({data, member = null}) {
     data = getData(props);
     //console.log(data);
   }*/
+  var controller;
+  for (var col in data.columns) {
+    var attendanceCheck = 0;
+    console.log(col)
+    if (data.columns[col].field == 'start_time') {
+      controller = 'events'; break;
+    }
+    else if (data.columns[col].field == 'first_name') {
+      controller = 'members'; break;
+    }
+    else if (data.columns[col].field == 'member_id' || data.columns[col].field == 'event_id') {
+      attendanceCheck = attendanceCheck + 1;
+    }
+    if (attendanceCheck >= 2) {
+      controller = 'attendances'; break;
+    }
+  }
+  
+  console.log(controller);
   console.log(member);
   console.log(data);
   const classes = useStyles();
   
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
+  const [selectedRows, setSelectedRows] = React.useState([]);
   var hideColumn = member ? (member.admin ? false : true) : true;
 
   const requestSearch = (searchValue) => {
@@ -174,20 +226,23 @@ export default function DataTable({data, member = null}) {
     });
     setDataRows(filteredRows);
   };
+  
+  const selectionChange = (rows) => {
+    setSelectedRows(rows);
+    /*const filteredRows = data.rows.filter((row) => {
+      return Object.keys(row).some((field) => {
+        return searchRegex.test(row[field].toString());
+      });
+    });*/
+    console.log(selectedRows);
+    console.log(rows);
+    console.log(selectedRows);
+    //setSelectedRows(selectedRows);
+  }
 
   React.useEffect(() => {
     setDataRows(data.rows);
   }, [data.rows]);
-  
-  const deleteRow = (row, controller) => {
-    const token = document.querySelector('[name=csrf-token]').content;
-    fetch(`/api/v1/${controller}/${row.event_id}`, {
-      method: 'DELETE', 
-      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
-    }).then(() => {
-      location.reload();
-    })
-  }
   
   if (member != null) {
     data.columns.push(
@@ -208,7 +263,7 @@ export default function DataTable({data, member = null}) {
               else if (params.row.first_name) {
                 deleteRow(params.row, 'members')
               }
-              else if (params.rows.member_id && params.row.event_id) {
+              else if (params.row.member_id && params.row.event_id) {
                 deleteRow(params.row, 'attendances')
               }
             }}
@@ -234,6 +289,9 @@ export default function DataTable({data, member = null}) {
             value: searchText,
             onChange: (event) => requestSearch(event.target.value),
             clearSearch: () => requestSearch(''),
+            selectedRows: selectedRows,
+            controller: controller,
+            admin: !hideColumn
           },
         }}
         rows={dataRows}
@@ -241,6 +299,15 @@ export default function DataTable({data, member = null}) {
         pageSize={10}
         rowsPerPageOptions={[10]}
         checkboxSelection
+        onSelectionModelChange={(ids) => {
+          const selectedIDs = new Set(ids);
+          const selectedRowData = data.rows.filter((row) =>
+            selectedIDs.has(row.id.toString()),
+          );
+          console.log(selectedRowData);
+          console.log(selectedIDs);
+          selectionChange(selectedRowData);
+        }}
       />
     </div>
   );

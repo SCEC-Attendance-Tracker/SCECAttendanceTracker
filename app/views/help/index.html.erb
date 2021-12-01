@@ -1,0 +1,9 @@
+<%# <h1>Help Page</h1> %>
+<%= react_component("NavBar", 
+					props: {member: Member.where({id: session[:member_id]}), page: "Help"} )%>
+					
+<div style = "margin-top: .5em;" >
+	<%= react_component("pages/HelpPage",
+			roles: {member: session[:member], admin: session[:admin]}
+	)%>
+</div>

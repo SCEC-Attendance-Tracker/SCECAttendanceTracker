@@ -3,7 +3,7 @@ import {Button} from "@material-ui/core";
 import {Box} from "@material-ui/core";
 import {Typography} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
-
+import FeedBackForm from "./FeedBackForm";
 /**
  * Profile Page Component 
  * Written by Noah Miner
@@ -66,7 +66,7 @@ class ProfilePage extends React.Component {
   returnDuesStatement(paid_dues) {
     if (paid_dues) {
       return (
-        <Typography id="profile-page-text">
+        <Typography id="">
           Your dues are paid!
         </Typography>
       );
@@ -150,12 +150,75 @@ class ProfilePage extends React.Component {
       alert(this.state.error);
     }
   }
-
+   
+  /*getRSVPs = () => {
+    const url = "api/v1/events/index";
+    fetch(url)
+      .then((data) => {
+        if (data.ok) {
+          return data.json();
+        }
+        throw new Error("Network error.");
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => message.error("Error: " + err));
+  };*/
+  
+  /*
+  getAttendances = () => {
+    fetch(`/api/v1/attendances/`, {
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then((response) => response.json())
+    .then(data => {
+      var member = this.state.member_edit;
+      console.log(data);
+      
+      for (var e in data) {
+        var row = data[e];
+        console.log(row);
+        
+        
+        if ((member.id  == row.member_id) && row.rsvp) {
+          //arr.push(row.event_id);
+        }
+        
+      }
+    })
+  }
+  
+  getRSVPs = () => {
+    fetch(`/api/v1/events/`, {
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then((response) => response.json())
+    .then(data => {
+      var member = this.state.member_edit;
+      var eventsRSVPd = [];
+      
+      console.log(data);
+      this.getAttendances();
+      
+      console.log(eventsRSVPd);
+      
+      for (var e in data) {
+        var row = data[e];
+        
+        console.log(row);
+        
+      }
+    })
+  }
+  */
+  
   render() {
     const paid_dues = false;//this.state.member_info.paid_dues;
     var first_name = this.state.member_edit.first_name;
     var last_name = this.state.member_edit.last_name;
     var description = this.state.member_edit.description;
+    
     const style = {
       position: 'absolute', 
       top: '25%', 
@@ -182,13 +245,9 @@ class ProfilePage extends React.Component {
             </Typography>
             }
           </div>
-          {this.state.is_owner &&
-          <div className="edit" style={{width:'40%'}} display="inline-block">
-            <Button onClick={this.handleEdit}> {this.state.editable ? "Submit" : "Edit"} </Button>
-            {this.state.editable ? "" : <Button onClick={this.handleDelete}>Delete Profile</Button>}
-          </div>
-          }
+          
         </div>
+        
         <div className="email">
           <Typography id="profile-page-label" variant="overline" component="h2">
             Email:
@@ -197,6 +256,7 @@ class ProfilePage extends React.Component {
             {this.state.member_info.email}
           </Typography>
         </div>
+        
         <div className="description">
           {this.state.editable ? 
           <TextField id="outlined" label="Description" name="description" size='medium' value={description} onChange={this.handleInputChange}/>
@@ -205,12 +265,13 @@ class ProfilePage extends React.Component {
           <Typography id="profile-page-label" variant="overline" component="h2">
             About Me:
           </Typography>
-          <Typography id="profile-page-text" sx={{ mt: 2 }}>
+          <Typography id="" sx={{ mt: 2 }}>
             {this.state.member_info.description}
           </Typography>
           </>
           }
         </div>
+        
         <div className="attendance-points">
           {this.state.is_owner ? 
             <Typography id="profile-page-label" variant="overline"> 
@@ -221,6 +282,7 @@ class ProfilePage extends React.Component {
               {this.state.member_info.total_attendance}
             </Typography> : ""}
         </div>
+        
         <div className="paid-dues">
           {this.state.is_owner ?
             <Typography id="profile-page-label" variant="overline"> 
@@ -229,6 +291,15 @@ class ProfilePage extends React.Component {
           {this.state.is_owner ? 
             this.returnDuesStatement(paid_dues) : ""}
         </div>
+        
+        
+        
+        {this.state.is_owner &&
+          <div className="edit" style={{width:'40%'}} display="inline-block">
+            <Button onClick={this.handleEdit}> {this.state.editable ? "Submit" : "Edit"} </Button>
+            {this.state.editable ? "" : <Button onClick={this.handleDelete}>Delete Profile</Button>}
+          </div>
+        }
       </Box></>
     );
   }

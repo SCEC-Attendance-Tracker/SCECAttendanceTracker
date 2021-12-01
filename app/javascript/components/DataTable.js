@@ -9,6 +9,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core";
 import EditEventModal from './EditEventModal';
@@ -38,13 +39,13 @@ const useStyles = makeStyles(
         padding: theme.spacing(0.5, 0.5, 0),
         justifyContent: 'space-between',
         display: 'flex',
-        alignItems: 'flex-start',
+        //alignItems: 'flex-start',
         flexWrap: 'wrap',
         width: '100%',
       },
       grid: {
-        marginTop: '30px',
-
+        marginTop: '10px',
+        
         '& .MuiDataGrid-main': {
           width: '100%',
         },
@@ -60,7 +61,7 @@ const useStyles = makeStyles(
         display: 'flex',
         alignItems: 'flex-start',
         flexWrap: 'wrap',
-        width: '100%',
+        margin: '0 10px'
       },
       textField: {
         [theme.breakpoints.down('xs')]: {
@@ -107,15 +108,74 @@ const useStyles = makeStyles(
   { newTheme },
 );
 
+const deleteRow = (row, controller) => {
+  const token = document.querySelector('[name=csrf-token]').content;
+  fetch(`/api/v1/${controller}/${row.event_id}`, {
+    method: 'DELETE', 
+    headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+  }).then(() => {
+    location.reload();
+  })
+}
+
+const markMembership = (row) => {
+  const token = document.querySelector('[name=csrf-token]').content;
+  var mem = {
+    id: row.member_id,
+    is_member: true
+  }
+  return fetch(`/api/v1/members/${mem.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(mem),
+    headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+  }).then(() => {
+    location.reload();
+  }).catch((error) => { console.error(error) });
+}
+
+function DeleteSelected(props) {
+  return (
+    <IconButton className={useStyles().actionButton}
+      aria-label="Delete"
+      title="Delete"
+      size="small"
+      onClick={() => {
+        console.log(props.rows);
+        for (var i in props.rows) {
+          console.log(props.rows[i]);
+          deleteRow(props.rows[i], props.controller)
+        }
+      }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  )
+}
+
+function MakeMember(props) {
+  return (
+    <IconButton className={useStyles().actionButton}
+      aria-label="Approve Member"
+      role='tooltip'
+      size="small"
+      onClick={() => {
+        console.log(props.rows);
+        for (var i in props.rows) {
+          console.log(props.rows[i]);
+          markMembership(props.rows[i])
+        }
+      }}
+    >
+      <PersonAddIcon />
+    </IconButton>
+  )
+}
+
 function QuickSearchToolbar(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.toolbar}>
-      <div>
-        <GridToolbarFilterButton className={classes.actionButton}/>
-        <GridToolbarDensitySelector className={classes.actionButton}/>
-      </div>
       <div>
         <TextField
           variant="standard"
@@ -138,6 +198,16 @@ function QuickSearchToolbar(props) {
             ),
           }}
         />
+        <GridToolbarFilterButton className={classes.actionButton}/>
+        <GridToolbarDensitySelector className={classes.actionButton}/>
+      </div>
+      <div>
+        {props.admin && props.controller == 'members' &&
+          <MakeMember rows={props.selectedRows} />
+        }
+        {props.admin &&
+          <DeleteSelected rows={props.selectedRows} controller={props.controller} />
+        }
         <GridToolbarExport className={classes.actionButton}/>
       </div>
     </div>
@@ -152,18 +222,40 @@ QuickSearchToolbar.propTypes = {
 
 //var data;
 
-export default function DataTable(data, editable, deletable) {
-
+export default function DataTable({data, member = null}) {
+  
   /*if (data == undefined) {
     data = getData(props);
     //console.log(data);
   }*/
-
+  var controller;
+  for (var col in data.columns) {
+    var attendanceCheck = 0;
+    console.log(col)
+    if (data.columns[col].field == 'start_time') {
+      controller = 'events'; break;
+    }
+    else if (data.columns[col].field == 'first_name') {
+      controller = 'members'; break;
+    }
+    else if (data.columns[col].field == 'member_id' || data.columns[col].field == 'event_id') {
+      attendanceCheck = attendanceCheck + 1;
+    }
+    if (attendanceCheck >= 2) {
+      controller = 'attendances'; break;
+    }
+  }
+  
+  console.log(controller);
+  console.log(member);
+  console.log(data);
+  
   const classes = useStyles();
 
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
-
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  var hideColumn = member ? (member.admin ? false : true) : true;
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
@@ -174,65 +266,48 @@ export default function DataTable(data, editable, deletable) {
     });
     setDataRows(filteredRows);
   };
+  
+  const selectionChange = (rows) => {
+    setSelectedRows(rows);
+    /*const filteredRows = data.rows.filter((row) => {
+      return Object.keys(row).some((field) => {
+        return searchRegex.test(row[field].toString());
+      });
+    });*/
+    //setSelectedRows(selectedRows);
+  }
 
   React.useEffect(() => {
     setDataRows(data.rows);
   }, [data.rows]);
-
-  const deleteRow = React.useCallback(
-    (id) => () => {
-      setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+  
+  if (member != null) {
+    data.columns.push(
+      {
+        field: 'actions',
+        type: 'actions',
+        width: 80,
+        hide: hideColumn,
+        getActions: (params) => [
+          controller == 'events' && <EditEventModal id={params.row.event_id}/>,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={() => {
+              console.log(params);
+              deleteRow(params.row, controller)
+            }}
+          />,
+        ],
       });
-    },
-    [],
-  );
-
-  // const updateRow = React.useCallback(
-  //   (id) => () => {
-  //     console.log("Reached here"),
-  //     <EditEventModal id={id} open={true}/>
-  //   }
-  // )
-
-  // const updateRow = (row) => {
-  //       console.log("Reached here")
-  //       return (
-  //         <EditEventModal id={row.event_id}/>
-  //         // id={row.event_id} open={open}
-  //       )
-  // }
-
-  console.log(data)
-
-  data.columns.push(
-    {
-      field: 'actions',
-      type: 'actions',
-      width: 120,
-      getActions: (params) => [
-        editable && <EditEventModal id={params.row.event_id}/>,
-        // editable && <GridActionsCellItem
-        //   icon={<EditIcon />}
-        //   label="Edit"
-        //   onClick={() => {
-        //     console.log(params)
-        //     updateRow(params.row)
-        //   }}
-        // />,
-        deletable && <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Deleted"
-          onClick={deleteRow(params.id)}
-        />,
-      ],
-    });
-
+  }
+    
+  console.log(data.columns);
+  
   const dataColumns = React.useMemo(
     () => data.columns,
     [deleteRow],
   );
-
 
   return (
     <div style={{ height: '50em', width: '100%'}}>
@@ -244,12 +319,25 @@ export default function DataTable(data, editable, deletable) {
             value: searchText,
             onChange: (event) => requestSearch(event.target.value),
             clearSearch: () => requestSearch(''),
+            selectedRows: selectedRows,
+            controller: controller,
+            admin: !hideColumn
           },
         }}
         rows={dataRows}
         columns={dataColumns}
         pageSize={10}
         rowsPerPageOptions={[10]}
+        checkboxSelection
+        onSelectionModelChange={(ids) => {
+          const selectedIDs = new Set(ids);
+          const selectedRowData = data.rows.filter((row) =>
+            selectedIDs.has(row.id.toString()),
+          );
+          console.log(selectedRowData);
+          console.log(selectedIDs);
+          selectionChange(selectedRowData);
+        }}
       />
     </div>
   );

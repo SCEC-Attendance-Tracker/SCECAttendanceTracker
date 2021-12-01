@@ -17,12 +17,12 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  borderRadius: '4px',
   boxShadow: 24,
   p: 4,
 };
-
-export default function NewEventModal() {
+const primary = '#500000';
+export default function CreateEventModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -182,7 +182,7 @@ export default function NewEventModal() {
                           <Button onClick={() => {
                             this.submitEvent();
                           }}
-                          startIcon={<Close/>}> Submit </Button>
+                          startIcon={<Check/>}> Submit </Button>
                       </div>
                   </div>
               </Box>
@@ -193,8 +193,8 @@ export default function NewEventModal() {
   return (
     <div>
       <Button
-        variant="contained"
-        color="primary"
+        variant='contained'
+        color='primary'
         onClick={handleOpen}
       >
         New Event

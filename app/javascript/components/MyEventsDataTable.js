@@ -19,7 +19,9 @@ function getData(props) {
   var member = props.props.members[0];
   var events = props.props.events;
   var attendances = props.props.attendances;
+  var isHome = props.props.page ? (props.props.page == "Home" ? true : false) : false;
   var a = attendances != undefined;
+  var showCode = member ? (member.admin ? false : true) : false;
   
   const columns = [
     {
@@ -34,6 +36,13 @@ function getData(props) {
       headerName: 'Event ID',
       width: 100,
       hide: true
+    },
+    {
+      headerClassName: 'theme-header', 
+      field: 'code', 
+      headerName: 'Code',
+      width: 120,
+      hide: showCode
     },
     {
       headerClassName: 'theme-header',
@@ -101,12 +110,20 @@ function getData(props) {
   console.log(events)
   
   var myEvents = [];
-  for (var i in attendances) {
-    if (attendances[i].member_id == member.id) {
-      var e = events.find(x => x.id == attendances[i].event_id);
-      myEvents.push(e);
+  if (props.props.members && props.props.members.length > 0) {
+    for (var i in attendances) {
+      if (attendances[i].member_id == member.id) {
+        var e = events.find(x => x.id == attendances[i].event_id);
+        myEvents.push(e);
+      }
     }
   }
+  
+  console.log(member)
+  if (isHome) {
+    myEvents = events;
+  }
+  
   console.log(myEvents);
   
   for (var i in myEvents) {
@@ -114,6 +131,7 @@ function getData(props) {
       var entry = {
         id: i,
         event_id: myEvents[i].id,
+        code: myEvents[i].code,
         title: myEvents[i].title,
         start_date: new Date(myEvents[i].start_date).toLocaleDateString(),
         end_date: new Date(myEvents[i].end_date).toLocaleDateString(),
@@ -121,12 +139,12 @@ function getData(props) {
         end_time: new Date(myEvents[i].end_date).toLocaleTimeString(),
         description: myEvents[i].description,
         location: myEvents[i].location,
-        rsvp: (attendances ? 
+        rsvp: (attendances && props.props.members ? 
                 (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)) ? 
                   ((attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)).rsvp) ? true : false ) 
                 : false) 
               : false),
-        attended: (attendances ? 
+        attended: (attendances && props.props.members ? 
                     (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)) ? 
                       (attendances.find(e => (e.event_id == myEvents[i].id) && (e.member_id == member.id)).attended ? true : false ) 
                     : false)
@@ -144,15 +162,38 @@ function getData(props) {
 var data;
 
 export default function MyEventsDataTable(props) {
-  if (data == undefined) {
-    data = getData(props);
-  }
-  console.log(data.rows);
-  var attendances = props.props.attendances;
-  var member = props.props.members[0];
   
-  return (
-    EventList({events: data.rows, attendances: attendances, member: member})
-    //DataTable(data)
-  );
+  console.log(props);
+  
+  if (props.props.members == false) {
+    console.log("DOIFHOWDJKLNXOCILJBWDNOSJLFNOXJL");
+    console.log(props);
+      
+      data = getData(props);
+    console.log(data.rows);
+    var attendances = props.props.attendances;
+    
+    return (
+      EventList({events: data.rows, attendances: attendances, page: props.props.page})
+      //DataTable(data)
+    );
+  }
+  else if ((props.props.members.length > 0) || (props.props.page == "Home")) {
+  
+    if (data == undefined) {
+      data = getData(props);
+    } else if (data != getData(props)){
+      data = getData(props);
+    }
+    console.log(data.rows);
+    var attendances = props.props.attendances;
+    var member = props.props.members[0];
+    
+    console.log(member);
+    return (
+      EventList({events: data.rows, attendances: attendances, member: member, page: props.props.page})
+      //DataTable(data)
+    );
+  }
+  return (<></>);
 }

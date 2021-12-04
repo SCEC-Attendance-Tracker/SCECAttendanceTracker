@@ -119,7 +119,7 @@ export default function EditEventModal(props) {
               return;
           }
           const token = document.querySelector('[name=csrf-token]').content;
-          fetch(`/api/v1/events/`, {
+          fetch(`/api/v1/events/${this.state.event.id}`, {
               method: 'PUT',
               body: JSON.stringify({event: this.state.event}),
               headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }

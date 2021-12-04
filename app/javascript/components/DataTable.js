@@ -297,7 +297,7 @@ export default function DataTable({data, member = null}) {
             label="Delete"
             onClick={() => {
               console.log(params);
-              //deleteRow(params.row, controller)
+              deleteRow(params.row, controller)
             }}
           />,
         ],

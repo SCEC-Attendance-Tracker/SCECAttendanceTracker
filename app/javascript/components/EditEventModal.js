@@ -45,7 +45,7 @@ export default function EditEventModal(props) {
                   description: event.description,
                   location: event.location,
                   title: event.title,
-                  id: event.id
+                  id: event.event_id
               }
           };
       }
@@ -118,6 +118,7 @@ export default function EditEventModal(props) {
           if (!this.validateInput()) {
               return;
           }
+          console.log(this.state.event.id);
           const token = document.querySelector('[name=csrf-token]').content;
           fetch(`/api/v1/events/${this.state.event.id}`, {
               method: 'PUT',

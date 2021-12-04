@@ -24,11 +24,13 @@ const useStyles = makeStyles(
   (theme) =>
     createStyles({
       listCard: {
-        padding: '0px 16px !important',
-        borderRadius: '4px',
-        border: '1px solid #DDD',
-        marginTop: '30px',
-        '& .makeStyles-listCardItem-7:last-child': {
+        '& > li': {
+          padding: '0px 16px !important',
+          borderRadius: '4px',
+          border: '1px solid #DDD',
+          marginTop: '30px',
+        },
+        '& > li:last-child': {
           borderBottom: '1px solid transparent !important',
           marginBottom: '0px !important'
         }

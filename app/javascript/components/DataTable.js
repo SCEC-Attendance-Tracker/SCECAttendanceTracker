@@ -231,7 +231,6 @@ export default function DataTable({data, member = null}) {
   var controller;
   for (var col in data.columns) {
     var attendanceCheck = 0;
-    console.log(col)
     if (data.columns[col].field == 'start_time') {
       controller = 'events'; break;
     }

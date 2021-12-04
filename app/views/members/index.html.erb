@@ -2,7 +2,7 @@
 props: {member: Member.where({id: session[:member_id]}), page: "Members"} )%>
 
 <%= react_component("MembersDataTable", 
-props: {members: @member})%>
+props: {members: @member, member: Member.where({id: session[:member_id]})})%>
 
 <div class="Members index">
   <table class="listing" summary="Member list">

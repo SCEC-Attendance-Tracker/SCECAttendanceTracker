@@ -165,7 +165,8 @@ export default function MemberDataTable(props) {
   if (data == undefined) {
   data = getData(props);
   }
+  console.log(props)
   return (
-    <DataTable data = {data}/>
+    <DataTable data = {data} member = {props.props.member[0]}/>
   );
 }

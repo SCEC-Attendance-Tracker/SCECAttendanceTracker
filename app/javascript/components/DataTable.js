@@ -8,6 +8,7 @@ import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridTool
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
 
@@ -58,7 +59,7 @@ const useStyles = makeStyles(
         display: 'flex',
         alignItems: 'flex-start',
         flexWrap: 'wrap',
-        width: '100%',
+        margin: '0 10px'
       },
       textField: {
         [theme.breakpoints.down('xs')]: {
@@ -105,15 +106,74 @@ const useStyles = makeStyles(
   { newTheme },
 );
 
+const deleteRow = (row, controller) => {
+  const token = document.querySelector('[name=csrf-token]').content;
+  fetch(`/api/v1/${controller}/${row.event_id}`, {
+    method: 'DELETE', 
+    headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+  }).then(() => {
+    location.reload();
+  })
+}
+
+const markMembership = (row) => {
+  const token = document.querySelector('[name=csrf-token]').content;
+  var mem = {
+    id: row.member_id,
+    is_member: true
+  }
+  return fetch(`/api/v1/members/${mem.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(mem),
+    headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+  }).then(() => {
+    location.reload();
+  }).catch((error) => { console.error(error) });
+}
+
+function DeleteSelected(props) {
+  return (
+    <IconButton className={useStyles().actionButton}
+      aria-label="Delete"
+      title="Delete"
+      size="small"
+      onClick={() => {
+        console.log(props.rows);
+        for (var i in props.rows) {
+          console.log(props.rows[i]);
+          deleteRow(props.rows[i], props.controller)
+        }
+      }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  )
+}
+
+function MakeMember(props) {
+  return (
+    <IconButton className={useStyles().actionButton}
+      aria-label="Approve Member"
+      role='tooltip'
+      size="small"
+      onClick={() => {
+        console.log(props.rows);
+        for (var i in props.rows) {
+          console.log(props.rows[i]);
+          markMembership(props.rows[i])
+        }
+      }}
+    >
+      <PersonAddIcon />
+    </IconButton>
+  )
+}
+
 function QuickSearchToolbar(props) {
   const classes = useStyles();
   
   return (
     <div className={classes.toolbar}>
-      <div>
-        <GridToolbarFilterButton className={classes.actionButton}/>
-        <GridToolbarDensitySelector className={classes.actionButton}/>
-      </div>
       <div>
         <TextField
           variant="standard"
@@ -136,6 +196,16 @@ function QuickSearchToolbar(props) {
             ),
           }}
         />
+        <GridToolbarFilterButton className={classes.actionButton}/>
+        <GridToolbarDensitySelector className={classes.actionButton}/>
+      </div>
+      <div>
+        {props.admin && props.controller == 'members' &&
+          <MakeMember rows={props.selectedRows} />
+        }
+        {props.admin &&
+          <DeleteSelected rows={props.selectedRows} controller={props.controller} />
+        }
         <GridToolbarExport className={classes.actionButton}/>
       </div>
     </div>
@@ -156,13 +226,33 @@ export default function DataTable({data, member = null}) {
     data = getData(props);
     //console.log(data);
   }*/
+  var controller;
+  for (var col in data.columns) {
+    var attendanceCheck = 0;
+    console.log(col)
+    if (data.columns[col].field == 'start_time') {
+      controller = 'events'; break;
+    }
+    else if (data.columns[col].field == 'first_name') {
+      controller = 'members'; break;
+    }
+    else if (data.columns[col].field == 'member_id' || data.columns[col].field == 'event_id') {
+      attendanceCheck = attendanceCheck + 1;
+    }
+    if (attendanceCheck >= 2) {
+      controller = 'attendances'; break;
+    }
+  }
+  
+  console.log(controller);
   console.log(member);
   console.log(data);
   const classes = useStyles();
   
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
-
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  var hideColumn = member ? (member.admin ? false : true) : true;
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
@@ -173,20 +263,20 @@ export default function DataTable({data, member = null}) {
     });
     setDataRows(filteredRows);
   };
+  
+  const selectionChange = (rows) => {
+    setSelectedRows(rows);
+    /*const filteredRows = data.rows.filter((row) => {
+      return Object.keys(row).some((field) => {
+        return searchRegex.test(row[field].toString());
+      });
+    });*/
+    //setSelectedRows(selectedRows);
+  }
 
   React.useEffect(() => {
     setDataRows(data.rows);
   }, [data.rows]);
-  
-  const deleteRow = (row, controller) => {
-    const token = document.querySelector('[name=csrf-token]').content;
-    fetch(`/api/v1/${controller}/${row.event_id}`, {
-      method: 'DELETE', 
-      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
-    }).then(() => {
-      location.reload();
-    })
-  }
   
   if (member != null) {
     data.columns.push(
@@ -194,21 +284,14 @@ export default function DataTable({data, member = null}) {
         field: 'actions',
         type: 'actions',
         width: 80,
+        hide: hideColumn,
         getActions: (params) => [
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => {
               console.log(params);
-              if (params.row.start_time) {
-                deleteRow(params.row, 'events')
-              }
-              else if (params.row.first_name) {
-                deleteRow(params.row, 'members')
-              }
-              else if (params.rows.member_id && params.row.event_id) {
-                deleteRow(params.row, 'attendances')
-              }
+              deleteRow(params.row, controller)
             }}
           />,
         ],
@@ -232,6 +315,9 @@ export default function DataTable({data, member = null}) {
             value: searchText,
             onChange: (event) => requestSearch(event.target.value),
             clearSearch: () => requestSearch(''),
+            selectedRows: selectedRows,
+            controller: controller,
+            admin: !hideColumn
           },
         }}
         rows={dataRows}
@@ -239,6 +325,15 @@ export default function DataTable({data, member = null}) {
         pageSize={10}
         rowsPerPageOptions={[10]}
         checkboxSelection
+        onSelectionModelChange={(ids) => {
+          const selectedIDs = new Set(ids);
+          const selectedRowData = data.rows.filter((row) =>
+            selectedIDs.has(row.id.toString()),
+          );
+          console.log(selectedRowData);
+          console.log(selectedIDs);
+          selectionChange(selectedRowData);
+        }}
       />
     </div>
   );

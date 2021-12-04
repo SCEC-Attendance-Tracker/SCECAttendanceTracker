@@ -1,7 +1,10 @@
 <%= react_component("NavBar",
 props: {member: Member.where({id: session[:member_id]}), page: "Events"} )%>
 
-<h2> My Events </h2>
+<!-- <%= react_component("CreateEventModal", {}) %> -->
+<!-- <%= react_component("EditEventModal", {}) %> -->
+  
+<!-- <h2> My Events </h2> -->
 <%= react_component("MyEventsDataTable", 
 props: {members: Member.where({id: session[:member_id]}), events: @events, attendances: @attendances})%>
 
@@ -9,14 +12,13 @@ props: {members: Member.where({id: session[:member_id]}), events: @events, atten
 <%= react_component("EventsDataTable", 
 props: {members: Member.where({id: session[:member_id]}), events: @events, attendances: @attendances})%>
 
-
 <%#= link_to 'Back', :back %>
 <%#= link_to 'Home', root_path %>
 
 <table>
   <thead>
     <tr>
-      <th><%= sortable "id", "Event ID" %></th> 
+      <th><%= sortable "id", "Event ID" %></th>
       <th><%= sortable "title", "Event Title" %></th>
       <th><%= sortable "start_date", "Event Start Date" %></th>
       <th><%= sortable "end_date", "Event End Date" %></th>
@@ -25,7 +27,7 @@ props: {members: Member.where({id: session[:member_id]}), events: @events, atten
       <th>"Event Ratings"</th>
 
       <th colspan="2">Actions</th>
-      
+
       <th colspan="3">Admin Options</th>
     </tr>
   </thead>
@@ -46,10 +48,10 @@ props: {members: Member.where({id: session[:member_id]}), events: @events, atten
           <td><%= link_to sprintf( "%0.02f", Feedback.where(:event_id => event.id).average(:event_rating_score)), feedbacks_path(:id => event.id) %></td>
         <%end%>
 
-        <td><%= link_to (Attendance.find_by({member_id: session[:member_id], event_id: event.id, rsvp: true}) ? 'Cancel RSVP' : 'RSVP'), attendances_path(:event_id => event.id, :rsvp => true) %></td> 
-        
+        <td><%= link_to (Attendance.find_by({member_id: session[:member_id], event_id: event.id, rsvp: true}) ? 'Cancel RSVP' : 'RSVP'), attendances_path(:event_id => event.id, :rsvp => true) %></td>
+
         <td><%= link_to 'Mark Attendance', new_attendance_path({event_id: event.id, mark: true})%></td>
-        
+
         <td><%= link_to 'Show', event %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>

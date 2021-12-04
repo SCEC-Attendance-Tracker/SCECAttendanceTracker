@@ -194,7 +194,7 @@ export default function MyEventsDataTable(props) {
     console.log(member);
     return (
       <>
-      {(data.rows.length > 0) &&
+      {(data.rows.length > 0) && (props.props.page != "Home") && 
         <Typography variant = 'h5' component = 'h5'>
             My Events
         </Typography>

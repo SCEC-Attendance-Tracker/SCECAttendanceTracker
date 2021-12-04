@@ -8,13 +8,13 @@ import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Link from '@material-ui/core/Link'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, Avatar } from '@material-ui/core'
 import { createTheme, ThemeProvider } from "@material-ui/core"
 import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ProfilePageModal from './ProfilePageModal'
-	
-	
+import SCECLogo from '../../assets/images/apple-touch-icon.png' 
+
 const home = "SCEC Portal"
 
 const theme = createTheme({   
@@ -62,6 +62,9 @@ const useStyles = makeStyles({
 			color: '#200000',
 		}
 	},
+	logo: {
+		marginRight: '10px'
+	},
 })
 
 export default function NavBar(props) {
@@ -97,6 +100,9 @@ export default function NavBar(props) {
 			<AppBar position="static" className={classes.root}>
 				<Toolbar>
 				
+				{ page_name == home && 
+					<Avatar className={classes.logo} src={SCECLogo} variant='rounded' />
+				}
 				{ page_name != home && 
 						<IconButton
 							color="inherit"

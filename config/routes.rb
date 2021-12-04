@@ -1,15 +1,29 @@
 # frozen_string_literal: true
 
+# Set both to false if you need to debug and can't access a route
+class AdminConstraint
+  def initialize
+  end
+
+  def self.matches? (request)
+    Member.find(request.session[:member_id]).admin == false
+  end 
+end 
+
+class MemberConstraint
+  def initialize
+  end
+
+  def self.matches? (request) 
+    Member.find(request.session[:member_id]).is_member == false
+  end
+end
+
 Rails.application.routes.draw do
   resources :links
-  resources :feedbacks
   resources :help
-  root to: 'home#show'
 
-  resources :attendances
-  resources :events do
-    resources :feedbacks 
-  end
+  root to: 'home#show'
 
   devise_for :members, controllers: { omniauth_callbacks: 'members/omniauth_callbacks' }
   devise_scope :member do
@@ -17,26 +31,41 @@ Rails.application.routes.draw do
     get 'members/sign_out', to: 'members/sessions#destroy', as: :destroy_member_session
   end
 
-  resources :members do
-    member do
-      get :delete
+  constraints(AdminConstraint) do
+    resources :feedbacks 
+    resources :members
+    resources :attendances
+    namespace :api do
+      namespace :v1 do
+        resources :members, only: %i[index]
+        resources :events, only: %i[update delete destroy]
+        resources :attendances, only: %i[index delete destroy]
+        resources :feedbacks, only: %i[index]
+        get 'members/index'
+        get 'events/index'
+        get 'attendances/index'
+        resources :links, only: %i[update delete destroy create]     
+      end
     end
   end
 
-  namespace :api do
-    namespace :v1 do
-      resources :members, only: %i[index update show delete destroy]
-      resources :events, only: %i[index update show delete destroy]
-      resources :attendances, only: %i[index update show delete destroy create]
-      resources :feedbacks, only: %i[index show create]
-      get 'events/index'
-      get 'attendances/index'
-      resources :links, only: %i[update delete destroy create] 
-      resources :calendar, only: %i[] do
-        collection do
-          get :is_subscribed
-          put :subscribe
-        end
+  constraints(MemberConstraint) do 
+    resources :events do
+      resources :feedbacks 
+    end
+
+    namespace :api do 
+      namespace :v1 do 
+        resources :members, only: %i[show update delete destroy]
+        resources :events, only: %i[index show]
+        resources :feedbacks, only: %i[create show]
+        resources :attendances, only: %i[index show update create]
+        resources :calendar, only: %i[] do
+          collection do
+            get :is_subscribed
+            put :subscribe
+          end
+        end 
       end
     end
   end

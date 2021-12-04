@@ -1,4 +1,17 @@
-import DataTableAlt from "./DataTableAlt"; 
+import * as React from 'react';
+import PropTypes from 'prop-types';
+
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport, GridActionsCellItem} from '@mui/x-data-grid';
+import DataTable from "./DataTable";
+
+import ClearIcon from '@material-ui/icons/Clear';
+import CheckIcon from '@material-ui/icons/Check';
+import SearchIcon from '@material-ui/icons/Search';
+import EditIcon from '@material-ui/icons/Edit';
+
+import { createTheme, makeStyles, createStyles, Button } from "@material-ui/core"
 
 function getData(props) {
   
@@ -60,11 +73,12 @@ function getData(props) {
 
 var data;
 
-export default function AttendanceDataTable(props) {
+export default function FeedbackDataTable(props) {
   if (data == undefined) {
     data = getData(props);
   }
+  console.log(data);
   return (
-    <DataTableAlt data = {data} />
+    <DataTable data = {data} member = {props.props.member[0]}/>
   );
 }

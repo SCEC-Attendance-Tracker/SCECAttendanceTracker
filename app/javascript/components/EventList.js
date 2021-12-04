@@ -24,12 +24,11 @@ const useStyles = makeStyles(
   (theme) =>
     createStyles({
       listCard: {
-        '& > li': {
-          padding: '0px 16px !important',
-          borderRadius: '4px',
-          border: '1px solid #DDD',
-          marginTop: '30px',
-        },
+        padding: '0px 16px !important',
+        borderRadius: '4px',
+        border: '1px solid #DDD',
+        marginTop: '30px',
+        
         '& > li:last-child': {
           borderBottom: '1px solid transparent !important',
           marginBottom: '0px !important'
@@ -180,10 +179,12 @@ export default function EventList({events, attendances = null, member = false, p
           }}>
           {events && events.map((e) => {
               return (
-                  <ListItem className={classes.listCardItem} onClick={() => {handleItemClick(e)}}>
+                  <ListItem className={classes.listCardItem}>
                       <ListItemText 
-                          primary = {`${e.title}`}
-                          secondary = {`${e.start_date}`}/>
+                        primary = {`${e.title}`}
+                        secondary = {`${e.start_date}`}
+                        onClick={() => {handleItemClick(e)}}
+                      />
                       
                       {/* Home Page: Mark Attendance */}
                       {(`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
@@ -219,7 +220,7 @@ export default function EventList({events, attendances = null, member = false, p
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'RSVP'}/>
-                          <ListItemButton className={classes.listCardButton} onClick={() => {markRsvp(e)}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {markRsvp(e).then(location.reload())}}>
                               <ListItemIcon className={classes.icon}>
                                   <RsvpIcon />
                               </ListItemIcon>
@@ -233,7 +234,7 @@ export default function EventList({events, attendances = null, member = false, p
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
                           
-                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e)}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {handleItemClick(e).then(location.reload())}}>
                               <ListItemIcon className={classes.icon}>
                                   <EmojiPeopleIcon />
                               </ListItemIcon>
@@ -270,7 +271,7 @@ export default function EventList({events, attendances = null, member = false, p
                           <ListItemText className={classes.listActionText}
                           primary = {'RSVP'}/>}
                           
-                          <ListItemButton className={classes.listCardButton} onClick={() => {markRsvp(e)}}>
+                          <ListItemButton className={classes.listCardButton} onClick={() => {markRsvp(e).then(location.reload())}}>
                               <ListItemIcon className={classes.icon}>
                                   <RsvpIcon />
                               </ListItemIcon>
@@ -297,13 +298,13 @@ export default function EventList({events, attendances = null, member = false, p
                         Start Date:
                     </Typography>
                     <Typography variant = 'subtitle1'>
-                        {new Date(element.start_date).toLocaleString()}
+                        {new Date(element.start_date + ' ' + element.start_time).toLocaleString()}
                     </Typography>
                     <Typography variant = 'h6' component = 'h6'>
                         End Date:
                     </Typography>
                     <Typography variant = 'subtitle1'>
-                        {new Date(element.end_date).toLocaleString()}
+                        {new Date(element.end_date + ' ' + element.end_time).toLocaleString()}
                     </Typography>
                     <Typography variant = 'h6' component = 'h6'>
                         Location:

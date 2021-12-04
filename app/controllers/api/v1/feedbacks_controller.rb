@@ -34,6 +34,7 @@ module Api
       def create
         @feedback = Feedback.new(feedback_params)
         if @feedback.save
+          puts @feedback
           render json: @feedback
         else
           render json: @feedback.errors

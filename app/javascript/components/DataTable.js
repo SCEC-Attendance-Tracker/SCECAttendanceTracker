@@ -290,7 +290,7 @@ export default function DataTable({data, member = null}) {
         width: 80,
         hide: hideColumn,
         getActions: (params) => [
-          controller == 'events' && <EditEventModal event={params.row}/>,
+          controller == 'events' ? <EditEventModal event={params.row}/> : <></>,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"

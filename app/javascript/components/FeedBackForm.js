@@ -19,7 +19,7 @@ class FeedBackForm extends React.Component {
             event: this.props.event,
             rating: 0,
             feedback: {
-                event_id: this.props.event.id,
+                event_id: parseInt(this.props.event.event_id),
                 event_review: "",
                 event_rating_score: 0
             }
@@ -48,11 +48,12 @@ class FeedBackForm extends React.Component {
     // Change
     handleInputChange = (change) => {
         var feedbackDiff = {...this.state.feedback};
-        var name = [change.target.name];
+        var name = change.target.name;
+        console.log(change);
         if (name == 'event_review') {
-            feedbackDiff.event_review= change.target.value;
+            feedbackDiff.event_review = change.target.value;
         } else if (name == 'event_rating_score') {
-            feedbackDiff.event_rating_score = change.target.value;
+            feedbackDiff.event_rating_score = parseFloat(change.target.value);
         } 
         // reset if another feedback is created
         this.setState({created: false}); 
@@ -65,6 +66,7 @@ class FeedBackForm extends React.Component {
         if (!this.validateInput()) {
             return;
         }
+        console.log(this.state.feedback)
         const token = document.querySelector('[name=csrf-token]').content; 
         fetch(`/api/v1/feedbacks/`, {
             method: 'POST', 
@@ -74,6 +76,7 @@ class FeedBackForm extends React.Component {
             if (response.ok) {
                 console.log("WENT THROUGH");
                 this.setState({created: true})
+                this.setState({show: false})
                 return response.json;
             }
         }).catch((error) => {

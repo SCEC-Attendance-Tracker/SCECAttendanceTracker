@@ -68,6 +68,7 @@ class FeedBackForm extends React.Component {
         }
         console.log(this.state.feedback)
         const token = document.querySelector('[name=csrf-token]').content; 
+        
         fetch(`/api/v1/feedbacks/`, {
             method: 'POST', 
             body: JSON.stringify({feedback: this.state.feedback}),

@@ -205,7 +205,7 @@ function QuickSearchToolbar(props) {
         {props.admin && props.controller == 'members' &&
           <MakeMember rows={props.selectedRows} />
         }
-        {props.admin &&
+        {props.admin && props.controller != 'feedback' &&
           <DeleteSelected rows={props.selectedRows} controller={props.controller} />
         }
         <GridToolbarExport className={classes.actionButton}/>
@@ -236,6 +236,9 @@ export default function DataTable({data, member = null}) {
     }
     else if (data.columns[col].field == 'first_name') {
       controller = 'members'; break;
+    }
+    else if (data.columns[col].field == 'event_rating_score') {
+      controller = 'feedback'; break;
     }
     else if (data.columns[col].field == 'member_id' || data.columns[col].field == 'event_id') {
       attendanceCheck = attendanceCheck + 1;
@@ -282,7 +285,7 @@ export default function DataTable({data, member = null}) {
     setDataRows(data.rows);
   }, [data.rows]);
   
-  if (member != null) {
+  if (member != null && controller != 'feedback') {
     data.columns.push(
       {
         field: 'actions',

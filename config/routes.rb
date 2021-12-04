@@ -6,7 +6,7 @@ class AdminConstraint
   end
 
   def self.matches? (request)
-    Member.find(request.session[:member_id]).admin == false
+    Member.find(request.session[:member_id]).admin == true
   end 
 end 
 
@@ -15,7 +15,7 @@ class MemberConstraint
   end
 
   def self.matches? (request) 
-    Member.find(request.session[:member_id]).is_member == false
+    Member.find(request.session[:member_id]).is_member == true
   end
 end
 

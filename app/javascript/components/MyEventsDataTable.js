@@ -4,11 +4,14 @@ import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid'
+import {Typography} from '@material-ui/core'
 import DataTable from './DataTable'
 import EventList from './EventList'
 
 import ClearIcon from '@material-ui/icons/Clear'
 import SearchIcon from '@material-ui/icons/Search'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 import { createTheme, makeStyles, createStyles } from '@material-ui/core'
 
@@ -166,7 +169,6 @@ export default function MyEventsDataTable(props) {
   console.log(props);
   
   if (props.props.members == false) {
-    console.log("DOIFHOWDJKLNXOCILJBWDNOSJLFNOXJL");
     console.log(props);
       
       data = getData(props);
@@ -191,8 +193,14 @@ export default function MyEventsDataTable(props) {
     
     console.log(member);
     return (
-      EventList({events: data.rows, attendances: attendances, member: member, page: props.props.page})
-      //DataTable(data)
+      <>
+      {(data.rows.length > 0) &&
+        <Typography variant = 'h5' component = 'h5'>
+            My Events
+        </Typography>
+      }
+      <EventList events = {data.rows} attendances = {attendances} member = {member} page = {props.props.page} />
+      </>
     );
   }
   return (<></>);

@@ -1,23 +1,24 @@
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
+import { CloseIcon } from '@material-ui/icons';
 import { Check, Close } from '@material-ui/icons';
 import { DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import React from 'react'
-import './stylesheets/EventForm.css'
+import React from 'react';
+import './stylesheets/EventForm.css';
 
 class CreateEventForm extends React.Component {
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = { // gonna need event JSON
-            beginDate: new Date(), 
+            beginDate: new Date(),
             endDate: new Date(),
             created: false,
             event: {
-                start_date: this.convertDate(new Date()), 
-                end_date: this.convertDate(new Date()), 
-                description: "", 
-                location: "", 
+                start_date: this.convertDate(new Date()),
+                end_date: this.convertDate(new Date()),
+                description: "",
+                location: "",
                 title: ""
             }
         };
@@ -42,9 +43,9 @@ class CreateEventForm extends React.Component {
     beginDateChange = (newDate) => {
         this.setState({beginDate: newDate});
 
-        var newEvent = {...this.state.event}; 
+        var newEvent = {...this.state.event};
         newEvent.start_date = this.convertDate(newDate);
-        
+
         this.setState({event: newEvent})
     }
 
@@ -63,7 +64,7 @@ class CreateEventForm extends React.Component {
     endDateChange = (newDate) => {
         this.setState({endDate: newDate});
 
-        var newEvent = {...this.state.event}; 
+        var newEvent = {...this.state.event};
         newEvent.end_date = this.convertDate(newDate);
 
         this.setState({event: newEvent})
@@ -73,7 +74,7 @@ class CreateEventForm extends React.Component {
     handleInputChange = (change) => {
         var eventDiff = {...this.state.event};
         var name = [change.target.name];
-        
+
         if (name == 'description') {
             eventDiff.description = change.target.value;
         } else if (name == 'location') {
@@ -87,13 +88,13 @@ class CreateEventForm extends React.Component {
 
     // submits POST form to index route
     submitEvent = () => {
-        // gotta validate 
+        // gotta validate
         if (!this.validateInput()) {
             return;
         }
-        const token = document.querySelector('[name=csrf-token]').content; 
+        const token = document.querySelector('[name=csrf-token]').content;
         fetch(`/api/v1/events/`, {
-            method: 'POST', 
+            method: 'POST',
             body: JSON.stringify({event: this.state.event}),
             headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
         }).then((response) => {
@@ -112,13 +113,15 @@ class CreateEventForm extends React.Component {
             width: '100%'
         }
 
-        const begin = this.state.beginDate; 
+        const begin = this.state.beginDate;
         const end = this.state.endDate;
- 
+        const closeImg = {cursor:'pointer', float:'right', marginTop: '5px', width: '20px'};
+
         return (
             <Box sx={style}>
                 <div className='new-event-header'>
                     <Typography id='new-event-header' variant='h4' component ='h4'> New Event </Typography>
+
                 </div>
                 <div className='event-field'>
                     {this.state.created ? <Typography id='submitted'> Event created! </Typography> : ""}
@@ -138,7 +141,7 @@ class CreateEventForm extends React.Component {
                             <DateTimePicker minDateTime={this.state.beginDate} name="endDate" value={end} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
                         </LocalizationProvider>
                     </div>
-                </div> 
+                </div>
                 <br/>
                 <div className='event-field'>
                     <TextField id='outlined' label='Description' name='description' onChange={this.handleInputChange}/>
@@ -148,10 +151,14 @@ class CreateEventForm extends React.Component {
                 </div>
                 <div className='event-field'>
                     <div className='footer' style={{
-                        display: 'flex', 
+                        display: 'flex',
                         flexDirection: 'row-reverse'
                     }}>
-                        <Button onClick={this.submitEvent} startIcon={<Check/>}> Submit </Button>
+                        <Button onClick={() => {
+                          this.submitEvent
+                          // alert('clicked');
+                        }}
+                        startIcon={<Close/>}> Submit </Button>
                     </div>
                 </div>
             </Box>
@@ -159,4 +166,4 @@ class CreateEventForm extends React.Component {
     }
 }
 
-export default CreateEventForm; 
+export default CreateEventForm;

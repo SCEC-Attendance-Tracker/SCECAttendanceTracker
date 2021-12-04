@@ -13,6 +13,7 @@ class EventsController < ApplicationController
   
   # GET /events or /events.json
   def index
+    @attendances = Attendance.all 
     @events = Event.order(sort_column + " " + sort_direction)
     @attendances = Attendance.all
   end

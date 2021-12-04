@@ -8,25 +8,27 @@ import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridTool
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import { createTheme, makeStyles, createStyles } from "@material-ui/core";
+import EditEventModal from './EditEventModal';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-const newTheme = createTheme({   
-  palette: {      
+const newTheme = createTheme({
+  palette: {
     primary: {
       main: "#500000" // Maroon
     },
-    secondary: {         
-      main: "#ffff33" // Yellow               
+    secondary: {
+      main: "#ffff33" // Yellow
     },
-    divider: {         
+    divider: {
       main: 'rgba(0, 0, 0, 0.2)' // Maroon
-    },      
+    },
   },fontFamily: 'Roboto Mono'
 });
 
@@ -47,12 +49,12 @@ const useStyles = makeStyles(
         '& .MuiDataGrid-main': {
           width: '100%',
         },
-        
+
         '& .MuiDataGrid-columnHeaderTitle': {
           fontWeight: '800',
           textOverflow: 'clip',
         },
-        
+
       },
       toolbar: {
         justifyContent: 'space-between',
@@ -80,8 +82,8 @@ const useStyles = makeStyles(
       button: {
         backgroundColor: '#500000',
         color: '#fff',
-        padding: '1em', 
-        paddingTop: '0.5em', 
+        padding: '1em',
+        paddingTop: '0.5em',
         paddingBottom: '0.5em',
         '&:hover': {
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -171,7 +173,7 @@ function MakeMember(props) {
 
 function QuickSearchToolbar(props) {
   const classes = useStyles();
-  
+
   return (
     <div className={classes.toolbar}>
       <div>
@@ -229,7 +231,6 @@ export default function DataTable({data, member = null}) {
   var controller;
   for (var col in data.columns) {
     var attendanceCheck = 0;
-    console.log(col)
     if (data.columns[col].field == 'start_time') {
       controller = 'events'; break;
     }
@@ -247,12 +248,15 @@ export default function DataTable({data, member = null}) {
   console.log(controller);
   console.log(member);
   console.log(data);
-  const classes = useStyles();
   
+  const classes = useStyles();
+
   const [searchText, setSearchText] = React.useState('');
   const [dataRows, setDataRows] = React.useState(data.rows);
   const [selectedRows, setSelectedRows] = React.useState([]);
   var hideColumn = member ? (member.admin ? false : true) : true;
+  console.log(hideColumn);
+  
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
@@ -286,6 +290,7 @@ export default function DataTable({data, member = null}) {
         width: 80,
         hide: hideColumn,
         getActions: (params) => [
+          controller == 'events' && <EditEventModal event={params.row}/>,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"

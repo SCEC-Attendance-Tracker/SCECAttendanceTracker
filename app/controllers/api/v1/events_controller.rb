@@ -28,6 +28,14 @@ module Api
           render json: { notice: 'Event deleted' }
         end
 
+        def update
+          @event = Event.find(params[:id])
+          puts @event
+          @event.update(event_params)
+          puts @event
+          respond_with json: @event
+        end
+        
         private 
 
         def create_code

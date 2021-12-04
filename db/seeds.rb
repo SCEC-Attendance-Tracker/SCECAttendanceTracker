@@ -42,29 +42,29 @@ member = Member.create([
 
 event = Event.create([
                        {
-                         title: 'WWDC 1976',
-                         start_date: Time.new(1976, 0o1, 0o6, 11, 25, 0o0, '+00:00'),
-                         end_date: Time.new(1976, 0o1, 0o6, 12, 25, 0o0, '+00:00'),
-                         description: 'apple woo',
-                         avg_rating: 4.4,
-                         location: 'Neverland'
+                         title: 'SCEC Meeting 1',
+                         start_date: Time.new(2021, 11, 1, 11, 00, 0o0, '-06:00'),
+                         end_date: Time.new(2021, 11, 1, 12, 00, 0o0, '-06:00'),
+                         description: 'This meeting occurred in the past.',
+                         # avg_rating: 4.4,
+                         location: 'Zoom'
                        },
 
                        {
-                         title: 'Hundred Acre Woods Carrot Festival',
-                         start_date: Time.new(2000, 0o6, 24, 12, 0o0, 0o0, '+00:00'),
-                         end_date: Time.new(2000, 0o6, 24, 0o3, 30, 0o0, '+00:00'),
-                         description: 'eat hunny',
-                         avg_rating: 4.8,
-                         location: 'Hundred Acre Woods'
+                         title: 'SCEC Meeting 2',
+                         start_date: Time.new(2021, 11, 6, 19, 00, 0o0, '-06:00'),
+                         end_date: Time.new(2021, 11,19, 20, 00, 0o0, '-06:00'),
+                         description: 'This meeting is currently happening.',
+                         # avg_rating: 4.8,
+                         location: 'MS Teams'
                        },
 
                        {
-                         title: 'Tea Party',
-                         start_date: Time.new(2045, 10, 0o6, 0o3, 0o0, 0o0, '+00:00'),
-                         end_date: Time.new(2045, 10, 0o6, 0o5, 0o0, 0o0, '+00:00'),
-                         description: 'have fun with rabbit and cat',
-                         avg_rating: 2.5,
-                         location: 'Boston'
+                         title: 'SCEC Meeting 3',
+                         start_date: Time.new(2021, 11, 20, 19, 30, 0o0, '-06:00'),
+                         end_date: Time.new(2021, 11, 20, 20, 00, 0o0, '-06:00'),
+                         description: 'This meeting will happen in the future.',
+                         # avg_rating: 2.5,
+                         location: 'ZACH 213'
                        }
                      ])

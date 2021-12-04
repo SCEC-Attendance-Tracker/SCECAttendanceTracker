@@ -6,6 +6,7 @@ import { DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Modal from '@mui/material/Modal';
+import { createTheme, ThemeProvider } from "@material-ui/core"
 import React from 'react';
 import './stylesheets/EventForm.css';
 
@@ -21,7 +22,18 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const primary = '#500000';
+
+const theme = createTheme({   
+  palette: {      
+    primary: {         
+      main: "#500000" // Maroon
+    },      
+    secondary: {         
+      main: "#ffff33" // Yellow               
+    }            
+  },fontFamily: 'Roboto Mono'
+});
+
 export default function CreateEventModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -111,6 +123,7 @@ export default function CreateEventModal() {
       // submits POST form to index route
       submitEvent = () => {
           // gotta validate
+          console.log("You tried to submit a new event");
           if (!this.validateInput()) {
               return;
           }
@@ -194,7 +207,7 @@ export default function CreateEventModal() {
     <div>
       <Button
         variant='contained'
-        color='primary'
+        color='secondary'
         onClick={handleOpen}
       >
         New Event

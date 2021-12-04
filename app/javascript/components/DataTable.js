@@ -256,6 +256,8 @@ export default function DataTable({data, member = null}) {
   const [dataRows, setDataRows] = React.useState(data.rows);
   const [selectedRows, setSelectedRows] = React.useState([]);
   var hideColumn = member ? (member.admin ? false : true) : true;
+  console.log(hideColumn);
+  
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
@@ -289,13 +291,13 @@ export default function DataTable({data, member = null}) {
         width: 80,
         hide: hideColumn,
         getActions: (params) => [
-          controller == 'events' && <EditEventModal id={params.row.event_id}/>,
+          controller == 'events' && <EditEventModal event={params.row}/>,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => {
               console.log(params);
-              deleteRow(params.row, controller)
+              //deleteRow(params.row, controller)
             }}
           />,
         ],

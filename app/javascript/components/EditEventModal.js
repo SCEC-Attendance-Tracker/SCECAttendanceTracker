@@ -1,7 +1,7 @@
 // EditEventForm.js imports
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
 import { CloseIcon } from '@material-ui/icons';
-import { EditIcon } from '@material-ui/icons';
+import EditIcon from '@mui/icons-material/Edit';
 import { Check, Close } from '@material-ui/icons';
 import { DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -18,31 +18,34 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  borderRadius: '4px',
   boxShadow: 24,
   p: 4,
 };
 
-export default function EditEventModal() {
+export default function EditEventModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const event = props.event;
+  
   class EditEventForm extends React.Component {
       constructor(props) {
           super(props);
-          console.log(props);
+          console.log(event);
           this.state = { // gonna need event JSON
               beginDate: new Date(),
               endDate: new Date(),
               updated: false,
               onClose: props.onClose,
               event: {
-                  start_date: this.convertDate(new Date()),
-                  end_date: this.convertDate(new Date()),
-                  description: "",
-                  location: "",
-                  title: ""
+                  start_date: this.convertDate(new Date(event.start_date + ' ' + event.start_time)),
+                  end_date: this.convertDate(new Date(event.end_date + ' ' + event.end_time)),
+                  description: event.description,
+                  location: event.location,
+                  title: event.title,
+                  id: event.id
               }
           };
       }
@@ -151,7 +154,7 @@ export default function EditEventModal() {
                   </div>
                   <div className='event-field'>
                       {this.state.updated ? <Typography id='submitted'> Event updated! </Typography> : ""}
-                      <TextField required id='outlined' label='Event Title' name='title' onChange={this.handleInputChange}/>
+                      <TextField required id='outlined' label='Event Title' value={this.state.event.title} name='title' onChange={this.handleInputChange}/>
 
                   </div>
                   <br/>
@@ -159,22 +162,22 @@ export default function EditEventModal() {
                       <div className='time-pick'>
                           <Typography variant='overline'> From </Typography>
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
-                              <DateTimePicker maxDateTime={this.state.endDate} name="beginDate" value={begin} renderInput={(end) => <TextField id='outlined' label="From"{...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
+                              <DateTimePicker maxDateTime={this.state.endDate} name="beginDate" value={this.state.event.start_date} renderInput={(end) => <TextField id='outlined' label="From"{...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
                           </LocalizationProvider>
                       </div>
                       <div className='time-pick'>
                           <Typography variant='overline'> To </Typography>
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
-                              <DateTimePicker minDateTime={this.state.beginDate} name="endDate" value={end} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
+                              <DateTimePicker minDateTime={this.state.beginDate} name="endDate" value={this.state.event.end_date} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
                           </LocalizationProvider>
                       </div>
                   </div>
                   <br/>
                   <div className='event-field'>
-                      <TextField id='outlined' label='Description' name='description' onChange={this.handleInputChange}/>
+                      <TextField id='outlined' label='Description' value={this.state.event.description} name='description' onChange={this.handleInputChange}/>
                   </div>
                   <div className='event-field'>
-                      <TextField id='outlined' label='Location' name='location' onChange={this.handleInputChange}/>
+                      <TextField id='outlined' label='Location' value={this.state.event.location} name='location' onChange={this.handleInputChange}/>
                   </div>
                   <div className='event-field'>
                       <div className='footer' style={{
@@ -184,7 +187,7 @@ export default function EditEventModal() {
                           <Button onClick={() => {
                             this.updateEvent();
                           }}
-                          startIcon={<Close/>}> Submit </Button>
+                          startIcon={<Check/>}> Submit </Button>
                       </div>
                   </div>
               </Box>
@@ -194,13 +197,14 @@ export default function EditEventModal() {
 
   return (
     <div>
-      <Button
-        variant="text"
-        color="primary"
+      <IconButton
+        aria-label="Edit"
+        role='tooltip'
+        size="small"
         onClick={handleOpen}
       >
-        Edit
-      </Button>
+        <EditIcon />
+      </IconButton>
       <Modal
         open={open}
         onClose={handleClose}

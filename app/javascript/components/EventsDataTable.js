@@ -12,6 +12,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import CreateEventModal from './CreateEventModal'
 
 export default function EventsDataTable(props) {
   
@@ -267,6 +268,9 @@ export default function EventsDataTable(props) {
   
   return (
     <>
+      {member.admin && 
+        <CreateEventModal />
+      }
       <DataTable data = {data} member = {member}/>
       {open && 
         <Dialog

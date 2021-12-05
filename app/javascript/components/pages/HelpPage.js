@@ -16,11 +16,39 @@ export default function HelpPage(props) {
   console.log(props);
   
   return (
-    <Box>
-      <Typography variant = "h4"> SCEC Web App - Documentation </Typography>
+    <Box sx={{marginLeft: 10, marginRight: 10}} >
+      
+      {props.roles.admin && 
+        <>
+      <Typography variant = "h4"> Administrator </Typography>
+
+      <Typography variant = "h6"> Signing In </Typography>
+      <Typography display = 'block' variant = "p">Once logged in through Google, you will have access to all features of the application. 
+      On the front page, it will be similar to the member view; however, you can view the number of RSVPs per event. </Typography>
+      <br/>
+      <Typography variant = "h6"> Navigation </Typography>
+      <Typography display = 'block' variant = "p">Expanding the hamburger menu will reveal several links that are missing from the member view: Attendances, Feedback, and Members. 
+      Each page has a table. For Attendance, you can export this data in order to keep track of point totals. </Typography>
+      <br/>
+      <Typography variant = "h6"> Members </Typography>
+      <Typography display = 'block' variant = "p">On the Member page, you will be able to change several attributes. You can mark guest users to be members and if they have paid dues. 
+      You can change several members at a time by using the selection box on the far left.</Typography>
+      <br/>
+      <Typography variant = "h6"> Events </Typography>
+      <Typography display = 'block' variant = "p"> When clicking on any events, you will be able to create by clicking a button above the table. It will reveal a dialog box that will accept input. Once all required fields have been filled, it will then show the updated table. Here, you can edit and delete the entry. 
+      Any changes to the event will be reflected on the Google Calendar. Deletion of events will notify any attendees. </Typography>
+      <Typography display = 'block' variant = "p"> You can also manually mark member’s attendances if they were unable to log it themselves; this entails creating an entire entry on the table. </Typography>
+      <br/>
+      <Typography variant = "h6"> Feedback </Typography>
+      <Typography display = 'block' variant = "p"> On feedback, you will be unable to create feedback. However, you can view the feedback for each event along with the rating each user gives them. </Typography>
+      <br/>
+      <Typography variant = "h6"> Database Export and Wipe </Typography>
+      <Typography display = 'block' variant = "p">When switching semesters, the admin can export the entire database and save it for future record. They can then wipe the database clean for the next semester.</Typography>
+      
       <br/>
       <Typography variant = "h4"> Member </Typography>
-
+      </>
+    }
       <Typography variant = "h6"> Signing Up </Typography>
       <Typography display = 'block' variant = "p">An SCECAttendanceTracker account will automatically be created when you sign in to the app for the first time using your Google credentials. 
       An email will be sent to that email address and your membership will be pending authorization from the SCEC organization admin. </Typography>
@@ -47,32 +75,6 @@ export default function HelpPage(props) {
       <Typography display = 'block' variant = "p">Once an event is completed and an attendance is marked for an event a user is able to submit 
       a single feedback review with a rating point that is tallied and calculated to an overall rating per event. </Typography>
       
-      <br/>
-
-      <Typography variant = "h4"> Administrator </Typography>
-
-      <Typography variant = "h6"> Signing In </Typography>
-      <Typography display = 'block' variant = "p">Once logged in through Google, you will have access to all features of the application. 
-      On the front page, it will be similar to the member view; however, you can view the number of RSVPs per event. </Typography>
-      <br/>
-      <Typography variant = "h6"> Navigation </Typography>
-      <Typography display = 'block' variant = "p">Expanding the hamburger menu will reveal several links that are missing from the member view: Attendances, Feedback, and Members. 
-      Each page has a table. For Attendance, you can export this data in order to keep track of point totals. </Typography>
-      <br/>
-      <Typography variant = "h6"> Members </Typography>
-      <Typography display = 'block' variant = "p">On the Member page, you will be able to change several attributes. You can mark guest users to be members and if they have paid dues. 
-      You can change several members at a time by using the selection box on the far left.</Typography>
-      <br/>
-      <Typography variant = "h6"> Events </Typography>
-      <Typography display = 'block' variant = "p"> When clicking on any events, you will be able to create by clicking a button above the table. It will reveal a dialog box that will accept input. Once all required fields have been filled, it will then show the updated table. Here, you can edit and delete the entry. 
-      Any changes to the event will be reflected on the Google Calendar. Deletion of events will notify any attendees. </Typography>
-      <Typography display = 'block' variant = "p"> You can also manually mark member’s attendances if they were unable to log it themselves; this entails creating an entire entry on the table. </Typography>
-      <br/>
-      <Typography variant = "h6"> Feedback </Typography>
-      <Typography display = 'block' variant = "p"> On feedback, you will be unable to create feedback. However, you can view the feedback for each event along with the rating each user gives them. </Typography>
-      <br/>
-      <Typography variant = "h6"> Database Export and Wipe </Typography>
-      <Typography display = 'block' variant = "p">When switching semesters, the admin can export the entire database and save it for future record. They can then wipe the database clean for the next semester.</Typography>
     </Box>
   ); 
 }

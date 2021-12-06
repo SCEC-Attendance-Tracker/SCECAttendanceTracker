@@ -46,11 +46,16 @@ module Api
       end
 
       def update
+        @orig_mem = Member.find(params[:id]).is_member
         @member = Member.find(params[:id])
         puts @member
         @member.update(member_params)
+        @new_mem = Member.find(params[:id]).is_member
         puts @member
         respond_with json: @member
+        if (@orig_mem != @new_mem) 
+          UpdateMailer.with(member: @member).member_update_mailer.deliver_now;
+        end
       end
 
       private

@@ -107,7 +107,7 @@ class FeedBackForm extends React.Component {
             }).then((response) => {
                 if (response.ok) {
                     console.log("WENT THROUGH");
-                    this.setState({created: true})
+                    this.setState({updated: true})
                     this.setState({show: false})
                     return response.json;
                 }

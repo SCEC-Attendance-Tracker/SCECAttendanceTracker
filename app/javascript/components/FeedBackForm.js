@@ -14,11 +14,14 @@ class FeedBackForm extends React.Component {
         super(props);
         this.state = {
             created: false,
+            updated: false,
+            existing: false,
             id: this.props.id,
             show: false,
             event: this.props.event,
             rating: 0,
             feedback: {
+                id: 0,
                 event_id: parseInt(this.props.event.event_id),
                 event_review: "",
                 event_rating_score: 0
@@ -27,6 +30,33 @@ class FeedBackForm extends React.Component {
     }
 
     componentDidMount = () => {
+        fetch(`/api/v1/feedbacks?event_id=${this.props.event.event_id}`, {
+            method: 'GET', 
+            headers: { 'ACCEPT': 'application/json'}
+            }).then(response => response.json()
+            ).then(data => {
+                console.log(data)
+                if(data) {
+                    this.setState({
+                        feedback: {
+                            id: data.id,
+                            event_id: data.event_id,
+                            event_review: data.event_review,
+                            event_rating_score: data.event_rating_score
+                    }})
+                    this.setState({existing: true})
+
+                    console.log(this.state.feedback)
+                }
+                else {
+                    this.setState({
+                        feedback: {
+                            event_id: parseInt(this.props.event.event_id),
+                            event_review: "",
+                            event_rating_score: 0
+                    }})
+                }
+            });
         this.render();
     }
 
@@ -69,20 +99,38 @@ class FeedBackForm extends React.Component {
         console.log(this.state.feedback)
         const token = document.querySelector('[name=csrf-token]').content; 
         
-        fetch(`/api/v1/feedbacks/`, {
-            method: 'POST', 
-            body: JSON.stringify({feedback: this.state.feedback}),
-            headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
-        }).then((response) => {
-            if (response.ok) {
-                console.log("WENT THROUGH");
-                this.setState({created: true})
-                this.setState({show: false})
-                return response.json;
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
+        if(this.state.existing) {
+            fetch(`/api/v1/feedbacks/${this.state.feedback.id}`, {
+                method: 'PUT', 
+                body: JSON.stringify({feedback: this.state.feedback}),
+                headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+            }).then((response) => {
+                if (response.ok) {
+                    console.log("WENT THROUGH");
+                    this.setState({updated: true})
+                    this.setState({show: false})
+                    return response.json;
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+        else {
+            fetch(`/api/v1/feedbacks/`, {
+                method: 'POST', 
+                body: JSON.stringify({feedback: this.state.feedback}),
+                headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+            }).then((response) => {
+                if (response.ok) {
+                    console.log("WENT THROUGH");
+                    this.setState({created: true})
+                    this.setState({show: false})
+                    return response.json;
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
 
     handleOpen = e => {
@@ -135,6 +183,7 @@ class FeedBackForm extends React.Component {
                     <Box sx={style}>
                         <DialogContent>
                             {this.state.created ? <Typography id='submitted'> Feedback created! </Typography> : ""}
+                            {this.state.updated ? <Typography id='submitted'> Feedback updated! </Typography> : ""}
                             {/* <Button onClick={() => { this.setState({ show: !this.state.show }) }}>{this.state.show ? 'Hide' : 'Show'} Feedback</Button> */}
                             <div id="feedback">
                                 {this.state.show ?
@@ -156,6 +205,7 @@ class FeedBackForm extends React.Component {
                                                 variant="filled"
                                                 rows={4} 
                                                 id='outlined' 
+                                                defaultValue = {this.state.feedback.event_review}
                                                 label='Event Review' 
                                                 name='event_review' 
                                                 onChange={this.handleInputChange} 

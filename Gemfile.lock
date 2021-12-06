@@ -87,6 +87,7 @@ GEM
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
+    csv (3.2.1)
     declarative (0.0.20)
     devise (4.8.0)
       bcrypt (~> 3.0)
@@ -356,6 +357,7 @@ DEPENDENCIES
   brakeman
   byebug
   capybara (>= 3.26)
+  csv
   devise
   figaro
   google-apis-calendar_v3

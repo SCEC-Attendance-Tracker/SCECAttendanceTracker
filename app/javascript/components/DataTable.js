@@ -14,6 +14,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { createTheme, makeStyles, createStyles } from "@material-ui/core";
 import EditEventModal from './EditEventModal';
 import CreateEventModal from './CreateEventModal';
+import AddLinkButton from './AddLinkButton';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -183,6 +184,9 @@ function QuickSearchToolbar(props) {
         {props.admin && props.controller == 'events' && 
           <CreateEventModal />
         }
+        {props.admin && props.controller == 'links' && 
+          <AddLinkButton />
+        }
         <TextField
           variant="standard"
           value={props.value}
@@ -245,6 +249,9 @@ export default function DataTable({data, member = null}) {
     }
     else if (data.columns[col].field == 'event_rating_score') {
       controller = 'feedback'; break;
+    }
+    else if (data.columns[col].field == 'url') {
+      controller = 'links'; break;
     }
     else if (data.columns[col].field == 'member_id' || data.columns[col].field == 'event_id') {
       attendanceCheck = attendanceCheck + 1;

@@ -107,6 +107,7 @@ export default function EventsDataTable(props) {
         field: 'rsvp',
         headerName: 'RSVP',
         width: 150,
+        hide: !member,
         type: 'actions',
         getActions: (params) => [
           <GridActionsCellItem
@@ -123,6 +124,7 @@ export default function EventsDataTable(props) {
         field: 'attended',
         headerName: 'Mark Attendance',
         width: 150,
+        hide: !member,
         type: 'actions',
         getActions: (params) => [
           <GridActionsCellItem

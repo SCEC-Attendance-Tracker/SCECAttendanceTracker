@@ -219,9 +219,9 @@ export default function CreateEventModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <div sx={style}>
+        <Box sx={style}>
           <CreateEventForm onClose={handleClose}/>
-        </div>
+        </Box>
 
       </Modal>
     </>

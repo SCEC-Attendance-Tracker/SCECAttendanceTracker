@@ -43,6 +43,7 @@ function getData(props) {
       field: 'event_rating_score', 
       headerName: 'Event Rating',
       minWidth: 50,
+      type: 'rating',
       flex: 1
     },
     {

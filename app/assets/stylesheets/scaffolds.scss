@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Outfit:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Outfit:wght@400;600;700&family=Arima+Madurai:wght@400;600;700&family=Berkshire+Swash&family=Amita:wght@700&display=swap');
 
 h1, h2, h3, h4, h5, h6, td, button {
-    font-family: 'El Messiri', sans-serif !important;
+    font-family: 'Arima Madurai', sans-serif !important;
 }
-h1, h2, h3, h4, h5 {
-  font-weight: 700 !important;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600 !important;
 }
-a, p, span, ol, ul, li, tr, div, button {
+a, p, span, ol, ul, li, tr, div, button, label, input {
   font-family: 'Outfit', sans-serif !important;
 }
 .profiler-results {
@@ -37,8 +37,10 @@ a:visited {
   color: #666; }
 
 a:hover {
-  color: #fff;
-  background-color: #000; }
+  color: #fff; }
+
+.MuiDataGrid-cell a:hover {
+  color: #55f; }
 
 th {
   padding-bottom: 5px; }

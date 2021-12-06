@@ -6,5 +6,6 @@ props: {member: Member.where({id: session[:member_id]}), page: "Feedbacks"} )%>
 <%#= link_to 'Back', :back %>
 <%#= link_to 'Home', root_path %>
 
+<br />
 <%= react_component("FeedbackDataTable", 
 props: {events: @event, feedbacks: @feedbacks, member: Member.where({id: session[:member_id]})})%>

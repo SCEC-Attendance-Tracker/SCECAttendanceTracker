@@ -28,7 +28,7 @@ const useStyles = makeStyles(
         borderRadius: '4px',
         backgroundColor: 'white',
         marginTop: '10px !important',
-        '& > *': {
+        '& :has(> li)': {
           border: '1px solid #DDD',
         },
         

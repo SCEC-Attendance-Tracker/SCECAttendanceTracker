@@ -41,8 +41,8 @@ export default function CreateAttendanceModal(props) {
             this.state = {
                 created: false,
                 onClose: props.onClose,
-                members: props.members,
-                events: props.events,
+                members: props.props.members,
+                events: props.props.events,
                 attendance: {
                     first_name: "",
                     last_name: "",
@@ -55,17 +55,19 @@ export default function CreateAttendanceModal(props) {
                     attended: true
                 }
             };
+            this.onTagsChange = this.onTagsChange.bind(this);
         }
 
         componentDidMount = () => {
             this.render();
         }
-
         setAttendancefields = () => {
-            member_id = members.find(element => element == first_name).member_id;
-            event_id = events.find(element => element == title).event_id;
-            start_date = events.find(element => element == title).start_date;
-            start_time = events.find(element => element == title).start_time;
+            this.setState({attendance: {
+                member_id: this.state.members.find(element => element == this.state.attendance.last_name).member_id, 
+                event_id: this.state.events.find(element => element == this.state.attendance.title).event_id,
+                start_date: this.state.events.find(element => element == this.state.attendance.title).start_date, 
+                start_time: this.state.events.find(element => element == this.state.attendance.title).start_time
+            }})
         }
         submitAttendance = () => {
             // validate 
@@ -86,6 +88,15 @@ export default function CreateAttendanceModal(props) {
             }).catch((error) => {
                 console.log(error);
             });
+        }
+        onTagsChange = (e, value) => {
+            this.setState({attendance:{ 
+                [e.target.name]:value
+            }},()=>{
+                console.log("name", e.target.name);
+                console.log("value", value);
+                console.log(this.attendance);
+            })
         }
 
         render = () => {
@@ -108,27 +119,50 @@ export default function CreateAttendanceModal(props) {
                         <Autocomplete
                             disablePortal
                             id='outlined'
-                            options={events.title}
+                            options={this.state.events.map(a=>a.title)}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Event Title'/>}
+                            onChange={(e, value) => {
+                                this.setState({attendance:{ 
+                                    title:value
+                                }},()=>{
+                                    console.log(this.attendance);
+                                })
+                            }}
                         />
                     </div>
                     <div className='attendance-field'>
                       <Autocomplete
                             disablePortal
                             id='outlined'
-                            options={members.first_name}
+                            options={this.state.members.map(a=>a.first_name)}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='First Name'/>}
+                            onChange={(e, value) => {
+                                this.setState({attendance:{ 
+                                    first_name:value
+                                }},()=>{
+                                    console.log(this.attendance);
+                                })
+                            }}
+
                         />
                     </div>
                     <div className='attendance-field'>
                       <Autocomplete
                             disablePortal
                             id='outlined'
-                            options={members.last_name}
+                            options={this.state.members.map(a=>a.last_name)}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Last Name'/>}
+                            onChange={(e, value) => {
+                                this.setState({attendance:{ 
+                                    last_name:value
+                                }},()=>{
+                                    console.log("value", value);
+                                    console.log(this.attendance);
+                                })
+                            }}
                         />
                     </div>
 
@@ -165,7 +199,7 @@ return (
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <CreateAttendanceData onClose={handleClose}/>
+          <CreateAttendanceData props ={{events: props.props.events, members: props.props.members}}onClose={handleClose}/>
         </Box>
       </Modal>
     </div>

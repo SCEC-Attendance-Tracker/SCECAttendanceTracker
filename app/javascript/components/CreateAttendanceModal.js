@@ -49,8 +49,6 @@ export default function CreateAttendanceModal(props) {
                     title: "",
                     member_id: "",
                     event_id: "",
-                    start_date: "",
-                    start_time: "",
                     rsvp: false,
                     attended: true
                 }
@@ -61,18 +59,20 @@ export default function CreateAttendanceModal(props) {
             this.render();
         }
         setAttendancefields = () => {
-            this.setState({attendance: {
-                member_id: this.state.members.find(element => element.last_name == this.state.attendance.last_name).member_id, 
-                event_id: this.state.events.find(element => element.title == this.state.attendance.title).event_id,
-                start_date: this.state.events.find(element => element.title == this.state.attendance.title).start_date, 
-                start_time: this.state.events.find(element => element.title == this.state.attendance.title).start_time
-            }}), () => {
+            var someProperty = { ...this.state.attendance }
+            someProperty.member_id = this.state.members.find(element => element.last_name == this.state.attendance.last_name).member_id;
+            someProperty.event_id = this.state.events.find(element => element.title == this.state.attendance.title).event_id;
+            someProperty.rsvp = false;
+            someProperty.attended = true;
+            this.setState({attendance: someProperty}), () => {
                 console.log(this.state.attendance);
             }
+            console.log(this.state.attendance);
+            this.submitAttendance()
         }
 
         validateInput = () => {
-
+            return true;
         }
         submitAttendance = () => {
             // validate 
@@ -80,9 +80,9 @@ export default function CreateAttendanceModal(props) {
                 return;
             }
             const token = document.querySelector('[name=csrf-token]').content;
-            fetch(`/api/v1/attendances/`, {
+            fetch(`/api/v1/attendances`, {
                 method: 'POST',
-                body: JSON.stringify({ attendance: this.state.attendance }),
+                body: JSON.stringify( this.state.attendance ),
                 headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
             }).then((response) => {
                 if (response.ok) {
@@ -115,14 +115,15 @@ export default function CreateAttendanceModal(props) {
                         <Autocomplete
                             disablePortal
                             id='outlined'
-                            options={this.state.events.map(a=>a.title)}
+                            options={this.state.events.map(a=>({label: a.title, event: a}))}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Event Title'/>}
                             onChange={(event, value) => {
-                                this.setState({attendance:{ 
-                                    title: value
-                                }},()=>{
-                                    console.log(this.state.attendance);
+                                var someProperty = { ...this.state.attendance }
+                                someProperty.title = value.event.id;
+                                someProperty.event_id = value.event.event_id;
+                                this.setState({attendance: someProperty}, () => {
+                                    console.log(this.state.attendance.title);
                                 })
                             }}
                         />
@@ -131,14 +132,14 @@ export default function CreateAttendanceModal(props) {
                       <Autocomplete
                             disablePortal
                             id='outlined'
-                            options={this.state.members.map(a=>a.first_name)}
+                            options={this.state.members.map(a=>({label: a.first_name, event: a}))}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='First Name'/>}
-                            onChange={(e, value) => {
-                                this.setState({attendance:{ 
-                                    first_name:value
-                                }},()=>{
-                                    console.log(this.state.attendance);
+                            onChange={(event, value) => {
+                                var someProperty = { ...this.state.attendance }
+                                someProperty.first_name = value.event.id;
+                                this.setState({attendance: someProperty}, () => {
+                                    console.log(this.state.attendance.first_name);
                                 })
                             }}
 
@@ -148,14 +149,15 @@ export default function CreateAttendanceModal(props) {
                       <Autocomplete
                             disablePortal
                             id='outlined'
-                            options={this.state.members.map(a=>a.last_name)}
+                            options={this.state.members.map(a=>({label: a.last_name, event: a}))}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Last Name'/>}
-                            onChange={(e, value) => {
-                                this.setState({attendance:{ 
-                                    last_name:value
-                                }},()=>{
-                                    console.log(this.state.attendance);
+                            onChange={(event, value) => {
+                                var someProperty = { ...this.state.attendance }
+                                someProperty.last_name = value.event.id;
+                                someProperty.member_id = value.event.member_id;
+                                this.setState({attendance: someProperty}, () => {
+                                    console.log(this.state.attendance.last_name);
                                 })
                             }}
                         />

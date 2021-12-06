@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "application", :media => "all" %>
+
 <%= react_component("NavBar", 
 props: {member: Member.where({id: session[:member_id]}), page: "Links"} )%>
 

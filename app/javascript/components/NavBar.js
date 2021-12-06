@@ -114,7 +114,7 @@ export default function NavBar(props) {
 				}
 				
 				<Typography 
-				variant="h6"
+				variant="h5"
 				className={classes.title}
 				>
 					{page_name}

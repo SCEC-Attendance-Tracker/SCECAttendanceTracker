@@ -26,8 +26,15 @@ const useStyles = makeStyles(
       listCard: {
         padding: '0px 16px !important',
         borderRadius: '4px',
-        border: '1px solid #DDD',
-        marginTop: '30px',
+        backgroundColor: 'white',
+        marginTop: '10px !important',
+        '& > *': {
+          border: '1px solid #DDD',
+        },
+        
+        '& > li:first-child': {
+          marginTop: '0px !important'
+        },
         
         '& > li:last-child': {
           borderBottom: '1px solid transparent !important',

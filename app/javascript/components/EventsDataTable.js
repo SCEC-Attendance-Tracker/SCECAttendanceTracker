@@ -94,7 +94,7 @@ export default function EventsDataTable(props) {
         headerClassName: 'theme-header',
         field: 'description',
         headerName: 'Description',
-        width: 150,
+        width: 160,
       },
       {
         headerClassName: 'theme-header',
@@ -106,7 +106,7 @@ export default function EventsDataTable(props) {
         headerClassName: 'theme-header',
         field: 'rsvp',
         headerName: 'RSVP',
-        width: 160,
+        width: 150,
         type: 'actions',
         getActions: (params) => [
           <GridActionsCellItem
@@ -122,7 +122,7 @@ export default function EventsDataTable(props) {
         headerClassName: 'theme-header',
         field: 'attended',
         headerName: 'Mark Attendance',
-        width: 160,
+        width: 150,
         type: 'actions',
         getActions: (params) => [
           <GridActionsCellItem
@@ -268,9 +268,6 @@ export default function EventsDataTable(props) {
   
   return (
     <>
-      {member.admin && 
-        <CreateEventModal />
-      }
       <DataTable data = {data} member = {member}/>
       {open && 
         <Dialog

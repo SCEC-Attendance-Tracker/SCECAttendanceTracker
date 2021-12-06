@@ -195,11 +195,21 @@ export default function MyEventsDataTable(props) {
     return (
       <>
       {(data.rows.length > 0) && (props.props.page != "Home") && 
-        <Typography variant = 'h5' component = 'h5'>
+        <Typography variant = 'h6' component = 'h6'>
             My Events
         </Typography>
       }
+      
       <EventList events = {data.rows} attendances = {attendances} member = {member} page = {props.props.page} />
+      
+      {(data.rows.length > 0) && (props.props.page != "Home") && 
+      <>
+      <br/>
+      <Typography variant = 'h6' component = 'h6'>
+          All Events
+      </Typography>
+      </>
+    }
       </>
     );
   }

@@ -204,10 +204,11 @@ export default function CreateEventModal() {
   }
 
   return (
-    <div>
+    <>
       <Button
         variant='contained'
         color='secondary'
+        size='small'
         onClick={handleOpen}
       >
         New Event
@@ -218,11 +219,11 @@ export default function CreateEventModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <div sx={style}>
           <CreateEventForm onClose={handleClose}/>
-        </Box>
+        </div>
 
       </Modal>
-    </div>
+    </>
   )
 }

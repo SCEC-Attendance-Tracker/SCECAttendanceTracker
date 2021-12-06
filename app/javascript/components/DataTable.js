@@ -13,6 +13,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core";
 import EditEventModal from './EditEventModal';
+import CreateEventModal from './CreateEventModal';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -42,9 +43,11 @@ const useStyles = makeStyles(
         //alignItems: 'flex-start',
         flexWrap: 'wrap',
         width: '100%',
+        
       },
       grid: {
         marginTop: '10px',
+        backgroundColor: 'white',
         
         '& .MuiDataGrid-main': {
           width: '100%',
@@ -67,7 +70,7 @@ const useStyles = makeStyles(
         [theme.breakpoints.down('xs')]: {
           width: '100%',
         },
-        margin: theme.spacing(1, 0.5, 1.5),
+        margin: theme.spacing(1, 0.5, 1.5, 2.5),
         '& .MuiSvgIcon-root': {
           marginRight: theme.spacing(0.5),
           color: '#500000',
@@ -177,6 +180,9 @@ function QuickSearchToolbar(props) {
   return (
     <div className={classes.toolbar}>
       <div>
+        {props.admin && props.controller == 'events' && 
+          <CreateEventModal />
+        }
         <TextField
           variant="standard"
           value={props.value}

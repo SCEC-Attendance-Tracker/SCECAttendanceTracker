@@ -20,7 +20,7 @@ export default function HelpPage(props) {
       
       {props.roles.admin && 
         <>
-      <Typography variant = "h4"> Administrator </Typography>
+      <Typography variant = "h5"> Administrator </Typography>
 
       <Typography variant = "h6"> Signing In </Typography>
       <Typography display = 'block' variant = "p">Once logged in through Google, you will have access to all features of the application. 
@@ -46,7 +46,7 @@ export default function HelpPage(props) {
       <Typography display = 'block' variant = "p">When switching semesters, the admin can export the entire database and save it for future record. They can then wipe the database clean for the next semester.</Typography>
       
       <br/>
-      <Typography variant = "h4"> Member </Typography>
+      <Typography variant = "h5"> Member </Typography>
       </>
     }
       <Typography variant = "h6"> Signing Up </Typography>

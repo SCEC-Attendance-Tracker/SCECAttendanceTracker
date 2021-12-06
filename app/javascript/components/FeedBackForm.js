@@ -99,7 +99,9 @@ class FeedBackForm extends React.Component {
         console.log(this.state.feedback)
         const token = document.querySelector('[name=csrf-token]').content; 
         
+        console.log(this.state.existing)
         if(this.state.existing) {
+            console.log('updating..')
             fetch(`/api/v1/feedbacks/${this.state.feedback.id}`, {
                 method: 'PUT', 
                 body: JSON.stringify({feedback: this.state.feedback}),
@@ -116,6 +118,7 @@ class FeedBackForm extends React.Component {
             });
         }
         else {
+            console.log('in new')
             fetch(`/api/v1/feedbacks/`, {
                 method: 'POST', 
                 body: JSON.stringify({feedback: this.state.feedback}),
@@ -125,11 +128,13 @@ class FeedBackForm extends React.Component {
                     console.log("WENT THROUGH");
                     this.setState({created: true})
                     this.setState({show: false})
+                    location.reload()
                     return response.json;
                 }
             }).catch((error) => {
                 console.log(error);
             });
+            this.setState({existing: true})
         }
     }
 

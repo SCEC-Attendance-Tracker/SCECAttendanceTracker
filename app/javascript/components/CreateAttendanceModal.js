@@ -60,25 +60,57 @@ export default function CreateAttendanceModal(props) {
         }
 
         validateInput = () => {
-            const mid = encodeURIComponent(this.state.member_id);
-            const eid = encodeURIComponent(this.state.event_id);
+            // also check if member_id and event_id is null 
+            const mid = encodeURIComponent(this.state.attendance.member_id);
+            const eid = encodeURIComponent(this.state.attendance.event_id);
             fetch(`/api/v1/attendances?member_id=${mid}&event_id=${eid}`, {
                 method: 'GET',
                 headers: { 'ACCEPT': 'application/json' }
             }).then(response => response.json()
             ).then(data => {
-                
+                if (data.length == 0) {
+                    // POST
+                    this.submitAttendance();
+                } else {
+                    if (!data[0].attended) {
+                        this.updateAttendance(data[0].rsvp, data[0].id);
+                        // UPDATE
+                    } else {
+                        // DO NOTHING, ALREADY ATTENDED
+                        alert('Attendance exists already!');
+                    }
+                }
             }
             ).catch((error) => {
                 console.log(error);
             });
         }
 
+        updateAttendance = (rsvp, att_id) => {
+            var data = this.state.attendance;
+
+            var update = {
+                event_id: data.event_id,
+                member_id: data.member_id,
+                rsvp: rsvp,
+                attended: true
+            }
+
+            const token = document.querySelector('[name=csrf-token]').content; 
+            fetch(`api/v1/attendances/${att_id}`, {
+                method: 'PUT',
+                body: JSON.stringify(update), 
+                headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+            }).then((response) => {
+                if (response.ok) {
+                    console.log('Attendance Updated');
+                    return true;
+                }
+            }).catch(error => {console.log(error)});
+        }
+
         submitAttendance = () => {
             // validate 
-            if (!this.validateInput()) {
-                return;
-            }
             const token = document.querySelector('[name=csrf-token]').content;
             fetch(`/api/v1/attendances`, {
                 method: 'POST',
@@ -121,11 +153,8 @@ export default function CreateAttendanceModal(props) {
                             renderInput={(params) => <TextField {...params} label='Event Title'/>}
                             onChange={(event, value) => {
                                 var someProperty = { ...this.state.attendance }
-                                someProperty.title = value.event.id;
                                 someProperty.event_id = value.event.id;
-                                this.setState({attendance: someProperty}, () => {
-                                    console.log(this.state.attendance.title);
-                                })
+                                this.setState({attendance: someProperty})
                             }}
                         />
                     </div>
@@ -139,10 +168,8 @@ export default function CreateAttendanceModal(props) {
                             renderInput={(params) => <TextField {...params} label='First Name'/>}
                             onChange={(event, value) => {
                                 var someProperty = { ...this.state.attendance }
-                                someProperty.first_name = value.event.id;
-                                this.setState({attendance: someProperty}, () => {
-                                    console.log(this.state.attendance.first_name);
-                                })
+                                someProperty.member_id = value.event.id;
+                                this.setState({attendance: someProperty})
                             }}
 
                         />
@@ -152,16 +179,13 @@ export default function CreateAttendanceModal(props) {
                             disablePortal
                             id='outlined'
                             options={this.state.members.map(a=>({label: a.last_name, event: a}))}
-                            getOptionSelected={(option, value) => option === value.event.title} 
+                            getOptionSelected={(option, value) => option === value.event.last_name} 
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Last Name'/>}
                             onChange={(event, value) => {
                                 var someProperty = { ...this.state.attendance }
-                                someProperty.last_name = value.event.id;
                                 someProperty.member_id = value.event.id;
-                                this.setState({attendance: someProperty}, () => {
-                                    console.log(this.state.attendance.last_name);
-                                })
+                                this.setState({attendance: someProperty})
                             }}
                         />
                     </div>
@@ -172,7 +196,7 @@ export default function CreateAttendanceModal(props) {
                           flexDirection: 'row-reverse'
                       }}>
                           <Button onClick={() => {
-                            this.submitAttendance();
+                            this.validateInput();
                           }}
                           startIcon={<Close/>}> Submit </Button>
                       </div>

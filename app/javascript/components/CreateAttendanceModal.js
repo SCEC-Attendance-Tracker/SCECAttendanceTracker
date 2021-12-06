@@ -55,7 +55,6 @@ export default function CreateAttendanceModal(props) {
                     attended: true
                 }
             };
-            this.onTagsChange = this.onTagsChange.bind(this);
         }
 
         componentDidMount = () => {
@@ -63,11 +62,17 @@ export default function CreateAttendanceModal(props) {
         }
         setAttendancefields = () => {
             this.setState({attendance: {
-                member_id: this.state.members.find(element => element == this.state.attendance.last_name).member_id, 
-                event_id: this.state.events.find(element => element == this.state.attendance.title).event_id,
-                start_date: this.state.events.find(element => element == this.state.attendance.title).start_date, 
-                start_time: this.state.events.find(element => element == this.state.attendance.title).start_time
-            }})
+                member_id: this.state.members.find(element => element.last_name == this.state.attendance.last_name).member_id, 
+                event_id: this.state.events.find(element => element.title == this.state.attendance.title).event_id,
+                start_date: this.state.events.find(element => element.title == this.state.attendance.title).start_date, 
+                start_time: this.state.events.find(element => element.title == this.state.attendance.title).start_time
+            }}), () => {
+                console.log(this.state.attendance);
+            }
+        }
+
+        validateInput = () => {
+
         }
         submitAttendance = () => {
             // validate 
@@ -88,15 +93,6 @@ export default function CreateAttendanceModal(props) {
             }).catch((error) => {
                 console.log(error);
             });
-        }
-        onTagsChange = (e, value) => {
-            this.setState({attendance:{ 
-                [e.target.name]:value
-            }},()=>{
-                console.log("name", e.target.name);
-                console.log("value", value);
-                console.log(this.attendance);
-            })
         }
 
         render = () => {
@@ -122,11 +118,11 @@ export default function CreateAttendanceModal(props) {
                             options={this.state.events.map(a=>a.title)}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Event Title'/>}
-                            onChange={(e, value) => {
+                            onChange={(event, value) => {
                                 this.setState({attendance:{ 
-                                    title:value
+                                    title: value
                                 }},()=>{
-                                    console.log(this.attendance);
+                                    console.log(this.state.attendance);
                                 })
                             }}
                         />
@@ -142,7 +138,7 @@ export default function CreateAttendanceModal(props) {
                                 this.setState({attendance:{ 
                                     first_name:value
                                 }},()=>{
-                                    console.log(this.attendance);
+                                    console.log(this.state.attendance);
                                 })
                             }}
 
@@ -159,8 +155,7 @@ export default function CreateAttendanceModal(props) {
                                 this.setState({attendance:{ 
                                     last_name:value
                                 }},()=>{
-                                    console.log("value", value);
-                                    console.log(this.attendance);
+                                    console.log(this.state.attendance);
                                 })
                             }}
                         />

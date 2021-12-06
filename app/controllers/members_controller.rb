@@ -47,6 +47,7 @@ class MembersController < ApplicationController
   def update
     @member = Member.find(params[:id])
     @member.update(member_params)
+    UpdateMailer.with(member: @member).member_update_mailer.deliver_now
   end
 
   private

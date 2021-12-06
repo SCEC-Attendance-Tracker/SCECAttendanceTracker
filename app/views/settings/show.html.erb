@@ -1,0 +1,4 @@
+<%= react_component("NavBar", 
+props: {member: Member.where({id: session[:member_id]}), page: "Members"} )%>
+
+<%= react_component("ExportDeleteData") %>

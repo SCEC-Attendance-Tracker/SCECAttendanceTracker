@@ -40,4 +40,7 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get '/settings' => 'settings#show'
+  get '/settings/wipe' => 'settings#wipe'
 end

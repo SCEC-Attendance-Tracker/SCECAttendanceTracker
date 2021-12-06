@@ -38,6 +38,7 @@ gem 'omniauth-google-oauth2'
 gem 'react-rails'
 gem 'rexml'
 gem 'simplecov', require: false
+gem 'csv'
 gem 'google-apis-calendar_v3'
 
 group :development, :test do

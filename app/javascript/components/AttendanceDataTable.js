@@ -170,8 +170,11 @@ function getData(props) {
 var data;
 
 export default function AttendanceDataTable(props) {
-  data = getData(props);
+  if (data == undefined) {
+    data = getData(props);
+  }
+  console.log(props.props);
   return (
-    <DataTable data = {data}/>
+    <DataTable data = {data} member = {props.props.member[0]} />
   );
 }

@@ -12,4 +12,4 @@ props: {member: Member.where({id: session[:member_id]}), page: "Attendances"} )%
 
 <br />
 <%= react_component("AttendanceDataTable", 
-props: {members: @member, events: @event, attendances: @attendances})%>
+props: {member: Member.where({id: session[:member_id]}), members: @member, events: @event, attendances: @attendances})%>

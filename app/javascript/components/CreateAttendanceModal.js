@@ -58,22 +58,22 @@ export default function CreateAttendanceModal(props) {
         componentDidMount = () => {
             this.render();
         }
-        setAttendancefields = () => {
-            var someProperty = { ...this.state.attendance }
-            someProperty.member_id = this.state.members.find(element => element.last_name == this.state.attendance.last_name).member_id;
-            someProperty.event_id = this.state.events.find(element => element.title == this.state.attendance.title).event_id;
-            someProperty.rsvp = false;
-            someProperty.attended = true;
-            this.setState({attendance: someProperty}), () => {
-                console.log(this.state.attendance);
-            }
-            console.log(this.state.attendance);
-            this.submitAttendance()
-        }
 
         validateInput = () => {
-            return true;
+            const mid = encodeURIComponent(this.state.member_id);
+            const eid = encodeURIComponent(this.state.event_id);
+            fetch(`/api/v1/attendances?member_id=${mid}&event_id=${eid}`, {
+                method: 'GET',
+                headers: { 'ACCEPT': 'application/json' }
+            }).then(response => response.json()
+            ).then(data => {
+                
+            }
+            ).catch((error) => {
+                console.log(error);
+            });
         }
+
         submitAttendance = () => {
             // validate 
             if (!this.validateInput()) {
@@ -117,11 +117,12 @@ export default function CreateAttendanceModal(props) {
                             id='outlined'
                             options={this.state.events.map(a=>({label: a.title, event: a}))}
                             sx={{ width: 300 }}
+                            getOptionSelected={(option, value) => option === value.event.title} 
                             renderInput={(params) => <TextField {...params} label='Event Title'/>}
                             onChange={(event, value) => {
                                 var someProperty = { ...this.state.attendance }
                                 someProperty.title = value.event.id;
-                                someProperty.event_id = value.event.event_id;
+                                someProperty.event_id = value.event.id;
                                 this.setState({attendance: someProperty}, () => {
                                     console.log(this.state.attendance.title);
                                 })
@@ -133,6 +134,7 @@ export default function CreateAttendanceModal(props) {
                             disablePortal
                             id='outlined'
                             options={this.state.members.map(a=>({label: a.first_name, event: a}))}
+                            getOptionSelected={(option, value) => option === value.event.title} 
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='First Name'/>}
                             onChange={(event, value) => {
@@ -150,12 +152,13 @@ export default function CreateAttendanceModal(props) {
                             disablePortal
                             id='outlined'
                             options={this.state.members.map(a=>({label: a.last_name, event: a}))}
+                            getOptionSelected={(option, value) => option === value.event.title} 
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label='Last Name'/>}
                             onChange={(event, value) => {
                                 var someProperty = { ...this.state.attendance }
                                 someProperty.last_name = value.event.id;
-                                someProperty.member_id = value.event.member_id;
+                                someProperty.member_id = value.event.id;
                                 this.setState({attendance: someProperty}, () => {
                                     console.log(this.state.attendance.last_name);
                                 })
@@ -169,7 +172,7 @@ export default function CreateAttendanceModal(props) {
                           flexDirection: 'row-reverse'
                       }}>
                           <Button onClick={() => {
-                            this.setAttendancefields();
+                            this.submitAttendance();
                           }}
                           startIcon={<Close/>}> Submit </Button>
                       </div>

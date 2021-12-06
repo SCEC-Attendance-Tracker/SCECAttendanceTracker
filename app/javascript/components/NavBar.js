@@ -176,7 +176,7 @@ export default function NavBar(props) {
 							</Link>
 						}
 						{ (member != undefined) && (member.admin) &&
-							<Link href={"/settings/show"}>
+							<Link href={"/settings"}>
 								<MenuItem className={classes.menuItem}>Admin Settings</MenuItem>
 							</Link>
 						}

@@ -38,7 +38,7 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = google_secret.to_authorization
-    calendar_id = 'scecattendancetracker@gmail.com'
+    calendar_id = 'scectamu@gmail.com'
     puts event_params[:start_date]
     start_date = Google::Apis::CalendarV3::EventDateTime.new
     start_date.date_time =  DateTime.new(event_params["start_date(1i)"].to_i, 
@@ -80,7 +80,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = google_secret.to_authorization
-    calendar_id = 'scecattendancetracker@gmail.com'
+    calendar_id = 'scectamu@gmail.com'
 
     start_date = Google::Apis::CalendarV3::EventDateTime.new
     start_date.date_time =  DateTime.new(event_params["start_date(1i)"].to_i, 
@@ -120,7 +120,7 @@ class EventsController < ApplicationController
   def destroy
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = google_secret.to_authorization
-    calendar_id = 'scecattendancetracker@gmail.com'
+    calendar_id = 'scectamu@gmail.com'
 
     response = service.delete_event(calendar_id, @event.google_event_id, send_updates: 'all')
     @event.destroy

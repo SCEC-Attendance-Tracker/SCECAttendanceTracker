@@ -81,7 +81,8 @@ class AttendancesController < ApplicationController
       if DateTime.now.between?(event.start_date, event.end_date)
         if @attendance.save
           member = Member.find(attendance_params[:member_id])
-          member.update(total_attendance: member.total_attendance + 1)
+          counts = Attendance.where(member_id: session[:member_id], event_id: params[:event_id], attended: true).count
+          member.update(total_attendance: counts)
 
           format.html { redirect_to attendances_url, notice: 'Attendance was successfully created.' }
           format.json { render :show, status: :created, location: @attendance }

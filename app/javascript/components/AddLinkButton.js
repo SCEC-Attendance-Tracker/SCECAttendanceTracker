@@ -44,7 +44,7 @@ export default function AddLinkButton() {
   return (
     <>
       <Button sx = {{mt: 2, mb: 1}} size='small' color='secondary' variant="contained" onClick={handleClickOpen}>
-        Create Link
+        New Link
       </Button>
       
       <Dialog open={open} onClose={handleClose}>
@@ -57,6 +57,7 @@ export default function AddLinkButton() {
             autoFocus
             margin="dense"
             id="name"
+            color='secondary'
             label="Link Name"
             type="string"
             fullWidth
@@ -68,6 +69,7 @@ export default function AddLinkButton() {
             autoFocus
             margin="dense"
             id="url"
+            color='secondary'
             label="Link URL (https://www.example.com)"
             type="text"
             fullWidth
@@ -79,6 +81,7 @@ export default function AddLinkButton() {
             autoFocus
             margin="dense"
             id="description"
+            color='secondary'
             label="Description"
             type="text"
             fullWidth
@@ -88,8 +91,8 @@ export default function AddLinkButton() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit}>Add</Button>
           <Button onClick={handleClose}>Cancel</Button>
+          <Button variant='contained' color='secondary' onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
     </>

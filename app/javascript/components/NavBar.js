@@ -7,19 +7,14 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import Box from '@material-ui/core/Box'
 import Link from '@material-ui/core/Link'
-import { makeStyles } from '@material-ui/core'
-
-import { withStyles } from '@material-ui/core'
+import { makeStyles, Avatar } from '@material-ui/core'
 import { createTheme, ThemeProvider } from "@material-ui/core"
-
-import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ProfilePageModal from './ProfilePageModal'
-	
-	
+import SCECLogo from '../../assets/images/apple-touch-icon.png' 
+
 const home = "SCEC Portal"
 
 const theme = createTheme({   
@@ -67,6 +62,9 @@ const useStyles = makeStyles({
 			color: '#200000',
 		}
 	},
+	logo: {
+		marginRight: '10px'
+	},
 })
 
 export default function NavBar(props) {
@@ -102,6 +100,9 @@ export default function NavBar(props) {
 			<AppBar position="static" className={classes.root}>
 				<Toolbar>
 				
+				{ page_name == home && 
+					<Avatar className={classes.logo} src={SCECLogo} variant='rounded' />
+				}
 				{ page_name != home && 
 						<IconButton
 							color="inherit"
@@ -113,7 +114,7 @@ export default function NavBar(props) {
 				}
 				
 				<Typography 
-				variant="h6"
+				variant="h5"
 				className={classes.title}
 				>
 					{page_name}
@@ -156,13 +157,11 @@ export default function NavBar(props) {
 						open={Boolean(anchorEl)}
 						onClose={handleClose}
 					>
-						{ (member != undefined) && 
-							<Button href={"/members/"+member.id}>
-								<MenuItem className={classes.menuItem}>Profile</MenuItem>
-							</Button>
-						}
 						<Link href={"/events"}>
 							<MenuItem className={classes.menuItem}>Events</MenuItem>
+						</Link>
+						<Link href={"/links"}>
+							<MenuItem className={classes.menuItem}>Links</MenuItem>
 						</Link>
 						
 						{ (member != undefined) && (member.admin) &&
@@ -173,6 +172,16 @@ export default function NavBar(props) {
 						{ (member != undefined) && (member.admin) &&
 							<Link href={"/members"}>
 								<MenuItem className={classes.menuItem}>Members</MenuItem>
+							</Link>
+						}
+						{ (member != undefined) && (member.admin) &&
+							<Link href={"/feedbacks"}>
+								<MenuItem className={classes.menuItem}>Feedback</MenuItem>
+							</Link>
+						}
+						{ (member != undefined) &&
+							<Link href="/help">
+								<MenuItem className={classes.menuItem}>Help</MenuItem>
 							</Link>
 						}
 						{ (member != undefined) && (member.admin) &&

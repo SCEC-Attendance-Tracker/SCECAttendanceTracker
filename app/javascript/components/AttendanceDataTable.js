@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid';
-import DataTable from "./DataTable";
+import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport, GridActionsCellItem} from '@mui/x-data-grid';
 
+import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import { createTheme, makeStyles, createStyles } from "@material-ui/core"
+import DataTable from "./DataTable";
 
 function getData(props) {
   
@@ -82,10 +83,37 @@ function getData(props) {
       field: 'attended',
       headerName: 'Attended?',
       width: 160,
-      editable: true,
-      type: 'boolean'
+      type: 'actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={ params.row.attended ? <CheckIcon /> : <ClearIcon />}
+          label="Attendance"
+          onClick={() => {
+            toggleAttendance(params.row)
+            //markAttendance(params.row);
+          }}
+        />
+      ],
     },
   ];
+  
+  const toggleAttendance = (row) => {
+    const token = document.querySelector('[name=csrf-token]').content;
+    
+    var att = {
+      id: row.id,
+      attended: !row.attended
+    };
+    
+    fetch(`/api/v1/attendances/${row.id}`, {
+      method: 'PUT', 
+      body: JSON.stringify(att),
+      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+    }).then(() => {
+      console.log(row)
+      //location.reload();
+    });
+  }
   
   var test_rows = [
     {
@@ -135,6 +163,7 @@ function getData(props) {
   }
   
   var data = {columns: columns, rows: rows}
+  console.log(data.rows);
   return data;
 }
 
@@ -143,6 +172,6 @@ var data;
 export default function AttendanceDataTable(props) {
   data = getData(props);
   return (
-    DataTable(data)
+    <DataTable data = {data}/>
   );
 }

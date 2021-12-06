@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_03_040234) do
+ActiveRecord::Schema.define(version: 2021_11_08_111229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,8 +44,10 @@ ActiveRecord::Schema.define(version: 2021_10_03_040234) do
     t.string "title"
     t.datetime "start_date"
     t.datetime "end_date"
+    t.string "google_event_id"
     t.string "description"
     t.string "location"
+    t.string "code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -58,7 +60,16 @@ ActiveRecord::Schema.define(version: 2021_10_03_040234) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "links", force: :cascade do |t|
+    t.string "name"
+    t.text "url"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "members", force: :cascade do |t|
+    t.boolean "is_member"
     t.boolean "admin"
     t.string "first_name"
     t.string "last_name"

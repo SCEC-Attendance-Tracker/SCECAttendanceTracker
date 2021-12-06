@@ -27,7 +27,7 @@
 
 <% if  @event.feedbacks.any? %>
   <hr>
-  <h2>Feedbacks by <%= @event.title%>:</h2>
+  <h2> Feedback for <%= @event.title %>:</h2>
   <%= render @event.feedbacks %>
 <% else %>
   <hr>
@@ -38,4 +38,5 @@
 
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'All Events', events_path %>
+<%= link_to 'All Events', events_path %> | 
+<%= link_to("<< Back to Profile", member_path, :class => 'back-link') %>

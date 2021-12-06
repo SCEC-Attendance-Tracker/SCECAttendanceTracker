@@ -1,6 +1,7 @@
 import React from 'react'
 import GoogleCalendar from '../GoogleCalendar'
 import EventList from '../EventList'
+import MyEventsDataTable from '../MyEventsDataTable'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -8,30 +9,37 @@ import Typography from '@mui/material/Typography'
 
 export default function HomePage(props) {
 
-  if(!props.events.current_events){
-    props.events.current_events = null
-  }
-  if(!props.events.upcoming_events){
-    props.events.upcoming_events = null
-  }
-  console.log(props)
+  console.log(props);
+  
   return (
     <Box>
-        <Grid container spacing = {5} alignItems = 'stretch'>
-            <Grid item xs = {8} style = {{height: '100%'}}>
-              <GoogleCalendar />
-            </Grid>
-            <Grid item xs = {4}>
-              <Typography variant="h5">
-                Current Events
-              </Typography>
-              <EventList events = {props.events.current_events}/>
-              <Typography variant="h5">
+        <Grid container spacing = {5} alignItems = 'flex-start'>
+            <Grid item xs = {12} lg = {4} >
+              {(props.events.current_events.length > 0) &&
+                <>
+                <Typography variant="h6">
+                  Current Events
+                </Typography>
+                <MyEventsDataTable props = {{page: "Home", events: props.events.current_events, attendances: props.attendances, members: props.member}}/>
+                </>
+              }
+              
+              <Typography variant="h6">
                 Upcoming Events
               </Typography>
-              <EventList events = {props.events.upcoming_events}/>
+              
+              {(props.events.upcoming_events.length > 0) ?
+                <MyEventsDataTable props = {{page: "Home", events: props.events.upcoming_events, attendances: props.attendances, members: props.member}}/>
+                :
+                <Typography variant="p">
+                  No upcoming events. Check back soon!
+                </Typography>
+              }
+            </Grid>
+            <Grid item xs = {12} lg = {8} style = {{height: '100%'}}>
+              <GoogleCalendar />
             </Grid>
         </Grid>
     </Box>
-  );
+  ); 
 }

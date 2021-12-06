@@ -168,7 +168,6 @@ export default function CreateEventModal() {
                       <Box sx={{display: 'flex', gap: 30, mt: 1}}>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <DateTimePicker 
-                            maxDateTime={this.state.endDate} 
                             name="beginDate" 
                             value={begin} 
                             label="From" 

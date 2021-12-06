@@ -21,6 +21,7 @@ export default function HomePage(props) {
                   Current Events
                 </Typography>
                 <MyEventsDataTable props = {{page: "Home", events: props.events.current_events, attendances: props.attendances, members: props.member}}/>
+                <br/>
                 </>
               }
               

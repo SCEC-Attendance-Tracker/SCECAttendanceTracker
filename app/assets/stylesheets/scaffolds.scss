@@ -16,9 +16,13 @@ table.fc-scrollgrid {
   background-color: white;
   border-radius: 4px;
 }
+.fc-header-toolbar {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
 
 body {
-  background-color: rgba(170, 0, 40, 0.08);
+  background-color: rgba(170, 50, 45, 0.08);
   color: #333; }
 
 body, p, ol, ul, td {

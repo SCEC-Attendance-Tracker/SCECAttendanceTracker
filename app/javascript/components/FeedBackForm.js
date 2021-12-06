@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Modal} from "@material-ui/core";
+import {Modal, Dialog, DialogTitle, DialogActions} from "@material-ui/core";
 import DialogContent from '@material-ui/core/DialogContent';
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
 import ListItemButton from '@mui/material/ListItemButton'
@@ -176,55 +176,41 @@ class FeedBackForm extends React.Component {
                     </ListItemIcon>
                 </ListItemButton>
                 
-                <Modal open={this.state.show}
-                    aria-labelledby="profile-page-label"
-                    aria-describedby="profile-page-text"
+                <Dialog open={this.state.show}
                     onClose={this.handleClose} >
-                    <Box sx={style}>
+                        <DialogTitle>
+                            {this.state.event.title}
+                        </DialogTitle>
                         <DialogContent>
-                            {this.state.created ? <Typography id='submitted'> Feedback created! </Typography> : ""}
-                            {this.state.updated ? <Typography id='submitted'> Feedback updated! </Typography> : ""}
+                            {/*this.state.created ? <Typography id='submitted'> Feedback created! </Typography> : ""*/}
+                            {/*this.state.updated ? <Typography id='submitted'> Feedback updated! </Typography> : ""*/}
                             {/* <Button onClick={() => { this.setState({ show: !this.state.show }) }}>{this.state.show ? 'Hide' : 'Show'} Feedback</Button> */}
-                            <div id="feedback">
-                                {this.state.show ?
-                                    <> 
-                                        <h2> {this.state.event.title} </h2>
-                                        <div className='feedback-field'>
-                                            <Rating
-                                                name="event_rating_score"
-                                                value={this.state.feedback.event_rating_score}
-                                                precision={0.5}
-                                                onChange={
-                                                    this.handleInputChange
-                                                }
-                                              />
-                                        </div>
-                                        <div className='feedback-field'>
-                                            <TextField 
-                                                multiline 
-                                                variant="filled"
-                                                rows={4} 
-                                                id='outlined' 
-                                                defaultValue = {this.state.feedback.event_review}
-                                                label='Event Review' 
-                                                name='event_review' 
-                                                onChange={this.handleInputChange} 
-                                            />
-                                        </div>
-                                        <div className='feedback-field'>
-                                            <div className='footer' style={{
-                                                display: 'flex',
-                                                flexDirection: 'row-reverse'
-                                            }}>
-                                                <Button onClick={this.submitFeedback} startIcon={<Check />}> Submit </Button>
-                                            </div>
-                                        </div>
-                                    </> :null
+                            
+                            <Rating
+                                name="event_rating_score"
+                                value={this.state.feedback.event_rating_score}
+                                precision={0.5}
+                                onChange={
+                                    this.handleInputChange
                                 }
-                            </div>
+                            />
+                            <TextField 
+                                multiline 
+                                fullWidth
+                                variant="filled"
+                                rows={4} 
+                                id='outlined' 
+                                color='secondary'
+                                defaultValue = {this.state.feedback.event_review}
+                                label='Event Review' 
+                                name='event_review' 
+                                onChange={this.handleInputChange} 
+                            />
+                            <DialogActions>
+                                <Button color='secondary' variant='contained' onClick={this.submitFeedback} startIcon={<Check />}> Submit Feedback </Button>
+                            </DialogActions>
                         </DialogContent>
-                    </Box>
-                </Modal>
+                    </Dialog>
             </>
         );
     }

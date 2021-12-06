@@ -131,5 +131,5 @@ Rails.application.configure do
     password: ENV["GMAIL_PASSWORD"]
   }
 
-  config.action_mailer.default_url_options = { host: "stage-scec-project.herokuapp.com", port: 3000 }
+  config.action_mailer.default_url_options = { host: "tamuscec.herokuapp.com", port: 3000 }
 end

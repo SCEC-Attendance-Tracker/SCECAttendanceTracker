@@ -118,21 +118,42 @@ function getData(props) {
 
   const markMembership = (row) => {
     const token = document.querySelector('[name=csrf-token]').content;
-    var mem = {
-      id: row.member_id,
-      first_name: row.first_name,
-      last_name: row.last_name,
-      dues: row.dues,
-      total: row.total,
-      is_member: true
+    if (row.is_member == false) 
+    {
+      var mem = {
+        id: row.member_id,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        dues: row.dues,
+        total: row.total,
+        is_member: true
+      }
+      return fetch(`/api/v1/members/${mem.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(mem),
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+      }).then(() => {
+        location.reload();
+      }).catch((error) => { console.error(error) });
     }
-    return fetch(`/api/v1/members/${mem.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(mem),
-      headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
-    }).then(() => {
-      location.reload();
-    }).catch((error) => { console.error(error) });
+    else {
+      var mem = {
+        id: row.member_id,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        dues: row.dues,
+        total: row.total,
+        is_member: false
+      }
+      return fetch(`/api/v1/members/${mem.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(mem),
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
+      }).then(() => {
+        location.reload();
+        alert("This user is no longer a member")
+      }).catch((error) => { console.error(error) });
+    }
   }
   var rows = [];
   

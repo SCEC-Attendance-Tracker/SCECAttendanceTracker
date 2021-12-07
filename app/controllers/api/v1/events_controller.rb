@@ -60,6 +60,7 @@ module Api
                     
             response = service.insert_event(calendar_id, event_object)
             @event.google_event_id = response.id
+            @event.average_rating = 0
 
             if @event.save
                 render json: @event 

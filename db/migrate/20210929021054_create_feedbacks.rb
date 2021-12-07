@@ -4,7 +4,7 @@ class CreateFeedbacks < ActiveRecord::Migration[6.1]
       t.bigint :event_id
       t.bigint :member_id
       t.string :event_review
-      t.integer :event_rating_score
+      t.float :event_rating_score
 
       t.timestamps
     end

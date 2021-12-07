@@ -8,6 +8,7 @@ class CreateEvents < ActiveRecord::Migration[6.1]
       t.string :description
       t.string :location
       t.string :code
+      t.float :average_rating
 
       t.timestamps
     end

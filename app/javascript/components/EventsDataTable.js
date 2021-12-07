@@ -113,6 +113,7 @@ export default function EventsDataTable(props) {
           <GridActionsCellItem
             icon={ params.row.rsvp ? <CheckIcon /> : <ClearIcon />}
             label="Mark RSVP"
+            disabled={(new Date <= new Date(params.row.start_date + ' ' + params.row.start_time)) ? false : true}
             onClick={() => {
               markRsvp(params.row);
             }}
@@ -130,6 +131,7 @@ export default function EventsDataTable(props) {
           <GridActionsCellItem
             icon={ params.row.attended ? <CheckIcon /> : <ClearIcon />}
             label="Mark Attendance"
+            disabled={((new Date >= new Date(params.row.start_date + ' ' + params.row.start_time)) && (new Date <= new Date(params.row.end_date + ' ' + params.row.end_time))) ? false : true}
             onClick={() => {
               openAttendanceCheck(params.row)
               //markAttendance(params.row);

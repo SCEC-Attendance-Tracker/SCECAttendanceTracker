@@ -7,7 +7,17 @@ module Api
 
       # GET /feedbacks or /feedbacks.json
       def index
-        if params[:event_id]
+        if params[:average_rating]
+          total_rating = 0
+          total = 0
+          @feedbacks = Feedback.where(event_id: params[:event_id]).find_each do |fb|
+            total_rating += fb.event_rating_score
+            total += 1 
+          end
+          
+          avg = total_rating/total
+          render json: {average_rating: avg}
+        elsif params[:event_id]
           @feedback = Feedback.find_by(event_id: params[:event_id], member_id: session[:member_id])
           render json: @feedback
         else
@@ -30,8 +40,7 @@ module Api
         @feedback = Feedback.new
       end
   
-      # GET /feedbacks/1/edit
-      def edit; end
+      # PUT /feedbacks/1
       def update
         @feedback = Feedback.find_by(id: params[:id], member_id: session[:member_id])
         puts @feedback

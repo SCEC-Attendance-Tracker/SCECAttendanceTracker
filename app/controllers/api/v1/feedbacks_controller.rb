@@ -7,17 +7,7 @@ module Api
 
       # GET /feedbacks or /feedbacks.json
       def index
-        if params[:average_rating]
-          total_rating = 0
-          total = 0
-          @feedbacks = Feedback.where(event_id: params[:event_id]).find_each do |fb|
-            total_rating += fb.event_rating_score
-            total += 1 
-          end
-          
-          avg = total_rating/total
-          render json: {average_rating: avg}
-        elsif params[:event_id]
+        if params[:event_id]
           @feedback = Feedback.find_by(event_id: params[:event_id], member_id: session[:member_id])
           render json: @feedback
         else
@@ -46,6 +36,25 @@ module Api
         puts @feedback
         @feedback.update(feedback_params)
         puts @feedback
+
+        event_id = feedback_params['event_id']
+
+        total = 0
+        total_rating = 0
+        @feedbacks = Feedback.where(event_id: event_id).find_each do |fb|
+          total_rating += fb.event_rating_score
+          total += 1 
+        end
+        puts total_rating
+        puts total
+
+        @event = Event.find_by(id: event_id)
+        if(total == 0)
+          @event.update(average_rating: 0)
+        else
+          avg = total_rating / total
+          @event.update(average_rating: avg.round(1))
+        end
         respond_with json: @feedback
       end
 
@@ -53,8 +62,24 @@ module Api
       def create
         @feedback = Feedback.new(feedback_params)
         @feedback.member_id = session[:member_id]
+
+        event_id = feedback_params['event_id']
         if @feedback.save
-          puts @feedback
+          total = 0
+          total_rating = 0
+          @feedbacks = Feedback.where(event_id: event_id).find_each do |fb|
+            total_rating += fb.event_rating_score
+            total += 1 
+          end
+
+          puts params[:event_id]
+          @event = Event.find_by(id: event_id)
+          if(total == 0)
+            @event.update(average_rating: 0)
+          else
+            avg = total_rating / total
+            @event.update(average_rating: avg.round(1))
+          end
           render json: @feedback
         else
           render json: @feedback.errors
@@ -78,7 +103,7 @@ module Api
   
       # Only allow a list of trusted parameters through.
       def feedback_params
-        params.require(:feedback).permit(:event_id, :event_review, :event_rating_score)
+        params.require(:feedback).permit(:event_id, :event_review, :event_rating_score, :id)
       end
     end
   end

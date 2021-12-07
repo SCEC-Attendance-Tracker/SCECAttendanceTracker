@@ -20,7 +20,7 @@ export default function EventsDataTable(props) {
   var member = props.props.members[0];
   var events = props.props.events;
   var attendances = props.props.attendances;
-
+  
   if (data == undefined) {
     data = getData(props);
   }
@@ -224,29 +224,6 @@ export default function EventsDataTable(props) {
         location.reload();
       })
     }
-
-    function getAverageRating(row) {
-
-      var avg_rating = null
-      return fetch(`/api/v1/feedbacks?event_id=${row}&average_rating=true`, {
-        method: 'GET',
-        headers: { 'ACCEPT': 'application/json' }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data) {
-          avg_rating = data.average_rating;
-          console.log(avg_rating)
-          return avg_rating
-        }
-        return avg_rating
-      })
-      .catch(error => console.log(error));
-      // console.log(avg_rating)
-      // console.log("Made it here")
-      // return avg_rating;
-    }
-
     var rows = [];
 
     for (var i in events) {
@@ -262,7 +239,7 @@ export default function EventsDataTable(props) {
         end_time: new Date(events[i].end_date).toLocaleTimeString(),
         description: events[i].description,
         location: events[i].location,
-        average_rating: getAverageRating(events[i].id).then(response => console.log(response)),
+        average_rating: events[i].average_rating,
         // average_rating: 0,
         rsvp: (attendances && member ?
           (attendances.find(e => (e.event_id == events[i].id) && (e.member_id == member.id)) ?

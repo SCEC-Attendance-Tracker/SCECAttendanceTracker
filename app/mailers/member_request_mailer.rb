@@ -8,8 +8,7 @@ class MemberRequestMailer < ApplicationMailer
   #
   def member_request
     @member = params[:member]
-    @admins = Member.where(admin: true)
 
-    mail(to: @admins.pluck(:email), subject: 'SCEC - New Member Request') if @admins.present?
+    mail(to: @member.email, subject: 'SCEC Account Created')
   end
 end

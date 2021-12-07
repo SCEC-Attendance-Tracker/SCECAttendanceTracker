@@ -71,10 +71,12 @@ export default function CreateAttendanceModal(props) {
                 if (data.length == 0) {
                     // POST
                     this.submitAttendance();
+                    location.reload();
                 } else {
                     if (!data[0].attended) {
                         this.updateAttendance(data[0].rsvp, data[0].id);
                         // UPDATE
+                        location.reload();
                     } else {
                         // DO NOTHING, ALREADY ATTENDED
                         alert('Attendance exists already!');

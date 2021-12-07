@@ -163,6 +163,9 @@ export default function NavBar(props) {
 						<Link href={"/links"}>
 							<MenuItem className={classes.menuItem}>Links</MenuItem>
 						</Link>
+						<Link href="/privacypolicy">
+							<MenuItem className={classes.menuItem}>Privacy Policy</MenuItem>
+						</Link>
 						
 						{ (member != undefined) && (member.admin) &&
 							<Link href={"/attendances"}>

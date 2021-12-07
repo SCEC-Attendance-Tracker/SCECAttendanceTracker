@@ -129,7 +129,7 @@ class ProfilePageModal extends React.Component {
           const token = document.querySelector('[name=csrf-token]').content;
           fetch(`/api/v1/members/${this.state.member_info.id}`, {
           method: 'PUT', 
-          body: JSON.stringify(this.state.member_edit),
+          body: JSON.stringify({member: this.state.member_edit}),
           headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
           }).then((response) => {
             if (response.ok) {
@@ -174,7 +174,6 @@ class ProfilePageModal extends React.Component {
                         }
                     </div>
                     <div className='delete-close'>
-                        {this.state.is_owner && this.state.editable ? "" : <IconButton size="medium" onClick={this.handleDelete} aria-label="Delete Profile"> <DeleteOutlined/> </IconButton>}
                         <IconButton size="medium" onClick={this.handleClose} aria-label="Close Menu"> <Close/> </IconButton>
                     </div>
                 </div>
@@ -192,9 +191,9 @@ class ProfilePageModal extends React.Component {
                 <Typography id="profile-page-label" variant="overline" component="h2">
                     About Me:
                 </Typography> 
-                {this.state.editable ? <TextField id="outlined" name="description" aria-label="About me:" multiline fullWidth value={description} onChange={this.handleInputChange}/>
+                {this.state.editable ? <TextField id="outlined" name="description" aria-label="About me:" multiline fullWidth value={description != null ? description : ""} onChange={this.handleInputChange}/>
                 :
-                <><Typography id="profile-page-text" sx={{ mt: 2 }}>{this.state.member_info.description}</Typography></>
+                <><Typography id="profile-page-text" sx={{ mt: 2 }}>{this.state.member_info.description != null ? this.state.member_info.description : ""}</Typography></>
                 }
                 </div>
                 <div className="attendance-points">

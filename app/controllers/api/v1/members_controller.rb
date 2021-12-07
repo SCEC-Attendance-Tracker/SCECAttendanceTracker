@@ -47,7 +47,6 @@ module Api
 
       def update
         @member = Member.find(params[:id])
-        puts @member
         @member.update(member_params)
         puts @member
         respond_with json: @member

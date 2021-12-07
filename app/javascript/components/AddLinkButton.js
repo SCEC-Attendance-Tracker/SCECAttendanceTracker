@@ -32,7 +32,7 @@ export default function AddLinkButton() {
       body: JSON.stringify(newLink),
       headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
     }).then(() => {
-      location.reload();
+      //location.reload();
     })
     setOpen(false);
   };

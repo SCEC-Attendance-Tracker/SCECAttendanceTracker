@@ -33,7 +33,8 @@ function getData(props) {
       hide: true
     },
     {
-      headerClassName: 'theme-header', field: 'event_id', 
+      headerClassName: 'theme-header', 
+      field: 'event_id', 
       headerName: 'Event ID',
       width: 100,
       hide: true

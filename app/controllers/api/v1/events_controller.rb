@@ -12,6 +12,7 @@ module Api
             @attendances = Attendance.all 
             @events = Event.order(sort_column + " " + sort_direction)
             @attendances = Attendance.all
+            render json: @events
         end
 
         def current_events
@@ -19,7 +20,14 @@ module Api
         end
 
         # GET /events/1 or /events/1.json
-        def show; end
+        def show
+          @event = Event.find(params[:id])
+          if @event
+            render json: @event
+          else
+            render json: @event.errors
+          end
+        end
 
         # GET /events/new
         def new

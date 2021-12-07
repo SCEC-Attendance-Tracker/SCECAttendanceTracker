@@ -15,6 +15,7 @@ import { createTheme, makeStyles, createStyles } from "@material-ui/core";
 import EditEventModal from './EditEventModal';
 import CreateEventModal from './CreateEventModal';
 import AddLinkButton from './AddLinkButton';
+import AddAttendanceButton from './AddAttendanceButton';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -114,11 +115,20 @@ const useStyles = makeStyles(
 
 const deleteRow = (row, controller) => {
   const token = document.querySelector('[name=csrf-token]').content;
-  fetch(`/api/v1/${controller}/${row.event_id}`, {
+  
+  var id = row.event_id;
+  if (controller == 'attendances')
+    id = row.id
+  else if (controller == 'members')
+    id = row.id
+  else if (controller == 'links')
+    id = row.id
+  
+  fetch(`/api/v1/${controller}/${id}`, {
     method: 'DELETE', 
     headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
   }).then(() => {
-    location.reload();
+    //location.reload();
   })
 }
 
@@ -186,6 +196,9 @@ function QuickSearchToolbar(props) {
         }
         {props.admin && props.controller == 'links' && 
           <AddLinkButton />
+        }
+        {props.admin && props.controller == 'attendances' && 
+          <AddAttendanceButton />
         }
         <TextField
           variant="standard"

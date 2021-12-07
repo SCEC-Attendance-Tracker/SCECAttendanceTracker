@@ -12,7 +12,6 @@ module Api
             @attendances = Attendance.all 
             @events = Event.order(sort_column + " " + sort_direction)
             @attendances = Attendance.all
-            render json: @events
         end
 
         def current_events
@@ -20,14 +19,7 @@ module Api
         end
 
         # GET /events/1 or /events/1.json
-        def show
-          @event = Event.find(params[:id])
-          if @event
-            render json: @event
-          else
-            render json: @event.errors
-          end
-        end
+        def show; end
 
         # GET /events/new
         def new
@@ -42,7 +34,7 @@ module Api
             @event = Event.new(event_params)
             service = Google::Apis::CalendarV3::CalendarService.new
             service.authorization = google_secret.to_authorization
-            calendar_id = 'scecattendancetracker@gmail.com'
+            calendar_id = 'scectamu@gmail.com'
             puts event_params
             start_date = Google::Apis::CalendarV3::EventDateTime.new
             start_date.date_time =  DateTime.iso8601(event_params["start_date"]).change(:offset => '-0600')
@@ -75,7 +67,7 @@ module Api
             @event = Event.find(params[:id])
             service = Google::Apis::CalendarV3::CalendarService.new
             service.authorization = google_secret.to_authorization
-            calendar_id = 'scecattendancetracker@gmail.com'
+            calendar_id = 'scectamu@gmail.com'
 
             start_date = Google::Apis::CalendarV3::EventDateTime.new
             start_date.date_time =  DateTime.iso8601(event_params["start_date"]).change(:offset => '-0600')
@@ -106,7 +98,7 @@ module Api
         def destroy
             service = Google::Apis::CalendarV3::CalendarService.new
             service.authorization = google_secret.to_authorization
-            calendar_id = 'scecattendancetracker@gmail.com'
+            calendar_id = 'scectamu@gmail.com'
 
             response = service.delete_event(calendar_id, @event.google_event_id, send_updates: 'all')
             @event.destroy

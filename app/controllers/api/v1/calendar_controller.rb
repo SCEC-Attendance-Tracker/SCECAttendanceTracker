@@ -10,7 +10,7 @@ module Api
                     service = Google::Apis::CalendarV3::CalendarService.new
                     service.authorization = google_secret.to_authorization
 
-                    calendar_id = 'scecattendancetracker@gmail.com'
+                    calendar_id = 'scectamu@gmail.com'
                     begin 
                         response = service.get_calendar_list(calendar_id)
                     rescue Google::Apis::ClientError 
@@ -29,7 +29,7 @@ module Api
             def subscribe
                 service = Google::Apis::CalendarV3::CalendarService.new
                 service.authorization = google_secret.to_authorization
-                calendar_id = 'scecattendancetracker@gmail.com'
+                calendar_id = 'scectamu@gmail.com'
 
                 if $subscribed 
                     begin

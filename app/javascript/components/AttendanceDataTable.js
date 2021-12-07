@@ -9,7 +9,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import CreateAttendanceModal from './CreateAttendanceModal'
 import DataTable from "./DataTable";
 
 function getData(props) {
@@ -175,6 +175,8 @@ export default function AttendanceDataTable(props) {
   }
   console.log(props.props);
   return (
-    <DataTable data = {data} member = {props.props.member[0]} />
+    <><CreateAttendanceModal props = {{events: props.props.events, members: props.props.members}} /><DataTable data={data} /></>
+
+
   );
 }

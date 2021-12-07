@@ -11,6 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { TextField, Button }from '@material-ui/core';
+import DataTable from './DataTable';
 
 const newTheme = createTheme({   
   palette: {      
@@ -23,7 +24,7 @@ const newTheme = createTheme({
     divider: {         
       main: 'rgba(0, 0, 0, 0.2)' // Maroon
     },      
-  },fontFamily: 'Roboto Mono'
+  }
 });
 
 const useStyles = makeStyles((theme) =>
@@ -126,6 +127,7 @@ const columns = [
 ];
 
 export default function LinkDataTable(props) {
+  console.log(props);
   var member;	
   if (props.props.member != undefined) {
     member = props.props.member[0]
@@ -253,18 +255,12 @@ export default function LinkDataTable(props) {
       }
     )
   }
+  var data = {columns: columns, rows: rows}
+  console.log(data)
 
   return (
-    <div style={{ height: '50em', width: "100%" }}>
-      <DataGrid
-        rowHeight={80}
-        className={classes.root}
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
-        onCellClick={handleCellClick}
-      />
-    </div>
+    
+    <DataTable data = {data} member = {member}/>
+    
   );
 }

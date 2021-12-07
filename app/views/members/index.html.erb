@@ -1,23 +1,7 @@
+<%= stylesheet_link_tag "application", :media => "all" %>
+
 <%= react_component("NavBar", 
 props: {member: Member.where({id: session[:member_id]}), page: "Members"} )%>
 
 <%= react_component("MembersDataTable", 
 props: {members: @member, member: Member.where({id: session[:member_id]})})%>
-
-<div class="Members index">
-  <table class="listing" summary="Member list">
-    <% @member.each do |member| %>
-    <tr>
-      <td><%= member.id %></td>
-      <td><%= member.first_name %></td>
-      <td><%= member.last_name %></td>
-      <td><%= member.email %></td>
-      <td><%= member.total_attendance %></td>
-      <td class="actions">
-        <%= link_to("Show", member_path(member), :class => 'action show') %>
-      </td>
-    </tr>
-    <% end %>
-    <%#= link_to("Home", root_path) %>
-  </table>
-</div>

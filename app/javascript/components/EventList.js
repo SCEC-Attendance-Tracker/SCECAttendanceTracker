@@ -4,8 +4,9 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import {Dialog} from "@material-ui/core";
+import {Dialog, Box} from "@material-ui/core";
 import {DialogContent} from '@material-ui/core';
+import DialogActions from '@mui/material/DialogActions';
 import {Typography} from "@material-ui/core";
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core"
@@ -26,8 +27,16 @@ const useStyles = makeStyles(
       listCard: {
         padding: '0px 16px !important',
         borderRadius: '4px',
-        border: '1px solid #DDD',
-        marginTop: '30px',
+        backgroundColor: 'white',
+        marginTop: '10px !important',
+        
+        '&:is(:not(:empty))': {
+          border: '1px solid #DDD',
+        },
+        
+        '& > li:first-child': {
+          marginTop: '0px !important'
+        },
         
         '& > li:last-child': {
           borderBottom: '1px solid transparent !important',
@@ -241,7 +250,7 @@ export default function EventList({events, attendances = null, member = false, p
                           </ListItemButton>
                       </div>
                       }
-                      {(`${e.attended}` == 'true') && onEvents && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) &&
+                      {(`${e.attended}` == 'true') && onEvents && 
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Attended'}/>
@@ -294,39 +303,30 @@ export default function EventList({events, attendances = null, member = false, p
                     <Typography variant = 'h4' component = 'h4'>
                         {element.title}
                     </Typography>
-                    <Typography variant = 'h6' component = 'h6'>
-                        Start Date:
-                    </Typography>
-                    <Typography variant = 'subtitle1'>
+                    <Typography variant = 'body1'>
                         {new Date(element.start_date + ' ' + element.start_time).toLocaleString()}
-                    </Typography>
-                    <Typography variant = 'h6' component = 'h6'>
-                        End Date:
-                    </Typography>
-                    <Typography variant = 'subtitle1'>
+                        —
                         {new Date(element.end_date + ' ' + element.end_time).toLocaleString()}
                     </Typography>
                     <Typography variant = 'h6' component = 'h6'>
                         Location:
                     </Typography>
-                    <Typography variant = 'subtitle1'>
+                    <Typography variant = 'body1'>
                         {element.location}
                     </Typography>
                     <Typography variant = 'h6' component = 'h6'>
                         Description:
                     </Typography>
-                    <Typography variant = 'subtitle1'>
+                    <Typography variant = 'body1'>
                         {element.description}
                     </Typography>
-                    { withinEventTime(element.start_date) ?
-                    <div style={{
-                        flexDirection:'column', 
-                        justifyContent:'center'
-                    }}>
+                    { (withinEventTime(element.start_date) && !element.attended) ?
+                    <DialogActions>
                         <EventCodeEntry event_id={element.event_id} member_id={member.id} event_code={element.code}/>
-                    </div>
+                    </DialogActions>
                     : 
                     <>
+                    <DialogActions/>
                     </>
                     }
                 </DialogContent>

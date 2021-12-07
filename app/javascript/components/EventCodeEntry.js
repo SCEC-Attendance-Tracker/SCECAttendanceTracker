@@ -72,6 +72,7 @@ class EventCodeEntry extends React.Component {
             if (response.ok) {
                 this.setState({has_attended: true})
                 console.log('Attendance Updated');
+                location.reload()
                 return true;
             }
         }).catch(error => {console.log(error)});
@@ -95,6 +96,8 @@ class EventCodeEntry extends React.Component {
             if(response.ok) {
                 this.setState({has_attended: true})
                 console.log('Attendance Created');
+                this.handleClose;
+                location.reload()
                 return true;
             }
         }).catch(error => {console.log(error)});
@@ -131,7 +134,7 @@ class EventCodeEntry extends React.Component {
 
         return (
             <>
-            <Button onClick={this.handleOpen}>Attendance Code</Button>
+            <Button color='secondary' variant='contained' onClick={this.handleOpen}>Log Attendance</Button>
             <Dialog 
                 open={this.state.show}
                 onClose={this.handleClose}

@@ -51,7 +51,8 @@ module Api
 
         if @event.save
           member = Member.find(attendance_params[:member_id])
-          member.update(total_attendance: member.total_attendance + 1)
+          counts = Attendance.where(member_id: session[:member_id], event_id: params[:event_id], attended: true).count
+          member.update(total_attendance: counts)
           render json: @event
         else
           render json: @event.errors
@@ -63,7 +64,8 @@ module Api
         if @attendance.update(attendance_params)
           if attendance_params[:attended]
             member = Member.find(attendance_params[:member_id])
-            member.update(total_attendance: member.total_attendance + 1)
+            counts = Attendance.where(member_id: session[:member_id], event_id: params[:event_id], attended: true).count
+            member.update(total_attendance: counts)
           end
           render json: @attendance
         else

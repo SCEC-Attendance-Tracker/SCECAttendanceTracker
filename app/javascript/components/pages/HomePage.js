@@ -15,14 +15,27 @@ export default function HomePage(props) {
     <Box>
         <Grid container spacing = {5} alignItems = 'flex-start'>
             <Grid item xs = {12} lg = {4} >
-              <Typography variant="h5">
-                Current Events
-              </Typography>
-              <MyEventsDataTable props = {{page: "Home", events: props.events.current_events, attendances: props.attendances, members: props.member}}/>
-              <Typography variant="h5">
+              {(props.events.current_events.length > 0) &&
+                <>
+                <Typography variant="h6">
+                  Current Events
+                </Typography>
+                <MyEventsDataTable props = {{page: "Home", events: props.events.current_events, attendances: props.attendances, members: props.member}}/>
+                <br/>
+                </>
+              }
+              
+              <Typography variant="h6">
                 Upcoming Events
               </Typography>
-              <MyEventsDataTable props = {{page: "Home", events: props.events.upcoming_events, attendances: props.attendances, members: props.member}}/>
+              
+              {(props.events.upcoming_events.length > 0) ?
+                <MyEventsDataTable props = {{page: "Home", events: props.events.upcoming_events, attendances: props.attendances, members: props.member}}/>
+                :
+                <Typography variant="p">
+                  No upcoming events. Check back soon!
+                </Typography>
+              }
             </Grid>
             <Grid item xs = {12} lg = {8} style = {{height: '100%'}}>
               <GoogleCalendar />

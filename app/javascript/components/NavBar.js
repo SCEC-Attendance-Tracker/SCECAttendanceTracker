@@ -114,7 +114,7 @@ export default function NavBar(props) {
 				}
 				
 				<Typography 
-				variant="h6"
+				variant="h5"
 				className={classes.title}
 				>
 					{page_name}
@@ -182,6 +182,11 @@ export default function NavBar(props) {
 						{ (member != undefined) &&
 							<Link href="/help">
 								<MenuItem className={classes.menuItem}>Help</MenuItem>
+							</Link>
+						}
+						{ (member != undefined) && (member.admin) &&
+							<Link href={"/settings"}>
+								<MenuItem className={classes.menuItem}>Admin Settings</MenuItem>
 							</Link>
 						}
 						{ (member != undefined) &&

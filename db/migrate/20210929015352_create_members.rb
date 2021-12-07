@@ -8,6 +8,7 @@ class CreateMembers < ActiveRecord::Migration[6.1]
       t.string :email
       t.string :description
       t.boolean :paid_dues
+      t.boolean :member
       t.integer :total_attendance
       t.string :img_url
 

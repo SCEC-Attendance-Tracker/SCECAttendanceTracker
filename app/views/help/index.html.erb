@@ -1,4 +1,6 @@
 <%# <h1>Help Page</h1> %>
+<%= stylesheet_link_tag "application", :media => "all" %>
+
 <%= react_component("NavBar", 
 					props: {member: Member.where({id: session[:member_id]}), page: "Help"} )%>
 					

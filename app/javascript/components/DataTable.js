@@ -13,6 +13,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import { createTheme, makeStyles, createStyles } from "@material-ui/core";
 import EditEventModal from './EditEventModal';
+import CreateEventModal from './CreateEventModal';
+import AddLinkButton from './AddLinkButton';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -42,9 +44,11 @@ const useStyles = makeStyles(
         //alignItems: 'flex-start',
         flexWrap: 'wrap',
         width: '100%',
+        
       },
       grid: {
         marginTop: '10px',
+        backgroundColor: 'white',
         
         '& .MuiDataGrid-main': {
           width: '100%',
@@ -67,7 +71,7 @@ const useStyles = makeStyles(
         [theme.breakpoints.down('xs')]: {
           width: '100%',
         },
-        margin: theme.spacing(1, 0.5, 1.5),
+        margin: theme.spacing(1, 0.5, 1.5, 2.5),
         '& .MuiSvgIcon-root': {
           marginRight: theme.spacing(0.5),
           color: '#500000',
@@ -177,6 +181,12 @@ function QuickSearchToolbar(props) {
   return (
     <div className={classes.toolbar}>
       <div>
+        {props.admin && props.controller == 'events' && 
+          <CreateEventModal />
+        }
+        {props.admin && props.controller == 'links' && 
+          <AddLinkButton />
+        }
         <TextField
           variant="standard"
           value={props.value}
@@ -229,16 +239,19 @@ export default function DataTable({data, member = null}) {
     //console.log(data);
   }*/
   var controller;
+  var attendanceCheck = 0;
   for (var col in data.columns) {
-    var attendanceCheck = 0;
-    if (data.columns[col].field == 'start_time') {
+    if (data.columns[col].field == 'code') {
       controller = 'events'; break;
     }
-    else if (data.columns[col].field == 'first_name') {
+    else if (data.columns[col].field == 'paid_dues') {
       controller = 'members'; break;
     }
     else if (data.columns[col].field == 'event_rating_score') {
       controller = 'feedback'; break;
+    }
+    else if (data.columns[col].field == 'url') {
+      controller = 'links'; break;
     }
     else if (data.columns[col].field == 'member_id' || data.columns[col].field == 'event_id') {
       attendanceCheck = attendanceCheck + 1;

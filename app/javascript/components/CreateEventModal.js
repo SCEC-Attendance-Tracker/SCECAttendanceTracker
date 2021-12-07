@@ -2,6 +2,11 @@
 import { TextField, Typography, Button, Box, IconButton } from '@material-ui/core';
 import { CloseIcon } from '@material-ui/icons';
 import { Check, Close } from '@material-ui/icons';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { DateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -42,7 +47,6 @@ export default function CreateEventModal() {
   class CreateEventForm extends React.Component {
       constructor(props) {
           super(props);
-          console.log(props);
           this.state = { // gonna need event JSON
               beginDate: new Date(),
               endDate: new Date(),
@@ -155,74 +159,72 @@ export default function CreateEventModal() {
           const closeImg = {cursor:'pointer', float:'right', marginTop: '5px', width: '20px'};
 
           return (
-              <Box sx={style}>
-                  <div className='new-event-header'>
-                      <Typography id='new-event-header' variant='h4' component ='h4'> New Event </Typography>
-
-                  </div>
-                  <div className='event-field'>
-                      {this.state.created ? <Typography id='submitted'> Event created! </Typography> : ""}
-                      <TextField required id='outlined' label='Event Title' name='title' onChange={this.handleInputChange}/>
-
-                  </div>
-                  <br/>
-                  <div className='event-field-dates'>
-                      <div className='time-pick'>
-                          <Typography variant='overline'> From </Typography>
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                              <DateTimePicker maxDateTime={this.state.endDate} name="beginDate" value={begin} renderInput={(end) => <TextField id='outlined' label="From"{...end} />} onChange={(newDate) => this.beginDateChange(newDate)}/>
-                          </LocalizationProvider>
-                      </div>
-                      <div className='time-pick'>
-                          <Typography variant='overline'> To </Typography>
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                              <DateTimePicker minDateTime={this.state.beginDate} name="endDate" value={end} renderInput={(begin) => <TextField id='outlined' label="To" {...begin} />} onChange={(newDate) => this.endDateChange(newDate)}/>
-                          </LocalizationProvider>
-                      </div>
-                  </div>
-                  <br/>
-                  <div className='event-field'>
-                      <TextField id='outlined' label='Description' name='description' onChange={this.handleInputChange}/>
-                  </div>
-                  <div className='event-field'>
-                      <TextField id='outlined' label='Location' name='location' onChange={this.handleInputChange}/>
-                  </div>
-                  <div className='event-field'>
-                      <div className='footer' style={{
-                          display: 'flex',
-                          flexDirection: 'row-reverse'
-                      }}>
-                          <Button onClick={() => {
-                            this.submitEvent();
-                          }}
-                          startIcon={<Check/>}> Submit </Button>
-                      </div>
-                  </div>
-              </Box>
+              <Dialog open={open} onClose={handleClose}>
+                  <DialogTitle>
+                      New Event
+                  </DialogTitle>
+                  <DialogContent>
+                      <TextField fullWidth required id='outlined' color='secondary' label='Event Title' name='title' onChange={this.handleInputChange}/>
+                      <Box sx={{display: 'flex', gap: 30, mt: 1}}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DateTimePicker 
+                            name="beginDate" 
+                            value={begin} 
+                            label="From" 
+                            color='secondary' 
+                            renderInput={(end) => 
+                              <TextField 
+                                id='outlined' 
+                                color='secondary' 
+                                label="From" 
+                                {...end} 
+                              />
+                            } 
+                            onChange={(newDate) => this.beginDateChange(newDate)}
+                          />
+                      
+                          <DateTimePicker 
+                            minDateTime={this.state.beginDate} 
+                            name="endDate" 
+                            value={end} 
+                            label="To" 
+                            color='secondary' 
+                            renderInput={(begin) => 
+                              <TextField 
+                                id='outlined' 
+                                color='secondary' 
+                                label="To" 
+                                {...begin} 
+                              />
+                            } 
+                            onChange={(newDate) => this.endDateChange(newDate)}
+                          />
+                      </LocalizationProvider>
+                      </Box>
+                      <TextField fullWidth required id='outlined' color='secondary' label='Description' name='description' onChange={this.handleInputChange}/>
+                      <TextField fullWidth required id='outlined' color='secondary' label='Location' name='location' onChange={this.handleInputChange}/>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button variant='contained' color='secondary' onClick={() => {this.submitEvent()}}>Create</Button>
+                  </DialogActions>
+              </Dialog>
           );
       }
   }
 
   return (
-    <div>
+    <>
       <Button
         variant='contained'
         color='secondary'
+        size='small'
         onClick={handleOpen}
       >
         New Event
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <CreateEventForm onClose={handleClose}/>
-        </Box>
-
-      </Modal>
-    </div>
+      
+      <CreateEventForm onClose={handleClose}/>
+    </>
   )
 }

@@ -1,12 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Outfit:wght@400;600;700&family=Arima+Madurai:wght@400;600;700&family=Berkshire+Swash&family=Amita:wght@700&display=swap');
+
+h1, h2, h3, h4, h5, h6, td, button {
+    font-family: 'Arima Madurai', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600 !important;
+}
+a, p, span, ol, ul, li, tr, div, button, label, input {
+  font-family: 'Outfit', sans-serif !important;
+}
+.profiler-results {
+  display: none;
+}
+table.fc-scrollgrid {
+  background-color: white;
+  border-radius: 4px;
+}
+.fc-header-toolbar {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
 body {
-  background-color: #fff;
-  color: #333;
-  margin: 33px; }
+  background-color: rgba(170, 50, 45, 0.08);
+  color: #333; }
 
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px; }
+  font-size: 16px;
+  line-height: 21px; }
 
 pre {
   background-color: #eee;
@@ -20,8 +41,10 @@ a:visited {
   color: #666; }
 
 a:hover {
-  color: #fff;
-  background-color: #000; }
+  color: #fff; }
+
+.MuiDataGrid-cell a:hover {
+  color: #55f; }
 
 th {
   padding-bottom: 5px; }

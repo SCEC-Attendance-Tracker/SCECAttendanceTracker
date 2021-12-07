@@ -7,11 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { TextField, Button } from '@material-ui/core';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-export default function AddLinkButton(props) {
-  var member;	
-  if (props.props.member != undefined) {
-    member = props.props.member[0]
-  }
+export default function AddLinkButton() {
+  
   const [open, setOpen] = React.useState(false);
   const inputName = useRef('')
   const inputUrl = useRef('')
@@ -45,12 +42,11 @@ export default function AddLinkButton(props) {
   };
 
   return (
-    <div>
-      { (member != undefined) && (member.admin) &&
-      <Button sx = {{mt: 2, mb: 1}} variant="contained" startIcon={<AddCircleOutlineIcon/>} onClick={handleClickOpen}>
-        Create Link
+    <>
+      <Button sx = {{mt: 2, mb: 1}} size='small' color='secondary' variant="contained" onClick={handleClickOpen}>
+        New Link
       </Button>
-      }
+      
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Link</DialogTitle>
         <DialogContent>
@@ -61,6 +57,7 @@ export default function AddLinkButton(props) {
             autoFocus
             margin="dense"
             id="name"
+            color='secondary'
             label="Link Name"
             type="string"
             fullWidth
@@ -72,6 +69,7 @@ export default function AddLinkButton(props) {
             autoFocus
             margin="dense"
             id="url"
+            color='secondary'
             label="Link URL (https://www.example.com)"
             type="text"
             fullWidth
@@ -83,6 +81,7 @@ export default function AddLinkButton(props) {
             autoFocus
             margin="dense"
             id="description"
+            color='secondary'
             label="Description"
             type="text"
             fullWidth
@@ -92,10 +91,10 @@ export default function AddLinkButton(props) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit}>Add</Button>
           <Button onClick={handleClose}>Cancel</Button>
+          <Button variant='contained' color='secondary' onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }

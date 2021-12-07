@@ -9,34 +9,44 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 member = Member.create([
-                         {
-                           admin: 1,
-                           first_name: 'Steve',
-                           last_name: 'Jobs',
-                           email: 'steve.jobs@mail.com',
-                           description: 'apple woo',
-                           paid_dues: 1,
-                           total_attendance: 2
-                         },
+                        #  {
+                        #    admin: 1,
+                        #    first_name: 'Steve',
+                        #    last_name: 'Jobs',
+                        #    email: 'steve.jobs@mail.com',
+                        #    description: 'apple woo',
+                        #    paid_dues: 1,
+                        #    total_attendance: 2
+                        #  },
+
+                        #  {
+                        #    admin: 0,
+                        #    first_name: 'Frodo',
+                        #    last_name: 'Baggins',
+                        #    email: 'frodo.baggins@hobbit.com',
+                        #    description: 'me short',
+                        #    paid_dues: 0,
+                        #    total_attendance: 2
+                        #  },
+
+                        #  {
+                        #    admin: 0,
+                        #    first_name: 'Steve',
+                        #    last_name: 'Wozniak',
+                        #    email: 'swozniak@mail.com',
+                        #    description: 'woo apple',
+                        #    paid_dues: 0,
+                        #    total_attendance: 1
+                        #  }, 
 
                          {
-                           admin: 0,
-                           first_name: 'Frodo',
-                           last_name: 'Baggins',
-                           email: 'frodo.baggins@hobbit.com',
-                           description: 'me short',
+                           admin: true, 
+                           first_name: 'Noah', 
+                           last_name: 'Miner', 
+                           email: 'noahjminer@tamu.edu', 
                            paid_dues: 0,
+                           member: 1, 
                            total_attendance: 2
-                         },
-
-                         {
-                           admin: 0,
-                           first_name: 'Steve',
-                           last_name: 'Wozniak',
-                           email: 'swozniak@mail.com',
-                           description: 'woo apple',
-                           paid_dues: 0,
-                           total_attendance: 1
                          }
                        ])
 

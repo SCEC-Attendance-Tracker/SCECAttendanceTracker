@@ -5,7 +5,7 @@ import DataTable from "./DataTable";
 
 import EventCodeEntry from './EventCodeEntry';
 import {Dialog} from "@material-ui/core";
-import {DialogContent} from '@material-ui/core';
+import {DialogContent, DialogTitle, DialogActions} from '@material-ui/core';
 import {Typography} from "@material-ui/core";
 
 import ClearIcon from '@material-ui/icons/Clear';
@@ -94,7 +94,7 @@ export default function EventsDataTable(props) {
         headerClassName: 'theme-header',
         field: 'description',
         headerName: 'Description',
-        width: 150,
+        width: 160,
       },
       {
         headerClassName: 'theme-header',
@@ -106,12 +106,14 @@ export default function EventsDataTable(props) {
         headerClassName: 'theme-header',
         field: 'rsvp',
         headerName: 'RSVP',
-        width: 160,
+        width: 150,
+        hide: !member,
         type: 'actions',
         getActions: (params) => [
           <GridActionsCellItem
             icon={ params.row.rsvp ? <CheckIcon /> : <ClearIcon />}
             label="Mark RSVP"
+            disabled={(new Date <= new Date(params.row.start_date + ' ' + params.row.start_time)) ? false : true}
             onClick={() => {
               markRsvp(params.row);
             }}
@@ -122,12 +124,14 @@ export default function EventsDataTable(props) {
         headerClassName: 'theme-header',
         field: 'attended',
         headerName: 'Mark Attendance',
-        width: 160,
+        width: 150,
+        hide: !member,
         type: 'actions',
         getActions: (params) => [
           <GridActionsCellItem
             icon={ params.row.attended ? <CheckIcon /> : <ClearIcon />}
             label="Mark Attendance"
+            disabled={((new Date >= new Date(params.row.start_date + ' ' + params.row.start_time)) && (new Date <= new Date(params.row.end_date + ' ' + params.row.end_time))) ? false : true}
             onClick={() => {
               openAttendanceCheck(params.row)
               //markAttendance(params.row);
@@ -268,58 +272,46 @@ export default function EventsDataTable(props) {
   
   return (
     <>
-      {member.admin && 
-        <CreateEventModal />
-      }
       <DataTable data = {data} member = {member}/>
       {open && 
         <Dialog
-            open = {open}
-            onClose = {handleClose}
-            fullWidth = {true}
-            maxWidth = 'sm'
-        >
-            <DialogContent>
-                <Typography variant = 'h4' component = 'h4'>
-                    {element.title}
-                </Typography>
-                <Typography variant = 'h6' component = 'h6'>
-                    Start Date:
-                </Typography>
-                <Typography variant = 'subtitle1'>
-                    {new Date(element.start_date).toLocaleString()}
-                </Typography>
-                <Typography variant = 'h6' component = 'h6'>
-                    End Date:
-                </Typography>
-                <Typography variant = 'subtitle1'>
-                    {new Date(element.end_date).toLocaleString()}
-                </Typography>
-                <Typography variant = 'h6' component = 'h6'>
-                    Location:
-                </Typography>
-                <Typography variant = 'subtitle1'>
-                    {element.location}
-                </Typography>
-                <Typography variant = 'h6' component = 'h6'>
-                    Description:
-                </Typography>
-                <Typography variant = 'subtitle1'>
-                    {element.description}
-                </Typography>
-                { withinEventTime(element.start_date) ?
-                <div style={{
-                    flexDirection:'column', 
-                    justifyContent:'center'
-                }}>
-                    <EventCodeEntry event_id={element.event_id} member_id={member.id} event_code={element.code}/>
-                </div>
-                : 
-                <>
-                </>
-                }
-            </DialogContent>
-        </Dialog>
+        open = {open}
+        onClose = {handleClose}
+        fullWidth = {true}
+        maxWidth = 'sm'
+    >
+        <DialogTitle>
+            {element.title}
+        </DialogTitle>
+        <DialogContent>
+            <Typography variant = 'body1'>
+                {new Date(element.start_date + ' ' + element.start_time).toLocaleString()}
+                —
+                {new Date(element.end_date + ' ' + element.end_time).toLocaleString()}
+            </Typography>
+            <Typography variant = 'h6' component = 'h6'>
+                Location:
+            </Typography>
+            <Typography variant = 'body1'>
+                {element.location}
+            </Typography>
+            <Typography variant = 'h6' component = 'h6'>
+                Description:
+            </Typography>
+            <Typography variant = 'body1'>
+                {element.description}
+            </Typography>
+            { (withinEventTime(element.start_date) && !element.attended) ?
+            <DialogActions>
+                <EventCodeEntry event_id={element.event_id} member_id={member.id} event_code={element.code}/>
+            </DialogActions>
+            : 
+            <>
+            <DialogActions/>
+            </>
+            }
+        </DialogContent>
+    </Dialog>
       }
     </>
   );

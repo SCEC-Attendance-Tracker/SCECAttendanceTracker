@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
 
   create_table "feedbacks", force: :cascade do |t|
     t.bigint "event_id"
+    t.bigint "member_id"
     t.string "event_review"
     t.integer "event_rating_score"
     t.datetime "created_at", precision: 6, null: false
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
     t.string "email"
     t.string "description"
     t.boolean "paid_dues"
+    t.boolean "member"
     t.integer "total_attendance"
     t.string "img_url"
     t.datetime "created_at", precision: 6, null: false

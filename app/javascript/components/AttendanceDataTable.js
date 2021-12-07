@@ -170,9 +170,13 @@ function getData(props) {
 var data;
 
 export default function AttendanceDataTable(props) {
-  data = getData(props);
+  if (data == undefined) {
+    data = getData(props);
+  }
+  console.log(props.props);
   return (
     <><CreateAttendanceModal props = {{events: props.props.events, members: props.props.members}} /><DataTable data={data} /></>
+
 
   );
 }

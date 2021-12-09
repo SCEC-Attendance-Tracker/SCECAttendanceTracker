@@ -59,16 +59,19 @@ The application can be seen using a browser and navigating to http://localhost:3
 
 ## Environmental Variables/Files ##
 
-** Add instructions/description if your application requires it.
+
 
 ## Deployment ##
 
-** Add instructions about how to deploy to Heroku
+https://www.codecademy.com/articles/deploy-rails-to-heroku
 
 
 ## CI/CD ##
 
-TBD
+CI/CD is built into this repository. Simply copy the workflow.yml file into another project if you intend on moving/forking this repository. This project is no longer connected to the Heroku pipeline we used during active development to deploy changes. You will want to hook up your Heroku account to this repository such that changes to the main branch will automatically redeploy to the production instance. Further instructions for achieving this can be found via Google.
+
+Additional resource:
+https://web.microsoftstream.com/video/c6b12d75-c824-4f87-bea2-f8ec0c9323ff
 
 ## Support ##
 

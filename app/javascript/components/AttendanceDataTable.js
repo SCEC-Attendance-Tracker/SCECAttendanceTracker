@@ -155,8 +155,8 @@ function getData(props) {
       first_name: members.find(e => e.id == attendances[i].member_id).first_name,
       last_name: members.find(e => e.id == attendances[i].member_id).last_name,
       title: events.find(e => e.id == attendances[i].event_id).title,
-      start_date: new Date(events.find(e => e.id == attendances[i].event_id).start_date).toLocaleDateString(),
-      start_time: new Date(events.find(e => e.id == attendances[i].event_id).start_date).toLocaleTimeString(),
+      start_date: attendances[i].created_at.toLocaleDateString(),
+      start_time: attendances[i].created_at.toLocaleTimeString(),
       rsvp: (attendances[i].rsvp ? true : false ),
       attended: ((new Date(events.find(e => e.id == attendances[i].event_id).start_date) < new Date()) ? (attendances[i].attended ? true : false) : false)
     }

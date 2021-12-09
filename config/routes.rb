@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :links
   resources :feedbacks
   resources :help
+  resources :privacypolicy
   root to: 'home#show'
 
   resources :attendances

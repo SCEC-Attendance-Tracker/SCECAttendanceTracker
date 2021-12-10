@@ -54,8 +54,18 @@ Install the app
 
 Run the app
   `rails server --binding:0.0.0.0`
-
+ 
 The application can be seen using a browser and navigating to http://localhost:3000/
+  
+To create admin credentials after signing in to the site, turn off the server, and open the rails console in your terminal. 
+
+ `rails console`
+ `member = Member.find(USER_EMAIL_HERE)`
+ `member.admin = true`
+ `member.is_member = true`
+ `member.update()`
+
+Then exit the console and restart the rails server.
 
 ## Environmental Variables/Files ##
 

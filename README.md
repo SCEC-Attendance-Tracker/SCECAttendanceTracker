@@ -4,7 +4,7 @@
 
 SCECAttendanceTracker
 
-[Description Here]
+This project was the cumulative work of six students in Pauline Wade's CSCE 431 class in the Fall of 2021. We have built a web application that acts as a portal for the Student Council for Exceptional Children that allows its members to view upcoming events, mark their attendance, and keep track of various other points of interest.
 
 ## Requirements ##
 
@@ -16,7 +16,7 @@ This code has been run and tested on:
 * PostgreSQL - 13.3
 * Nodejs - v16.7
 * Yarn - 1.22.11
-* React - [Do we have a version for this?]
+* React
 
 
 ## External Deps  ##

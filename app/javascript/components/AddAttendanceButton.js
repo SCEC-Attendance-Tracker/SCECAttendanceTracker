@@ -15,6 +15,7 @@ export default function AddAttendanceButton() {
   const inputEid = createRef('')
   
   var isValid = false;
+  var entryNotAttended = false;
   
   const membersOptions = () => {
     const token = document.querySelector('[name=csrf-token]').content;
@@ -57,8 +58,8 @@ export default function AddAttendanceButton() {
   }
   
        
-  console.log(membersOptions());
-  console.log(eventsOptions());
+  //console.log(membersOptions());
+  //console.log(eventsOptions());
   
   const allMembers = membersOptions();
   var mID = -1;
@@ -80,6 +81,11 @@ export default function AddAttendanceButton() {
           isValid = true
           return true;
         } else {
+          if (!data[0].attended) {
+            isValid = true;
+            entryNotAttended = true;
+            return true;
+          }
           isValid = false;
           return false;
         }
@@ -97,6 +103,21 @@ export default function AddAttendanceButton() {
       event_id: eID,
       attended: true
     }
+    
+    if (entryNotAttended) {
+      
+      fetch(`/api/v1/attendances?member_id=${mID}&event_id=${eID}`, {
+        method: 'PUT', 
+        body: JSON.stringify(newAttendance),
+        headers: { 'ACCEPT': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}
+      }).then(() => {
+        console.log('Updated attendance entry');
+        location.reload();
+      })
+      setOpen(false);
+      
+    }
+    
     
     fetch('/api/v1/attendances', {
       method: 'POST', 

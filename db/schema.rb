@@ -15,13 +15,6 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attachment_links", force: :cascade do |t|
-    t.bigint "attatchment_id"
-    t.bigint "event_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "attachments", force: :cascade do |t|
     t.bigint "member_id"
     t.string "title"
@@ -48,6 +41,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
     t.string "description"
     t.string "location"
     t.string "code"
+    t.float "average_rating"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -56,7 +50,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_111229) do
     t.bigint "event_id"
     t.bigint "member_id"
     t.string "event_review"
-    t.integer "event_rating_score"
+    t.float "event_rating_score"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

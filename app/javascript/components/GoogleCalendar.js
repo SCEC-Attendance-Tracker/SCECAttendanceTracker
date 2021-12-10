@@ -77,7 +77,7 @@ class GoogleCalendar extends React.Component {
             customButtons = {customButtons}
             headerToolbar = {headerToolbar}
             events = {{
-              googleCalendarId: 'scectamu@gmail.com'
+              googleCalendarId: 'scecattendancetracker@gmail.com'
             }}
           />
     );

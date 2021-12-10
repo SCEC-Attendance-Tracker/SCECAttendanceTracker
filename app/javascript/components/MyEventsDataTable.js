@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import { DataGrid, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarExport} from '@mui/x-data-grid'
-import {Typography} from '@material-ui/core'
+import {Typography, Box} from '@material-ui/core'
+import Stack from '@mui/material/Stack';
 import DataTable from './DataTable'
 import EventList from './EventList'
 
@@ -167,6 +168,13 @@ var data;
 export default function MyEventsDataTable(props) {
   
   console.log(props);
+  const [open, setOpen] = React.useState(true);
+  const handleItemClick = () => {
+    open ? 
+      setOpen(false)
+    :
+      setOpen(true);
+  }
   
   if (props.props.members == false) {
     console.log(props);
@@ -195,13 +203,20 @@ export default function MyEventsDataTable(props) {
     return (
       <>
       {(data.rows.length > 0) && (props.props.page != "Home") && 
+        <Stack direction='row' spacing={2}>
         <Typography variant = 'h6' component = 'h6'>
             My Events
         </Typography>
+        <IconButton size='small' onClick={() => {handleItemClick()}}>
+          {open ? <VisibilityIcon fontSize='small'/> : <VisibilityOffIcon fontSize='small'/>}
+        </IconButton>
+        </Stack>
       }
       
+      {open && 
       <EventList events = {data.rows} attendances = {attendances} member = {member} page = {props.props.page} />
-      
+    }
+    
       {(data.rows.length > 0) && (props.props.page != "Home") && 
       <>
       <br/>

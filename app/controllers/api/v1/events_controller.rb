@@ -35,7 +35,7 @@ module Api
             @event = Event.new(event_params)
             service = Google::Apis::CalendarV3::CalendarService.new
             service.authorization = google_secret.to_authorization
-            calendar_id = 'scectamu@gmail.com'
+            calendar_id = 'scecattendancetracker@gmail.com'
             puts event_params
             start_date = Google::Apis::CalendarV3::EventDateTime.new
             start_date.date_time =  DateTime.iso8601(event_params["start_date"]).change(:offset => '-0600')
@@ -68,7 +68,7 @@ module Api
             @event = Event.find(params[:id])
             service = Google::Apis::CalendarV3::CalendarService.new
             service.authorization = google_secret.to_authorization
-            calendar_id = 'scectamu@gmail.com'
+            calendar_id = 'scecattendancetracker@gmail.com'
 
             start_date = Google::Apis::CalendarV3::EventDateTime.new
             start_date.date_time =  DateTime.iso8601(event_params["start_date"]).change(:offset => '-0600')
@@ -99,7 +99,7 @@ module Api
         def destroy
             service = Google::Apis::CalendarV3::CalendarService.new
             service.authorization = google_secret.to_authorization
-            calendar_id = 'scectamu@gmail.com'
+            calendar_id = 'scecattendancetracker@gmail.com'
 
             response = service.delete_event(calendar_id, @event.google_event_id, send_updates: 'all')
             @event.destroy

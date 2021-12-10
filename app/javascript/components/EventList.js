@@ -4,7 +4,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import {Dialog, Box} from "@material-ui/core";
+import {Dialog, DialogTitle, Box} from "@material-ui/core";
 import {DialogContent} from '@material-ui/core';
 import DialogActions from '@mui/material/DialogActions';
 import {Typography} from "@material-ui/core";
@@ -196,7 +196,7 @@ export default function EventList({events, attendances = null, member = false, p
                       />
                       
                       {/* Home Page: Mark Attendance */}
-                      {(`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date}`)) <= today) && ((new Date(`${e.end_date}`)) >= today) &&
+                      {(`${e.attended}` != 'true') && onHome && member && ((new Date(`${e.start_date + ' ' + e.start_time}`)) <= today) && ((new Date(`${e.end_date + ' ' + e.end_time}`)) >= today) &&
                       <div className={classes.listActions}>
                           <ListItemText className={classes.listActionText}
                           primary = {'Mark Attendance'}/>
@@ -299,15 +299,16 @@ export default function EventList({events, attendances = null, member = false, p
                 fullWidth = {true}
                 maxWidth = 'sm'
             >
-                <DialogContent>
-                    <Typography variant = 'h4' component = 'h4'>
-                        {element.title}
-                    </Typography>
+                
+                <DialogTitle>
+                    {element.title}
                     <Typography variant = 'body1'>
                         {new Date(element.start_date + ' ' + element.start_time).toLocaleString()}
                         —
                         {new Date(element.end_date + ' ' + element.end_time).toLocaleString()}
                     </Typography>
+                </DialogTitle>
+                <DialogContent>
                     <Typography variant = 'h6' component = 'h6'>
                         Location:
                     </Typography>

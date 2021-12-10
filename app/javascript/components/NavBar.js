@@ -163,9 +163,6 @@ export default function NavBar(props) {
 						<Link href={"/links"}>
 							<MenuItem className={classes.menuItem}>Links</MenuItem>
 						</Link>
-						<Link href="/privacypolicy">
-							<MenuItem className={classes.menuItem}>Privacy Policy</MenuItem>
-						</Link>
 						
 						{ (member != undefined) && (member.admin) &&
 							<Link href={"/attendances"}>
@@ -182,6 +179,8 @@ export default function NavBar(props) {
 								<MenuItem className={classes.menuItem}>Feedback</MenuItem>
 							</Link>
 						}
+						
+						
 						{ (member != undefined) &&
 							<Link href="/help">
 								<MenuItem className={classes.menuItem}>Help</MenuItem>
@@ -192,6 +191,11 @@ export default function NavBar(props) {
 								<MenuItem className={classes.menuItem}>Admin Settings</MenuItem>
 							</Link>
 						}
+						
+						<Link href="/privacypolicy">
+							<MenuItem className={classes.menuItem}>Privacy Policy</MenuItem>
+						</Link>
+						
 						{ (member != undefined) &&
 							<Link href="/members/sign_out">
 								<MenuItem className={classes.menuItem}>Sign Out</MenuItem>
